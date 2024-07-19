@@ -251,7 +251,6 @@ export class HomeOwnerIndexPageComponent implements OnInit {
      .subscribe((data: any) => {     
      
       console.log("Checkdata",data);  
-      alert("Data is- "+data)
       if (data == true){
      
         let data: Array < any >= []; 
@@ -267,7 +266,7 @@ export class HomeOwnerIndexPageComponent implements OnInit {
       this._notificationService.generateNotification(data); 
   }
     else {
-      alert("else")
+     // alert("else")
       }
        });
 
@@ -470,7 +469,7 @@ export class HomeOwnerIndexPageComponent implements OnInit {
            console.log("Hurraaa!!! we got the token.....");
            console.log(currentToken);
            localStorage.setItem("fb_token",currentToken)
-          
+          alert(currentToken);
            const requestOptions = {
              method: 'POST', // GET/POST
              headers: {
