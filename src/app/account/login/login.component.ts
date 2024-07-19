@@ -91,33 +91,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.ns.sendNotification("ok","hello")
 
-    const requestOptions = {
-      method: 'POST', // GET/POST
-      headers: {
-        'Authorization': 'Bearer ya29.a0AXooCguz8X9gNo7FD-CYd6_TOPu4UGF83boN0v_vagwijA5IxAeQLs29Zj3904kY8o1wBJRY-XHrpxZMfGIvARDWBXjjzZB9YhEvgmOmVRDrMA5rSm5YzObBd_CZHguysCUW7iCXaDI1agmbxSTP3eFA0R7WKKx3G80gaCgYKAe0SARISFQHGX2MilPmjJ5oVHh8BjDPgan5fcw0171',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "message": {
-          "token": localStorage.getItem("fb_token"),
-          "notification": {
-            "title": "Hello",
-            "body": "World"
-          },
-          "data": {
-            "key1": "value1",
-            "key2": "value2"
-          }
-        }
-      }) // Uncomment this line for POST method
-    };
-    fetch("https://fcm.googleapis.com/v1/projects/traver-lamp/messages:send", requestOptions)
-      .then(response => response.json())
-      .then(data => console.log(data) );
-
-      return
     localStorage.removeItem("BearerToken");
     this.isloginError = false;
     this.isLoginRestricted = false;

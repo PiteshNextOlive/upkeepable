@@ -18,8 +18,9 @@ import { CommonOpsService } from 'src/app/shared/common-ops-service';
 import { AppToastService } from '../../toast/app-toast.service';
 import { SharingDataService } from 'src/app/services/sharing-data/sharing-data.service';
 import { HttpLoaderService } from 'src/app/shared/http-loader.service';
-import { PushNotificationService } from 'src/app/push-notification.service';
-
+//import { PushNotificationService } from 'src/app/push-notification.service';
+import { PushNotificationService } from '../../push-notification.service';
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 declare var $: any
 
 @Component({
@@ -186,6 +187,7 @@ export class HomeOwnerIndexPageComponent implements OnInit {
   selectedArticle: IArticle;
   defaultProfilePhoto = environment.defaultProfilePhoto;
   defaultApiRoot = environment.defaultApiRoot;
+  message:any;
   constructor(
 
     private _notificationService: PushNotificationService,
@@ -450,7 +452,69 @@ export class HomeOwnerIndexPageComponent implements OnInit {
               });
           });
       });
+  
+  
+
+      this.requestPermission();
+      this.listen();
+
+  
+    }
+
+  requestPermission() {
+    const messaging = getMessaging();
+    getToken(messaging, 
+     { vapidKey: environment.firebase.vapidKey}).then(
+       (currentToken) => {
+         if (currentToken) {
+           console.log("Hurraaa!!! we got the token.....");
+           console.log(currentToken);
+           localStorage.setItem("fb_token",currentToken)
+          
+           const requestOptions = {
+             method: 'POST', // GET/POST
+             headers: {
+               'Authorization': 'Bearer ya29.a0AXooCguz8X9gNo7FD-CYd6_TOPu4UGF83boN0v_vagwijA5IxAeQLs29Zj3904kY8o1wBJRY-XHrpxZMfGIvARDWBXjjzZB9YhEvgmOmVRDrMA5rSm5YzObBd_CZHguysCUW7iCXaDI1agmbxSTP3eFA0R7WKKx3G80gaCgYKAe0SARISFQHGX2MilPmjJ5oVHh8BjDPgan5fcw0171',
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({
+               "message": {
+                 "token":currentToken,
+                 "notification": {
+                   "title": "Hello",
+                   "body": "World"
+                 },
+                 "data": {
+                   "key1": "value1",
+                   "key2": "value2"
+                 }
+               }
+             }) // Uncomment this line for POST method
+           };
+           fetch("https://fcm.googleapis.com/v1/projects/traver-lamp/messages:send", requestOptions)
+             .then(response => response.json())
+             .then(data => console.log(data) );
+
+
+
+         } else {
+           console.log('No registration token available. Request permission to generate one.');
+         }
+     }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+    });
   }
+  listen() {
+    const messaging = getMessaging();
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+      this.message=payload;
+    });
+  }
+
+
+
+  
   selectToday(): void {
     const today = new Date();
     this.inputForm1.patchValue({
