@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
       },
       body: JSON.stringify({
         "message": {
-          "token": "c7zu3PS0nawHUK0KruZ93e:APA91bF6mJ1I8mHPUlXAHdtCVqdJRQ-hSWIHlox9TpsB5gDIhVI05sqNwwiqNzLiNirHwXCrVKWnXG8RFdrO3Sju29jxxAA0IAPh9kka1qTkNaPTd7b8-9QnbLIO2UaHEdhA2l6nj_7I",
+          "token": localStorage.getItem("fb_token"),
           "notification": {
             "title": "Hello",
             "body": "World"
