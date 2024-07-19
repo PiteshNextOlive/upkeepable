@@ -188,6 +188,7 @@ export class HomeOwnerIndexPageComponent implements OnInit {
   defaultProfilePhoto = environment.defaultProfilePhoto;
   defaultApiRoot = environment.defaultApiRoot;
   message:any;
+  token:any;
   constructor(
 
     private _notificationService: PushNotificationService,
@@ -469,7 +470,8 @@ export class HomeOwnerIndexPageComponent implements OnInit {
            console.log("Hurraaa!!! we got the token.....");
            console.log(currentToken);
            localStorage.setItem("fb_token",currentToken)
-          alert(currentToken);
+        //  alert(currentToken);
+        this.token=currentToken;
            const requestOptions = {
              method: 'POST', // GET/POST
              headers: {
