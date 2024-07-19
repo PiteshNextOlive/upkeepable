@@ -1,0 +1,148 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <input type="hidden" class="form-control" formControlName="firstName" placeholder="First Name" id="first-name">
+    <input type="hidden" formControlName="lastName" class="form-control" placeholder="Last Name" id="last-name">
+    <input type="hidden" formControlName="phone" class="form-control" placeholder="Phone" id="phone">
+    <input type="hidden" formControlName="email" class="form-control" placeholder="Email" id="email" (keyup)="checkDuplicateEmail()" (focusout)="onEmailFocusOut()">
+    <input type="hidden" formControlName="address" class="form-control" placeholder="address" id="address">
+    <input type="hidden" formControlName="zipCode" class="form-control" placeholder="zipCode" id="zipCode">
+    <input type="hidden" formControlName="cityName" class="form-control" placeholder="cityName" id="cityName">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="register-modal-header">
+                <h4>Let’s create your profile</h4>
+                <p>Your photo and social media links will appear in the homeowner’s dashboard. <br>You can always fill this information in later.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="setting-heading-text">
+                <h4>Account</h4>
+                <h6>Upload profile image</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="profile-section">
+                <div class="profile-image">
+                    <img class="img-fluid" [src]="profilePhoto" id="profilePhotoImgElement" alt="rea-agent-img">
+                </div>
+
+                <!-- <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                    Maximum File Size Limit is 1MB
+                </div> -->
+
+                <ul>
+                    <li>
+                        <input type="file" accept="image/png, image/jpeg" id="profilePhotoBrowserInput" (change)="onPhotoBrowserInputChange($event,'profilePhotoImgElement', '1')" style="display: none;">
+                        <a (click)="passClickToFileInput('profilePhotoBrowserInput')" onclick="profilePhotoBrowserInput.value = null" class="btn-primary-small">Upload</a>
+
+                    </li>
+                    <li> <a (click)="removeImage('profilePhotoImgElement')" class="btn-secondary-small">Remove</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="social-media-heading">
+                <h4>Social Media</h4>
+                <h6>Add your social media accounts.</h6>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="social-media-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group facebook-icon-input">
+                            <!-- <input type="text" class="form-control facebook-input" placeholder="facebook.com" id="address"> -->
+                            <input type="text" class="form-control facebook-input" placeholder="Add profile's URL" formControlName="socialMedia_FacebookUrl">
+                            <div *ngIf="(formControls.socialMedia_FacebookUrl.invalid) && (submitted || formControls.socialMedia_FacebookUrl.dirty || formControls.socialMedia_FacebookUrl.touched)" class="text-danger">
+                                <div *ngIf="formControls.socialMedia_FacebookUrl.errors?.pattern">
+                                    Please provide valid url.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+
+                    <div class="col-md-6">
+                        <div class="form-group tweeter-icon-input">
+                            <!-- <input type="text" class="form-control" placeholder="Address" id="address"> -->
+                            <input type="text" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_TweeterUrl">
+                            <div *ngIf="(formControls.socialMedia_TweeterUrl.invalid) && (submitted || formControls.socialMedia_TweeterUrl.dirty || formControls.socialMedia_TweeterUrl.touched)" class="text-danger">
+                                <div *ngIf="formControls.socialMedia_TweeterUrl.errors?.pattern">
+                                    Please provide valid url.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  col-md-6   -->
+
+                    <div class="col-md-6">
+                        <div class="form-group instagram-icon-input">
+                            <!-- <input type="text" class="form-control" placeholder="Address" id="address"> -->
+                            <input type="text" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_InstagramUrl">
+                            <div *ngIf="(formControls.socialMedia_InstagramUrl.invalid) && (submitted || formControls.socialMedia_InstagramUrl.dirty || formControls.socialMedia_InstagramUrl.touched)" class="text-danger">
+                                <div *ngIf="formControls.socialMedia_InstagramUrl.errors?.pattern">
+                                    Please provide valid url.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  col-md-6   -->
+
+                    <div class="col-md-6">
+                        <div class="form-group youtube-icon-input">
+                            <!-- <input type="text" class="form-control" placeholder="Address" id="address"> -->
+                            <input type="text" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_YoutubeUrl">
+                            <div *ngIf="(formControls.socialMedia_YoutubeUrl.invalid) && (submitted || formControls.socialMedia_YoutubeUrl.dirty || formControls.socialMedia_YoutubeUrl.touched)" class="text-danger">
+                                <div *ngIf="formControls.socialMedia_YoutubeUrl.errors?.pattern">
+                                    Please provide valid url.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>
+
+<ng-template #cancelAccountAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Close this account?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCancelAccountModelNoClick()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onCancelAccountModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>

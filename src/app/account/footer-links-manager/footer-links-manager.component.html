@@ -1,0 +1,138 @@
+<div id="links" class="tabcontent">
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="setting-heading-text">
+                <h4>Global Footer Links</h4>
+                <h6>View all global footer links</h6>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="add-footer-text">
+                <a href="javascript:;" (click)="openAddEditFooterLinkModal(addEditFooterLinkModalContent, 0)" class="btn-primary-small">+ Create global footer link</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="footer-link-table table-responsive global-footer-links-up">
+                <table class="table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Titles</th>
+                            <th>Links</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="footerLinks.length>0; else noFooterLinks">
+                        <tr *ngFor="let footerLink of footerLinks">
+                            <td><div>{{footerLink.linkTitle}}</div></td>
+                            <td>
+                                <div>{{footerLink.linkUrl}}</div>
+                            </td>
+                            <td>
+                                <ul class="edit-footer-ul">
+                                    <li><a href="javascript:;" (click)="openAddEditFooterLinkModal(addEditFooterLinkModalContent, footerLink.footerLinkId)" class="btn-secondary-small">Edit</a></li>
+                                    <li><a href="javascript:;" (click)="openRemoveFooterLink(removeFooterLinkAlertModel, footerLink.footerLinkId)" class="remove-footer-link"><i class="fas fa-trash"></i></a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+
+                <ng-template #noFooterLinks>
+                            <div style="text-align: left; width: 100%;
+                            padding: 20px 0;    margin: 0 auto;
+                            display: block;">No Global Footer Links yet..!</div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #removeFooterLinkAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onRemoveFooterLinkModalCancelClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Remove this footer link?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onRemoveFooterLinkModalCancelClick()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onRemoveFooterLinkModalYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- Modal Add/edit footer link-->
+<div class="add-footer-link-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #addEditFooterLinkModalContent let-modal>
+                <form [formGroup]="inputFormFooterLink" (ngSubmit)="onSubmitFooterLink()">
+                    <div class="modal-header">
+                        <button type="button" (click)="onAddEditFooterLinkModalCancelClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4 *ngIf="formControls.footerLinkId.value==undefiend || formControls.footerLinkId.value==0">Add Helpful Link</h4>
+                            <h4 *ngIf="formControls.footerLinkId.value>0">Edit Helpful Link</h4>
+                           
+                        </div>
+
+                        <div class="add-footer-modal-form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="linkUrl">URL <span>*</span></label>
+                                        <input type="text" class="form-control facebook-input" placeholder="Add URL" formControlName="linkUrl" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormFooterLink, 'linkUrl')">
+                                        <div *ngIf="(formControls.linkUrl.invalid) && (submitted || formControls.linkUrl.dirty || formControls.linkUrl.touched)" class="text-danger">
+                                            <div *ngIf="formControls.linkUrl.errors?.required">
+                                                Url is required.
+                                            </div>
+                                            <div *ngIf="formControls.linkUrl.errors?.pattern">
+                                                Please provide valid url.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">Custom Title <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Add Custom Title" formControlName="linkTitle" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormFooterLink, 'linkTitle')">
+                                        <div *ngIf="(formControls.linkTitle.invalid) && (submitted || formControls.linkTitle.dirty || formControls.linkTitle.touched)" class="text-danger">
+                                            <div *ngIf="formControls.linkTitle.errors?.required">
+                                                Custom title is required.
+                                            </div>
+                                            <div *ngIf="formControls.linkTitle?.errors?.pattern">
+                                                Invalid Custom title.
+                                            </div>
+                                            <div *ngIf="formControls.linkTitle?.errors?.maxlength">
+                                                Custom title can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="onAddEditFooterLinkModalCancelClick()" data-bs-dismiss="modal">No</button>
+                        <button type="submit" *ngIf="selectedFooterLinkId==0" class="btn btn-primary">Add Link</button>
+                        <button type="submit" *ngIf="selectedFooterLinkId>0" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

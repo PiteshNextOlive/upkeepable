@@ -1,0 +1,36 @@
+.qr-modal-body {
+    padding: 0 70px;
+}
+.qr-modal-img .center img {
+    width: 208px;
+}
+.qr-modal-body .qr-modal-img-logo {
+    position: absolute;
+    top: 41%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9;
+}
+
+
+@media(max-width:767px){
+    .qr-modal-body {
+        padding: 0 20px;
+    }
+    .qr-modal-body .qr-modal-img-logo {
+        position: absolute;
+        top: 38%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9;
+    }
+}
+
+.no-selection {
+    user-select: none; /* Standard syntax */
+    -webkit-user-select: none; /* Chrome, Safari, Opera */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    background: #e9e7e7;
+    cursor: no-drop;
+  }

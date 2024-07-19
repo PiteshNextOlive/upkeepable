@@ -1,0 +1,460 @@
+<!-- <p>sponsor-register works!</p> -->
+<div class="custom_modal" [class.show]="isOpen">
+    <div class="modal_content">
+        <a class="close" (click)="openPopup()">
+            <img alt="Close" src="assets/img/close.png">
+        </a>
+        <div class="modal_content_inner">
+            <div class="env">
+                <a>
+                    <img alt="Envelope" src="assets/img/envelope.png">
+                </a>
+            </div>
+            <h4>Please Verify your Email</h4>
+            <p>You’re almost there! We sent an email to</p>
+            <p class="mail"><strong>{{ email }}</strong></p>
+            <p>Just click in the link in that email to complete your signup. If <br>
+                 you don’t see it, You may need to check your spam folder.</p>
+            <p>Still can’t find the email? No Problem.</p>    
+            <a (click)="SendEmail(email)">Resend verification email</a>
+        </div>
+    </div>
+</div>
+
+
+<header [class.mobile_open]="isActive">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="logo text-center">
+                    <a href="#">
+                        <img alt="upkeepable-white-logo-ho" src="assets/img/upkeepable-white-logo-ho.svg">
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="col-8">
+                <div class="mobile-version d-flex d-lg-none align-items-center justify-content-end h-100">
+                    <button (click)="toggleClass()" id="mobileMenuButton" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbar_2" aria-controls="navbar_2"
+                        aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler collapsed"><span
+                            class="icon-bar top-bar"></span><span class="icon-bar middle-bar"></span><span
+                            class="icon-bar bottom-bar"></span></button>
+                </div>
+                <div id="navbar_2" class="collapse navbar-collapse justify-content-end">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 mainnav-ul flex-column flex-lg-row">
+                        <li class="nav-item">
+                            <a class="nav-link">Lorem ipsum</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">Lorem ipsum</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link contact_btn">Contact us</a>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</header>
+
+<!-- <div class="banner_area">
+    <div class="container">
+        <div class="banner_content">
+            <h1>Register an Account to Upkeepable</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting <br>
+                 industry. Lorem Ipsum has been the industry's standard dummy text</p>
+                 <p>Register an Account to Upkeepable</p> 
+        </div>
+    </div>
+</div> -->
+
+<div class="banner_area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-10">
+                <div class="banner_content text-center">
+                    <!-- <h1>Register an Account to Upkeepable</h1> -->
+                     <h1>Become an Upkeepable Sponsor</h1>
+                    <p>Reach homeowner through personalized home maintenance<br/> recommendations based on their home profile.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section>
+    <div class="container">
+        <!-- <h2>Create An Account</h2>
+        <p>Let’s Make it Happen Together!</p> -->
+        <form [formGroup]="inputForm" (ngSubmit)="onSubmitSponsorRegister()">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="FirstName">First Name <span>*</span></label>
+                        <input type="text" id="FirstName" formControlName="FirstName" class="form-control">
+                        <div *ngIf="formControls.FirstName.invalid && (submitted || formControls.FirstName.dirty || formControls.FirstName.touched)" class="text-danger">
+                            <div *ngIf="formControls.FirstName.errors?.required">
+                                First name is required.
+                            </div>
+                            <div *ngIf="formControls.FirstName.errors?.pattern">
+                                Invalid First name.
+                            </div>
+                            <div *ngIf="formControls?.FirstName?.errors?.maxlength">
+                                First name can be max 20 characters long.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="LastName">Last Name <span>*</span></label>
+                        <input type="text" id="LastName" formControlName="LastName" class="form-control" required>
+                        <div *ngIf="formControls.LastName.invalid && (submitted || formControls.LastName.dirty || formControls.LastName.touched)" class="text-danger">
+                            <div *ngIf="formControls.LastName.errors?.required">
+                                Last name is required.
+                            </div>
+                            <div *ngIf="formControls.LastName.errors?.pattern">
+                                Invalid Last name.
+                            </div>
+                            <div *ngIf="formControls?.LastName?.errors?.maxlength">
+                                Last name can be max 20 characters long.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="Email">Email Address <span>*</span></label>
+                        <input type="Email" id="Email" formControlName="Email" class="form-control" (keyup)="checkDuplicateEmail()" (focusout)="onEmailFocusOut()">
+                        <div *ngIf="(formControls.Email.invalid) && (submitted || formControls.Email.dirty || formControls.Email.touched)" class="text-danger">
+                            <div *ngIf="formControls.Email.errors?.required">
+                                Email address is required.
+                            </div>
+                            <div *ngIf="formControls.Email.errors?.pattern">
+                                Invalid Email address.
+                            </div>
+                        </div>
+                        <div *ngIf="isDuplicateEmail && (!formControls.Email?.errors?.required) && (!formControls.Email?.errors?.pattern)" class="text-danger">
+                            Email id already exists..!
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="Phone">Phone <span>*</span></label>
+                        <input type="tel" id="Phone" formControlName="Phone" class="form-control" required>
+                        <div *ngIf="(formControls.Phone.invalid) && (submitted || formControls.Phone.dirty || formControls.Phone.touched)" class="text-danger">
+                            <div *ngIf="formControls.Phone.errors?.required">
+                                Phone is required.
+                            </div>
+                            <div *ngIf="formControls.Phone.errors?.pattern">
+                                Invalid phone number.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="Address">Address Line <span>*</span></label>
+                        <input type="text" id="Address" formControlName="Address" class="form-control" required>
+                        <div *ngIf="formControls.Address.invalid && (submitted || formControls.Address.dirty || formControls.Address.touched)" class="text-danger">
+                            <div *ngIf="formControls.Address.errors?.required">
+                                Address is required.
+                            </div>
+                            <div *ngIf="formControls.Address.errors?.pattern">
+                                Invalid Address.
+                            </div>
+                            <div *ngIf="formControls?.Address?.errors?.maxlength">
+                                Address can be max 500 characters long.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="CityName">City <span>*</span></label>
+                        <input type="text" id="CityName" formControlName="CityName" class="form-control" required>
+                        <div *ngIf="formControls.CityName.invalid && (submitted || formControls.CityName.dirty || formControls.CityName.touched)" class="text-danger">
+                            <div *ngIf="formControls.CityName.errors?.required">
+                                City is required.
+                            </div>
+                            <div *ngIf="formControls.CityName.errors?.pattern">
+                                Invalid City.
+                            </div>
+                            <div *ngIf="formControls.CityName.errors?.maxlength">
+                                City can be max 20 characters long.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="state">State <span>*</span></label>
+                        <div class="select-dropdown">
+                            <select class="form-select" formControlName="StateCode" id="StateCode" aria-label="Default select example">
+                                <option value="" selected>State Name</option>
+                                <option *ngFor="let state of states" value="{{state.stateCode}}">
+                                    {{state.stateTitle}}
+                                </option>
+                            </select>
+                            <div *ngIf="(formControls.StateCode.invalid) && (submitted || formControls.StateCode.dirty || formControls.StateCode.touched)" class="text-danger">
+                                <div *ngIf="formControls.StateCode.errors?.required || formControls.StateCode.value==0">
+                                    State is required.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <select class="form-control" name="" id="">
+                            <option value="">Uttar Pradesh</option>
+                            <option value="">Delhi</option>
+                        </select> -->
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="ZipCode">Zip Code <span>*</span></label>
+                        <input type="text" id="ZipCode" formControlName="ZipCode" class="form-control" required>
+                        <div *ngIf="formControls.ZipCode.invalid && (submitted || formControls.ZipCode.dirty || formControls.ZipCode.touched)" class="text-danger">
+                            <div *ngIf="formControls.ZipCode.errors?.required">
+                                Zip code is required.
+                            </div>
+                            <div *ngIf="formControls.ZipCode.errors?.pattern">
+                                Invalid Zip code.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                         <!--<label for="password">Password <span>*</span></label>
+                        <input type="password" id="password" formControlName="password" class="form-control" required>-->
+                    
+                        <label class="form-label" for="Password">Password <span>*</span></label>
+                        <div class="fieldOldPass">
+                            <input [type]="fieldOldPass ? 'text' : 'Password'" id="Password" autocomplete="disabled" placeholder="Password" class="form-control" formControlName="Password">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i
+                                    class="fa"
+                                    [ngClass]="{
+                                      'fa-eye-slash': !fieldOldPass,
+                                      'fa-eye': fieldOldPass
+                                    }"
+                                    (click)="toggleOldPass()"
+                                  ></i>
+                            </span>
+                            </div>
+                        </div>
+                        <div *ngIf="(formControls.Password.invalid) && (submitted || formControls.Password.dirty || formControls.Password.touched)" class="text-danger">
+                            <div *ngIf="formControls.Password.errors?.required">
+                                 password is required.
+                            </div>                           
+                            <div *ngIf="formControls.Password.errors?.pattern">
+                                Invalid  password.
+                            </div>
+                            <div *ngIf="formControls.Password.errors?.minlength">
+                                 password can be min 6 characters long.
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="ConfirmPassword">Confirm Password <span>*</span></label>
+
+                        <div class="fieldNewPass">
+                            <input [type]="fieldNewPass ? 'text' : 'Password'" id="ConfirmPassword" autocomplete="disabled" placeholder="Enter your Password" class="form-control" formControlName="ConfirmPassword">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                <i
+                                class="fa"
+                                [ngClass]="{
+                                  'fa-eye-slash': !fieldNewPass,
+                                  'fa-eye': fieldNewPass
+                                }"
+                                (click)="toggleNewPass()"
+                              ></i>
+                            </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="(submitted || (formControls?.ConfirmPassword?.dirty || formControls?.ConfirmPassword?.touched))" class="text-danger">
+                            <div *ngIf="formControls?.ConfirmPassword?.errors?.required">
+                                Confirm Password is required.
+                            </div>
+                            <div *ngIf="formControls?.ConfirmPassword?.errors?.pattern">
+                                Invalid Confirm Password.
+                            </div>
+                        </div>
+                        <div *ngIf="!formControls.ConfirmPassword.errors?.required && !formControls.ConfirmPassword.errors?.pattern">
+                            <div class="text-danger" *ngIf="((!(formControls?.ConfirmPassword?.errors?.pattern || formControls?.Password?.errors?.required)) && (formControls?.Password?.value != formControls?.ConfirmPassword?.value) && (formControls?.Password?.dirty || formControls?.Password?.touched)) && (formControls?.ConfirmPassword?.dirty && (formControls?.ConfirmPassword?.dirty || formControls?.ConfirmPassword?.touched))">
+                                Confirm Passwords don't match.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center">
+                        <button  type="submit" class="btn btn-primary">Create an Account</button>
+                    </div>
+                    <p>Already have a Account? <a (click)="onClickLogin()" target="_blank" style="color: #1E7FDF;">Login now</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+            <div class="col-lg-6 order-1 order-lg-1 order-2">
+                <div class="copy-right-text">
+                    <div class="small m-0 text-white">Copyright © Upkeepable {{date| date:'yyyy'}}</div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 order-1">
+                <div class="footer-link">
+                    <a class="link-light small" href="javascript:;"  (click)="goToLoginPage()">Home</a>
+                    <a class="link-light small" href="javascript:;" (click)="openStaticPage('privacy')">Privacy</a>
+                    <a class="link-light small" href="javascript:;" (click)="openStaticPage('legal')">Legal</a>
+                    <a class="link-light small" href="javascript:;" (click)="addClass()">Help</a>
+                </div>
+            </div>
+
+
+            <!-- <div class="col-lg-6 col-md-6 order-1">
+                <div class="footer-link">
+                    <a class="link-light small" href="javascript:;" *ngIf="!authService.isUserLoggedIn()"
+                        (click)="goToLoginPage()">Home</a>
+                    <a class="link-light small" href="javascript:;" (click)="openStaticPage('privacy')">Privacy</a>
+                    <a class="link-light small" href="javascript:;" (click)="openStaticPage('legal')">Legal</a> 
+                    <a class="link-light small" href="javascript:;" (click)="addClass()" >Help</a> 
+                    <a class="link-light small" href="javascript:;" (click)="notify()">Show Notiication</a>                    
+                </div>
+            </div> -->
+
+
+        </div>
+    </div>
+
+    <div class="modal"  [ngClass]="{'show': isClassApplied}" id="contact_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <div class="modal-content">
+                <div  class="modal-header">
+                    <button (click)="removeClass()" type="button" data-bs-dismiss="modal" aria-label="Close" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="login-heading mt-0 mb-5">
+                        <h4>Need Help? Ask Us.</h4>
+                        <h6>Submit this form to get support from our team</h6>
+                    </div>
+                     <form [formGroup]="inputForm"  (ngSubmit)="onSubmit()">
+                        <div id="message" class="tabcontent" style="width:100%;">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="profile-information-box">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="firstName">First Name <span>*</span></label>
+                                                    <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" id="first-name" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'firstName')">
+                                                    <div *ngIf="formControls.firstName.invalid && (submitted || formControls.firstName.dirty || formControls.firstName.touched)" class="text-danger">
+                                                        <div *ngIf="formControls.firstName.errors?.required">
+                                                            First name is required.
+                                                        </div>
+                                                        <div *ngIf="formControls.firstName.errors?.pattern">
+                                                            Invalid First name.
+                                                        </div>
+                                                        <div *ngIf="formControls.firstName.errors?.maxlength">
+                                                            First name can be max 20 characters long.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="lastName">Last Name <span>*</span></label>
+                                                    <input type="text" formControlName="lastName" class="form-control" placeholder="Last Name" id="last-name" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'lastName')">
+                                                    <div *ngIf="formControls.lastName.invalid && (submitted || formControls.lastName.dirty || formControls.lastName.touched)" class="text-danger">
+                                                        <div *ngIf="formControls.lastName.errors?.required">
+                                                            Last name is required.
+                                                        </div>
+                                                        <div *ngIf="formControls.lastName.errors?.pattern">
+                                                            Invalid Last name.
+                                                        </div>
+                                                        <div *ngIf="formControls.lastName.errors?.maxlength">
+                                                            Last name can be max 20 characters long.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                 
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="email">Email address <span>*</span></label>
+                                                    <input type="email" formControlName="email" class="form-control" placeholder="Email">
+                                                    <div *ngIf="(formControls.email.invalid) && (submitted || formControls.email.dirty || formControls.email.touched)" class="text-danger">
+                                                        <div *ngIf="formControls.email.errors?.required">
+                                                            Email address is required.
+                                                        </div>
+                                                        <div *ngIf="formControls.email.errors?.pattern">
+                                                            Invalid email address.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="message">Message<span>*</span></label>
+                                                    <textarea type="message" formControlName="message" class="form-control" placeholder="Message">
+                                                        </textarea>
+                                                        <div *ngIf="(formControls.message.invalid) && (submitted || formControls.message.dirty || formControls.message.touched)" class="text-danger">
+                                                            <div *ngIf="formControls.message.errors?.required">
+                                                                Message is required.
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <div class="ho-save-info-box ho-save-info-box-new">
+                                        <button type="submit" style="margin-bottom: 62px;" class="btn btn-primary">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            <!-- </div> -->  
+        </div>
+    </div>
+
+
+</footer>

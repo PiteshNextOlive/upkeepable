@@ -1,0 +1,5 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <input type="hidden" formControlName="recommendationId">
+    <input type="text" class="form-control form-control-sm" formControlName="descriptionText">
+    <input type="submit" value="save"> 
+</form>

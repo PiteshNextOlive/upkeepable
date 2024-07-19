@@ -1,0 +1,39 @@
+
+
+button.back-button {
+    background: #1e7fdf;
+    outline: none;
+    border: 0;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+@media(max-width:991px){
+    .tab.rea-tabs-new {
+        background: #0061c1;
+        margin: 0;
+        padding: 10px 10px;
+    }
+    
+    .rea-tabs-new .tablinks {
+        color: #fff;
+    }
+    
+    .tab button.active {
+        background: #0061C1;
+        color: #fff;
+        border: 1px solid #fff;
+    }
+    button.back-button{
+        margin-top: 15px;
+    }
+}
+
+
+

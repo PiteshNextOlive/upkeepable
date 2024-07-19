@@ -1,0 +1,3 @@
+.global-footer-links-up table tr td:first-child {
+    display: table-cell;
+}

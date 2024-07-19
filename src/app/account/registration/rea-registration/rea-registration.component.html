@@ -1,0 +1,263 @@
+<div class="register-rea-form-group">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+
+
+            <!-- Step-1 -->
+            <div class="modal-content" *ngIf="stepCode==1">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="register-modal-header">
+                            <h4>Become a Sponsor</h4>
+                            <p>Tell us your details, and we’ll email you a setup link.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="first-name">First Name <span>*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter your first name" id="first-name" formControlName="firstName">
+                            <div *ngIf="formControls.firstName.invalid && (submittedStep1 || formControls.firstName.dirty || formControls.firstName.touched)" class="text-danger">
+                                <div *ngIf="formControls.firstName.errors?.required">
+                                    First name is required.
+                                </div>
+                                <div *ngIf="formControls.firstName.errors?.pattern">
+                                    Invalid First name.
+                                </div>
+                                <div *ngIf="formControls.firstName.errors?.maxlength">
+                                    First name can be max 20 characters long.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="last-name">Last Name <span>*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter your last name" id="last-name" formControlName="lastName">
+                            <div *ngIf="formControls.lastName.invalid && (submittedStep1 || formControls.lastName.dirty || formControls.lastName.touched)" class="text-danger">
+                                <div *ngIf="formControls.lastName.errors?.required">
+                                    Last name is required.
+                                </div>
+                                <div *ngIf="formControls.lastName.errors?.pattern">
+                                    Invalid Last name.
+                                </div>
+                                <div *ngIf="formControls.lastName.errors?.maxlength">
+                                    Last name can be max 20 characters long.
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--  col-md-6   -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="phone">Phone <span>*</span></label>
+                            <input type="tel" class="form-control" placeholder="Enter phone number" id="phone" formControlName="phone">
+                            <div *ngIf="(formControls.phone.invalid) && (submittedStep1 || formControls.phone.dirty || formControls.phone.touched)" class="text-danger">
+                                <div *ngIf="formControls.phone.errors?.required">
+                                    Phone is required.
+                                </div>
+                                <div *ngIf="formControls.phone.errors?.pattern">
+                                    Invalid phone number.
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--  col-md-6   -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="email">Email <span>*</span></label>
+                            <input type="email" class="form-control" placeholder="Enter email address" id="email" formControlName="email" (keyup)="checkDuplicateEmail()" (focusout)="onEmailFocusOut()">
+                            <div *ngIf="(formControls.email.invalid) && (submittedStep1 || formControls.email.dirty || formControls.email.touched)" class="text-danger">
+                                <div *ngIf="formControls.email.errors?.required">
+                                    Email address is required.
+                                </div>
+                                <div *ngIf="formControls.email.errors?.pattern">
+                                    Invalid email address.
+                                </div>
+                            </div>
+                            <div *ngIf="isDuplicateEmail && (!formControls.email?.errors?.required) && (!formControls.email?.errors?.pattern)" class="text-danger">
+                                Email id already exists..!
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--  col-md-6   -->
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="register-modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
+                            <button type="button" class="btn btn-primary" (click)="setFormStep(2, false)">next</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="register-modal-progress">
+                            <p>Information <b>{{stepCode}}</b> of 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Step-2 -->
+            <div class="modal-content" *ngIf="stepCode==2">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="register-modal-header">
+                            <h4>Where are you located?</h4>
+                            <p>We’ll show this to home owners in their dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="address-name-1">Address Line<span>*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter address" id="address-name-1" formControlName="address">
+                            <div *ngIf="formControls.address.invalid && (submittedStep2 || formControls.address.dirty || formControls.address.touched)" class="text-danger">
+                                <div *ngIf="formControls.address.errors?.required">
+                                    Address is required.
+                                </div>
+                                <div *ngIf="formControls.address.errors?.pattern">
+                                    Invalid Address.
+                                </div>
+                                <div *ngIf="formControls?.address?.errors?.maxlength">
+                                    Address can be max 500 characters long.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--  col-md-6   -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="city-name">City <span>*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter city name" id="city-name" formControlName="cityName">
+                            <div *ngIf="formControls.cityName.invalid && (submittedStep2 || formControls.cityName.dirty || formControls.cityName.touched)" class="text-danger">
+                                <div *ngIf="formControls.cityName.errors?.required">
+                                    City is required.
+                                </div>
+                                <div *ngIf="formControls.cityName.errors?.pattern">
+                                    Invalid City.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="address-name-1">State<span>*</span></label>
+                            <div class="select-dropdown">
+                                <select class="form-select" formControlName="stateCode" id="stateCode" aria-label="Default select example">
+                                    <option value="" selected>State Name</option>
+                                    <option *ngFor="let state of states" value="{{state.stateCode}}">
+                                        {{state.stateTitle}}
+                                    </option>
+                                </select>
+                                <div *ngIf="(formControls.stateCode.invalid) && (submittedStep2 || formControls.stateCode.dirty || formControls.stateCode.touched)" class="text-danger">
+                                    <div *ngIf="formControls.stateCode.errors?.required || formControls.stateCode.value==0">
+                                        State is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!--  col-md-6   -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="zip-code">Zip Code <span>*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter zip code" id="zip-code" formControlName="zipCode">
+                            <div *ngIf="formControls.zipCode.invalid && (submittedStep2 || formControls.zipCode.dirty || formControls.zipCode.touched)" class="text-danger">
+                                <div *ngIf="formControls.zipCode.errors?.required">
+                                    Zip code is required.
+                                </div>
+                                <div *ngIf="formControls.zipCode.errors?.pattern">
+                                    Invalid Zip code.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  col-md-6   -->
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="register-modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="setFormStep(1, true)" data-bs-dismiss="modal">prev</button>
+                            <button type="button" class="btn btn-primary" (click)="setFormStep(3, false)">next</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <div class="register-modal-progress">
+                            <p>Information <b>{{stepCode}}</b> of 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step-3 -->
+            <div class="modal-content" *ngIf="stepCode==3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="success-modal-header">
+                            <img src="assets/img/check-icon-mail.svg" class="" alt="check-icon-mail">
+                            <h4>Thanks for becoming a sponsor</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="success-thanks-text">
+                            <h5>We’re happy to have you as part of the Upkeepable family!</h5>
+                        </div>
+                    </div>
+                    <!--  col-md-12   -->
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="success-email-text">
+                            <h6>We’ve emailed you a link to setup your account password. <br> It was sent to <a href="javascript:;">{{this.inputForm.controls.email.value}}</a></h6>
+                            <h5>Don’t forget to check your spam if you don’t get it!</h5>
+                        </div>
+                    </div>
+                    <!--  col-md-12   -->
+                </div>
+
+                <!-- <div class="row">
+                    <div class="col-md-12">
+                        <div class="register-modal-footer">
+                            <button type="button" class="btn btn-primary">go to email</button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="contact-modal-support">
+                            <p>Need to help? <a href="https://help.upkeepable.com/" target="_blank">Contact support.</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

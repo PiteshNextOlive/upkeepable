@@ -1,0 +1,59 @@
+<section id="tabs-section">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/Admin/Dashboard']" [ngClass]="{'active': tabCode === 1}" data-bs-toggle="tab" (click)="setTabCode(1)" href="javascript:;">home recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/Admin/Dashboard']" [ngClass]="{'active': tabCode === 2}" data-bs-toggle="tab" (click)="setTabCode(2)" href="javascript:;">sponsors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/Admin/Dashboard']" [ngClass]="{'active': tabCode === 3}" data-bs-toggle="tab" (click)="setTabCode(3)" href="javascript:;">Home owners</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/Admin/Dashboard']" [ngClass]="{'active': tabCode === 4}" data-bs-toggle="tab" (click)="setTabCode(4)" href="javascript:;">Vendor Articles</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/Admin/Dashboard']" [ngClass]="{'active': tabCode === 5}" data-bs-toggle="tab" (click)="setTabCode(5)" href="javascript:;">Coupons</a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 1}" *ngIf="tabCode==1">
+            <app-recommendation-manager></app-recommendation-manager>
+        </div>
+        <!-- Home Recommendation Tab -->
+
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 2}" *ngIf="tabCode==2">
+            <app-rea-manager></app-rea-manager>
+        </div>
+        <!-- REA Agetns Tab -->
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 3}" *ngIf="tabCode==3">
+            <app-home-owner-manager></app-home-owner-manager>
+        </div>
+        <!-- Home Owners Tab -->
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 4}" *ngIf="tabCode==4">
+            <app-article-manager></app-article-manager>
+        </div>
+        <!-- Article Tab -->
+
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 5}" *ngIf="tabCode==5">
+            <app-coupon-management></app-coupon-management>
+        </div>
+        <!-- Article Tab -->
+    </div>
+</section>

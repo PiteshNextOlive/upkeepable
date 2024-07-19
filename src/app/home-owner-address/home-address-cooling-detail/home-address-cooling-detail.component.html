@@ -1,0 +1,195 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <div class="modal-inner">
+        <div class="modal-header">
+            <div class="home-img-box">
+                <img src="assets/img/{{mainCategory?.iconName}}" class="cooling-home-icon" alt="cooling-home-icon">
+                <h4>{{mainCategory?.title}}</h4>
+            </div>
+            <button type="button" class="btn-close" (click)="closeFormEvent.emit()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <input type="hidden" formControlName="homeOwnerAddressAttributeRefId">
+            <input type="hidden" formControlName="homeAddressCoolingDetailId">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="cool-system-honew-box">
+                        <div class="form-group cool-check-label">
+                            <div class="checkbox-group">
+                                <input type="checkbox" (click)="onClickDontHave($event)" [checked]="homeOwnerAddressDetailStatusType==2" id="heating-system">
+                                <label for="heating-system">{{subCategories[0]?.title}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="slider_section" class="cooling-setting-slider">
+                        <h5>{{subCategories[1]?.title}}</h5>
+                        <div class="cooling-slider">
+                            <div class="form-group">
+                                <input type="number" (input)="chaeckValidTemp()" min="55" max="95" formControlName="thermostatTemperature" class="form-control" autocomplete="off" placeholder="Please enter a value from 55 to 95.">
+                                <!-- <div *ngIf="inputForm.controls?.dontHaveDetail?.value == 0 && inputForm.controls.thermostatTemperature.value==0 && thermostatTem" class="text-danger errorText">Temperature is required
+                                </div> -->
+                                <div *ngIf="formControls.dontHaveDetail.value==0" class="text-danger errorText" style="display: none;" id="thermostatTem">Temperature is required
+                                </div>
+                                <div *ngIf="(inputForm.controls.thermostatTemperature.dirty || inputForm.controls.thermostatTemperature.touched)" class="text-danger">
+                                    <div *ngIf="(inputForm.controls?.dontHaveDetail?.value == 0 && ((inputForm.controls.thermostatTemperature.value==0 && inputForm.controls.thermostatTemperature.value != null) || (inputForm.controls.thermostatTemperature.value < 55 && inputForm.controls.thermostatTemperature.value != null) || (inputForm.controls.thermostatTemperature.value > 95 && inputForm.controls.thermostatTemperature.value != null)))" class="text-danger">
+                                        Please enter a value from 55 to 95.
+                                    </div> 
+                                </div> 
+                            </div>
+                            <!-- <div class="custom-slider">
+                                <ngx-slider [(value)]="tempValue" [options]="options"></ngx-slider>
+                            </div> -->
+
+                            <!-- <ngx-slider [(value)]="tempValue" [options]="options"></ngx-slider> -->
+                            <!-- <img class="img-fluid" src="assets/img/cooling-setting-slider.png" alt="cooling-setting-slider"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="modal-heading-box cool-add-sources-link">
+
+                        <!-- <a class="btn-secondary"
+                            [attr.disabled]="formControls.dontHaveDetail.value==1 ? 'disabled' :null"
+                            (click)="onAddNewHomeDetailParam()">
+                            + Add Source
+                        </a> -->
+
+
+                        <a class="btn-secondary" *ngIf="formControls.dontHaveDetail.value==0" (click)="onAddNewHomeDetailParam()">
+                        + Add Source
+                        </a>
+                        <!-- [attr.disabled]="formControls.dontHaveHeatingDetail.value==1 ? 'disabled' :null" -->
+                        <span class="btn-secondary-disabled" *ngIf="formControls.dontHaveDetail.value==1">
+                            + Add Source
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <ng-container *ngFor="let coolingDetail of coolingDetailParmsArray; index as i">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-heading-box cool-ho-new-heading">
+                            <h5>Cooling source {{i+1}}</h5>
+                            <button *ngIf="i>0" type="button" (click)="onRemoveHomeDetailParm(i)" class="btn-close remove-source"></button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[2]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" [attr.disabled]="formControls.dontHaveDetail.value==1 ? 'disabled' :null" [ngClass]="{'disabled-input': formControls.dontHaveDetail.value==1}" aria-label="Default select example" value="coolingDetail.coolingSystemType" id="coolingSystemType_{{i}}"
+                                    (change)="onChangeHomeDetailParm(i, 'coolingSystemType')">
+                                    <option value="0" selected>Select {{subCategories[2]?.title}}</option>
+                                    <option *ngFor="let coolingSystemType of subCategories[2]?.homeVariableSubCategoryListItems"
+                                        value="{{coolingSystemType.homeVariableSubCategoryListItemId}}">
+                                        {{coolingSystemType.title}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="text-danger errorText" style="display: none;" id="coolingSystemTypeError_{{i}}">{{subCategories[2]?.title}} is required </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="last">{{subCategories[3]?.title}}</label>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 year-ho-select">
+                                    <select class="form-select" [attr.disabled]="formControls.dontHaveDetail.value==1 ? 'disabled' :null" [ngClass]="{'disabled-input': formControls.dontHaveDetail.value==1}" aria-label="Default select example" [value]="coolingDetail.age_Year" id="age_Year_{{i}}"
+                                        (change)="onChangeHomeDetailParm(i, 'age_Year')">
+                                        <option value="0" selected>Year</option>
+                                        <option value="-1">Don't know</option>
+                                        <option value="1">1 year</option>
+                                        <option value="2">2 years</option>
+                                        <option value="3">3 years</option>
+                                        <option value="4">4 years</option>
+                                        <option value="5">5 years</option>
+                                        <option value="6">6 years</option>
+                                        <option value="7">7 years</option>
+                                        <option value="8">8 years</option>
+                                        <option value="9">9 years</option>
+                                        <option value="10">10 years</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6  col-sm-6">
+                                    <select class="form-select" [attr.disabled]="formControls.dontHaveDetail.value==1 ? 'disabled' :null" [ngClass]="{'disabled-input': formControls.dontHaveDetail.value==1}" aria-label="Default select example" [value]="coolingDetail.age_Month" id="age_Month_{{i}}"
+                                        (change)="onChangeHomeDetailParm(i, 'age_Month')">
+                                        <option value="0" selected>0 Month</option>
+                                        <option value="-1">Don't know</option>
+                                        <option value="1">1 month</option>
+                                        <option value="2">2 months</option>
+                                        <option value="3">3 months</option>
+    
+                                        <option value="4">4 months</option>
+                                        <option value="5">5 months</option>
+                                        <option value="6">6 months</option>
+    
+                                        <option value="7">7 months</option>
+                                        <option value="8">8 months</option>
+                                        <option value="9">9 months</option>
+    
+                                        <option value="10">10 months</option>
+                                        <option value="11">11 months</option>
+                                        <option value="12">12 months</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="text-danger errorText" style="display: none;" id="ageError_{{i}}">Age is required
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="last">{{subCategories[4]?.title}}</label>
+                            <select class="form-select" [attr.disabled]="formControls.dontHaveDetail.value==1 ? 'disabled' :null" [ngClass]="{'disabled-input': formControls.dontHaveDetail.value==1}" aria-label="Default select example" [value]="coolingDetail.coolingSystemUsageFrequencyType"
+                                id="coolingSystemUsageFrequencyType_{{i}}" (change)="onChangeHomeDetailParm(i, 'coolingSystemUsageFrequencyType')">
+                                <option value="0" selected>Select {{subCategories[4]?.title}}</option>
+                                <option
+                                    *ngFor="let coolingSystemUsageFrequencyType of subCategories[4]?.homeVariableSubCategoryListItems"
+                                    value="{{coolingSystemUsageFrequencyType.homeVariableSubCategoryListItemId}}">
+                                    {{coolingSystemUsageFrequencyType.title}}
+                                </option>
+                            </select>
+                            <div class="text-danger errorText" style="display: none;" id="coolingSystemUsageFrequencyTypeError_{{i}}">{{subCategories[4]?.title}} is required </div>
+                        </div>
+
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="closeFormEvent.emit()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" (click)="open(content)" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>
+
+
+<ng-template #content let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModalClick()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/add-equipment-icon.svg" class="add-equipment-icon" alt="modal-home-icon">
+            <p>Do you want to add another cooling source?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onModelNoClick()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>

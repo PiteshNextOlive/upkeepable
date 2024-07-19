@@ -1,0 +1,192 @@
+<form [formGroup]="inputFormMessage" (ngSubmit)="onMessageFormSubmit()">
+    <div class="modal-header">
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>    -->
+        <button type="button" (click)="onClickCloseModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="add-footer-modal-heading">
+            <h4 *ngIf="realEstateAgentMessageId==0">Create New Message</h4>
+            <h4 *ngIf="realEstateAgentMessageId>0">Edit Message</h4>
+
+            <p *ngIf="realEstateAgentMessageId==0">Choose when and what you’d like to message to homeowners.</p>
+            <p *ngIf="realEstateAgentMessageId>0">Update Message Information here.</p>
+        </div>
+
+        <div class="select-year-box">
+            <h6>Select the Year <span>*</span></h6>
+            <ul>
+                <li *ngFor="let yearInfo of yearsWithInfo">
+                    <a href="javascript:;" (click)="onClickYear(yearInfo.year)" [ngClass]="yearInfo.isSelcted ? 'btn-primary' : yearInfo.isDisabled ? 'btn-primary disabled-year' : 'btn-secondary'">{{yearInfo.year}}</a>
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="realEstateAgentMessageId>0" class="select-month-box deselect-box-month">
+            <h6>Select the Month <span>*</span></h6>
+            <ul>
+                <!-- <li><a href="javascript:;" class="disabled-month">Jan.</a></li>
+            <li><a href="javascript:;" class="selected-month">Feb.</a></li> -->
+                <li *ngFor="let month of monthNamesWithCodes; let i=index">
+                    <a href="javascript:;" role="button" style="cursor:pointer;" [ngClass]="month.isSelcted ? 'selected-month' : month.isDisabled ? 'disabled-month' : month.isAlreadyDrafted ? 'already-drated-month' : ''" (click)="onMonthClick(month.monthCode, month.isDisabled, month.isAlreadyDrafted)">{{month.monthAbbr}}</a>
+                </li>
+            </ul>
+            <div *ngIf="!isMonthYearSelected" class="text-danger">
+                Year & Month is required..!
+            </div>
+        </div>
+        <div *ngIf="realEstateAgentMessageId==0" class="select-month-box">
+            <h6>Select the Month <span>*</span></h6>
+            <ul>
+                <!-- <li><a href="javascript:;" class="disabled-month">Jan.</a></li>
+            <li><a href="javascript:;" class="selected-month">Feb.</a></li> -->
+                <li *ngFor="let month of monthNamesWithCodes; let i=index">
+                    <a href="javascript:;" role="button" style="cursor:pointer;" [ngClass]="month.isSelcted ? 'selected-month' : month.isDisabled ? 'disabled-month' : month.isAlreadyDrafted ? 'already-drated-month' : ''" (click)="onMonthClick(month.monthCode, month.isDisabled, month.isAlreadyDrafted)">{{month.monthAbbr}}</a>
+                </li>
+            </ul>
+            <div *ngIf="!isMonthYearSelected" class="text-danger">
+                Year & Month is required..!
+            </div>
+        </div>
+
+        <div class="add-subject-line-form">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="email">Add Subject <span>*</span></label>
+                        <input type="text" class="form-control" placeholder="Write subject text here.." formControlName="subject">
+                        <div *ngIf="formControls.subject.invalid && (submitted || formControls.subject.dirty || formControls.subject.touched)" class="text-danger">
+                            <div *ngIf="formControls.subject.errors?.required">
+                                Subject is required.
+                            </div>
+                            <div *ngIf="formControls.subject.errors?.pattern">
+                                Subject is invalid.
+                            </div>
+                            <div *ngIf="formControls?.subject?.errors?.maxlength">
+                                Subject can be max 150 characters long.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <!-- <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="email">Short Description</label>
+                        <textarea id="Short-Description" class="form-control" rows="4" cols="50" formControlName="shortDescription">Write Short Description here.
+                    </textarea>
+                        <div *ngIf="formControls.shortDescription.invalid && (submitted || formControls.shortDescription.dirty || formControls.shortDescription.touched)" class="text-danger">
+                            <div *ngIf="formControls.shortDescription.errors?.required">
+                                Description is required.
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="col-lg-12 col-md-12">
+                    <div class="form-group">
+                        <label for="optionalLinks">Optional Links</label>
+                        <div class="optional-links-box" *ngFor="let optionalLink of optionalLinks; let i=index">
+                            <input type="text" disabled class="form-control" placeholder="Add Optional Links" [value]="optionalLink">
+                            <a href="javascript:;" (click)="onRemoveOptionalLink(i)" class="optional-links-add">Remove a Link</a>
+                            <!-- <div class="text-danger">
+                                <div *ngIf="!isValidURL">
+                                    Please provide valid url.
+                                </div>
+                            </div> -->
+                        </div>
+                        
+                        <div class="optional-links-box">
+                            <div class="optional-block-rec-admin optional-display-off">
+                                <div class="optional-block-rec-admin">
+                                    <input type="text" class="form-control" placeholder="Add Optional Links" id="addOptionalress" formControlName="optionalLinkText">
+
+                                    <a href="javascript:;" [ngClass]="!(formControls.optionalLinkText.value==0) ? '' : 'disabled-add-more-button'" (click)="onAddNewOptionalLink(formControls.optionalLinkText.value)" class="optional-links-add">Add a Link
+</a></div>
+
+                                <div *ngIf="(formControls.optionalLinkText.invalid) && (submitted || formControls.optionalLinkText.dirty || formControls.optionalLinkText.touched)" class="text-danger">
+                                    <div *ngIf="formControls.optionalLinkText.errors?.pattern">
+                                        Please provide valid url.
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--  col-md-6   -->
+
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="email">Message <span>*</span></label>
+                        <textarea id="Short-Description" class="form-control" rows="5" cols="50" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormMessage, 'messageText')" formControlName="messageText">
+                    </textarea>
+                        <div *ngIf="formControls.messageText.invalid && (submitted || formControls.messageText.dirty || formControls.messageText.touched)" class="text-danger">
+                            <div *ngIf="formControls.messageText.errors?.required">
+                                Message is required.
+                            </div>
+                            <div *ngIf="formControls?.messageText?.errors?.maxlength">
+                                Message can be max 400 characters long.
+                            </div>
+                            <!-- <div *ngIf="formControls.messageText.errors?.pattern">
+                                Message is invalid.
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="upload-image-box" *ngIf="messageHomePhoto">
+                        <img class="img-fluid" id="messagePhotoImgElement" [src]="messageHomePhoto" class="modal-home-img img-fluid" alt="festivals-img">
+                    </div>
+                    <ul class="upload-image-box-link">
+                        <li>
+
+                            <input type="file" accept="image/png, image/jpeg" id="messagePhotoBrowserInput" (change)="onPhotoBrowserInputChange($event,'messagePhotoImgElement', '4.52')" style="display: none;">
+
+                            <!-- <a (click)="passClickToFileInput('homePhotoBrowserInput')" class="edit-home-img-icon"><img src="assets/img/edit-home-img.svg"
+                                    class="iZoticus-logo" alt="edit-home-img"></a> -->
+
+                            <a href="javascript:;" onclick="messagePhotoBrowserInput.value = null" (click)="passClickToFileInput('messagePhotoBrowserInput')" class="btn-primary-small">Upload Image</a>
+                        </li>
+                        <li> <a href="javascript:;" *ngIf="messageHomePhoto" (click)="onRemoveImage()" class="btn-secondary-small">Remove</a></li>
+                    </ul>
+                </div>
+
+                <!-- <div class="col-md-12">
+                    <div class="ho-pro-img-error">
+                        <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                            Maximum File Size Limit is 1MB
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="col-md-12">
+                    <div class="col-md-12">
+
+                        <ul class="upload-image-box-link">
+                          
+                            <li> <a href="javascript:;" class="btn-secondary-small">Upload images</a></li>
+                        </ul>
+
+                    </div>
+                </div> -->
+
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save message</button>
+    </div>
+</form>
+
+<ng-template #cropImageModal let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelCropImageModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>

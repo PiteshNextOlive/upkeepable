@@ -1,0 +1,181 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <input type="hidden" class="form-control" formControlName="firstName" placeholder="First Name" id="first-name">
+    <input type="hidden" formControlName="lastName" class="form-control" placeholder="Last Name" id="last-name">
+    <input type="hidden" formControlName="phone" class="form-control" placeholder="Phone" id="phone">
+    <input type="hidden" formControlName="email" class="form-control" placeholder="Email" id="email">
+    <input type="hidden" formControlName="address" class="form-control" placeholder="address" id="address">
+    <input type="hidden" formControlName="zipCode" class="form-control" placeholder="zipCode" id="zipCode">
+    <input type="hidden" formControlName="zipCode" class="form-control" placeholder="zipCode" id="zipCode">
+    <input type="hidden" formControlName="cityName" class="form-control" placeholder="cityName" id="cityName">
+
+    <input type="hidden" class="form-control facebook-input" placeholder="Add profile's URL" formControlName="socialMedia_FacebookUrl">
+    <input type="hidden" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_TweeterUrl">
+    <input type="hidden" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_InstagramUrl">
+    <input type="hidden" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_YoutubeUrl">
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="register-modal-header">
+                <h4>Confirm all your settings</h4>
+                <p>Check to make sure everything’s right</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="setting-heading-text">
+                <div class="setting-heading-rea">
+                    <h6>Profile image</h6>
+                    <a (click)="setStepEvent.emit(1)" href="javascript:;" class="btn-setting-modal"><img class="img-fluid" src="assets/img/setting-icon.svg" alt="setting-icon"></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="profile-section">
+                <div class="profile-image">
+                    <img class="img-fluid" [src]="profilePhoto" id="profilePhotoImgElement" alt="rea-agent-img">
+                </div>
+                <!-- <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                    Maximum File Size Limit is 1MB
+                </div> -->
+
+                <ul>
+                    <li>
+                        <input type="file" accept="image/png, image/jpeg" id="profilePhotoBrowserInput" (change)="onPhotoBrowserInputChange($event,'profilePhotoImgElement', '1')" style="display: none;">
+                        <a (click)="passClickToFileInput('profilePhotoBrowserInput')" class="btn-primary-small">Upload</a>
+                    </li>
+                    <li> <a (click)="removeImage('profilePhotoImgElement')" class="btn-secondary-small">Remove</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="preview-social-link-section">
+
+                <div class="setting-heading-rea">
+                    <h6>Social Media Links</h6>
+                    <!-- <a (click)="setStepEvent.emit(1)" href="javascript:;" class="btn-setting-modal"><img class="img-fluid" src="assets/img/setting-icon.svg"
+                        alt="setting-icon"></a> -->
+                </div>
+
+                <ul>
+                    <li>{{formControls.socialMedia_FacebookUrl.value}}</li>
+                    <li>{{formControls.socialMedia_TweeterUrl.value}}</li>
+                    <li>{{formControls.socialMedia_InstagramUrl.value}}</li>
+                    <li>{{formControls.socialMedia_YoutubeUrl.value}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="preview-social-link-section">
+
+                <div class="setting-heading-rea">
+                    <h6>Footer Links</h6>
+                    <a (click)="setStepEvent.emit(2)" href="javascript:;" class="btn-setting-modal"><img class="img-fluid" src="assets/img/setting-icon.svg" alt="setting-icon"></a>
+                </div>
+
+
+                <div class="db-footer-link">
+                    <div class="db-footer-link-box" *ngFor="let footerLink of footerLinks">
+                        <p><b>{{footerLink.linkTitle}}</b></p>
+                        <p>{{footerLink.linkUrl}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="preview-social-link-section">
+                <div class="setting-heading-rea">
+                    <h6>Welcome Message</h6>
+                    <a (click)="setStepEvent.emit(3)" class="btn-setting-modal"><img class="img-fluid" src="assets/img/setting-icon.svg" alt="setting-icon"></a>
+                </div>
+                <div class="db-footer-link">
+                    <div class="db-footer-link-box">
+                        <p>{{messageText}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="preview-social-link-section">
+                <div class="setting-heading-rea">
+                    <h6>Monthly Message List</h6>
+                    <a (click)="setStepEvent.emit(4)" class="btn-setting-modal"><img class="img-fluid" src="assets/img/setting-icon.svg" alt="setting-icon"></a>
+                </div>
+
+
+                <div class="db-footer-link">
+
+                    <div class="db-footer-link-box" *ngFor="let message of MessageList">
+                        <p><b>{{message.subject}} </b> <br>{{getMonthNameByCode(message.month)}}, {{message.year}}</p>
+                        <p class="ellipsis">
+                            {{message.messageText}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="profile-section">
+                <div class="profile-image">
+                    <img class="img-fluid" [src]="profilePhoto" id="profilePhotoImgElement" alt="rea-agent-img">
+                </div>
+                <ul>
+                    <li>
+                        <input type="file" accept="image/png, image/jpeg" id="profilePhotoBrowserInput"
+                            (change)="onPhotoBrowserInputChange($event,'profilePhotoImgElement', '1')"
+                            style="display: none;">
+                        <a (click)="passClickToFileInput('profilePhotoBrowserInput')"
+                            class="btn-primary-small">Upload</a>
+                    </li>
+                    <li> <a (click)="removeImage('profilePhotoImgElement')" class="btn-secondary-small">Remove</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+</form>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>

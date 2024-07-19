@@ -1,0 +1,101 @@
+<!-- <form [formGroup]="inputForm" (ngSubmit)="onSubmit()"> -->
+
+<div *ngIf="stepCode < maxSteps+1" class="register-rea-form-group">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content profile-rea-box">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="prgress-modal-header">
+                        <ul>
+                            <!-- <li [ngClass]="{'progress-box': stepCode==1}" (click)="onClickSetStepEvent(1)" class="profile-steper">1</li>
+                            <li [ngClass]="{'progress-box': stepCode==2, 'active-box': stepCode==1}" (click)="onClickSetStepEvent(2)" class="profile-steper">2</li>
+                            <li [ngClass]="{'progress-box': stepCode==3, 'active-box': stepCode==2}" (click)="onClickSetStepEvent(3)" class="profile-steper">3</li>
+                            <li [ngClass]="{'progress-box': stepCode==4, 'active-box': stepCode==3}" (click)="onClickSetStepEvent(4)" class="profile-steper">4</li>
+                            <li [ngClass]="{'progress-box': stepCode==5, 'active-box': stepCode==4}" (click)="onClickSetStepEvent(5)" class="profile-steper">5</li> -->
+                            <li [ngClass]="{'progress-box': stepCode==1}" class="profile-steper">1</li>
+                            <li [ngClass]="{'progress-box': stepCode==2, 'active-box': stepCode==1}" class="profile-steper">2</li>
+                            <li [ngClass]="{'progress-box': stepCode==3, 'active-box': stepCode==2}" class="profile-steper">3</li>
+                            <li [ngClass]="{'progress-box': stepCode==4, 'active-box': stepCode==3}" class="profile-steper">4</li>
+                            <li [ngClass]="{'progress-box': stepCode==5, 'active-box': stepCode==4}" class="profile-steper">5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <app-social-media-links-step #SocialMediaLinksStepComponentTemplate *ngIf="stepCode==1"></app-social-media-links-step>
+            <app-footer-links-step *ngIf="stepCode==2" #FooterLinksStepComponentTemplate></app-footer-links-step>
+            <app-welcome-message-step #WelcomeMessageStepComponentTemplate *ngIf="stepCode==3"></app-welcome-message-step>
+            <app-messages-step #MessagesStepComponentTemplate *ngIf="stepCode==4"></app-messages-step>
+            <app-confirm-profile-step #ConfirmProfileStepComponentTemplate (setStepEvent)="onClickSetStepEvent($event)" *ngIf="stepCode==5"></app-confirm-profile-step>
+            <app-tutorial-step *ngIf="stepCode==6"></app-tutorial-step>
+
+            <!-- <div class="row" *ngIf="stepCode==2">
+                <div class="col-md-12 text-danger">
+                    Please add footer link..!
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="register-modal-footer">
+
+                        <!-- <button *ngIf="stepCode>1" (click)="setStepCode(-1)">Prev</button> <button *ngIf="stepCode < maxSteps" (click)="setStepCode(1)">Next</button> -->
+
+                        <button *ngIf="stepCode == 1" (click)="setStepCode(1)" class="btn btn-secondary" data-bs-dismiss="modal">skip</button>
+                        <button *ngIf="(stepCode > 1) && (stepCode < maxSteps)" (click)="setStepCode(-1)" class="btn btn-secondary" data-bs-dismiss="modal">prev</button>
+
+                        <button class="btn btn-disable" *ngIf="IsDisabled; else enableButtons">
+                            <span *ngIf="stepCode < maxSteps" (click)="isDisabled()">next</span>
+                        </button>
+
+                        <ng-template #enableButtons>
+                            <button *ngIf="stepCode <= maxSteps" (click)="save()" class="btn btn-primary">
+                                <span *ngIf="stepCode < maxSteps">next</span>
+                                <span *ngIf="stepCode == maxSteps">finish</span>
+                            </button>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </form> -->
+
+
+
+<div *ngIf="stepCode == maxSteps+1" class="register-rea-form-group">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="register-modal-header">
+                        <h4>Getting Started</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div style="background-image:url(https://upkeepable.com/wp-content/uploads/2022/06/hero-image-new-o.png)" class="et_pb_video_overlay">
+                        <div class="et_pb_video_overlay_hover">
+                            <a href="#" class="et_pb_video_play"></a>
+                        </div>
+                    </div>
+                    <div class="video-box">
+                        <video width="100%" height="100%" controls poster="https://upkeepable.com/wp-content/uploads/2022/06/hero-image-new-o.png" loop autoplay controls="true">
+
+                            <source src="https://upkeepable.com/wp-content/uploads/2022/04/Intro.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <!--  col-md-12   -->
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="register-modal-footer">
+                        <button type="button" (click)="navigateToHome()" class="btn btn-primary">go to dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

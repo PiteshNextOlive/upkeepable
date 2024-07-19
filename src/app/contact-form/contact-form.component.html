@@ -1,0 +1,88 @@
+<div class="login-heading">
+    <h4>Need Help? Ask Us.</h4>
+    <h6>Submit this form to get support from our team</h6>
+</div>
+<form [formGroup]="inputForm"  (ngSubmit)="onSubmit()">
+    <div id="message" class="tabcontent">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="profile-information-box">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstName">First Name <span>*</span></label>
+                                <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" id="first-name" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'firstName')">
+                                <div *ngIf="formControls.firstName.invalid && (submitted || formControls.firstName.dirty || formControls.firstName.touched)" class="text-danger">
+                                    <div *ngIf="formControls.firstName.errors?.required">
+                                        First name is required.
+                                    </div>
+                                    <div *ngIf="formControls.firstName.errors?.pattern">
+                                        Invalid First name.
+                                    </div>
+                                    <div *ngIf="formControls.firstName.errors?.maxlength">
+                                        First name can be max 20 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastName">Last Name <span>*</span></label>
+                                <input type="text" formControlName="lastName" class="form-control" placeholder="Last Name" id="last-name" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'lastName')">
+                                <div *ngIf="formControls.lastName.invalid && (submitted || formControls.lastName.dirty || formControls.lastName.touched)" class="text-danger">
+                                    <div *ngIf="formControls.lastName.errors?.required">
+                                        Last name is required.
+                                    </div>
+                                    <div *ngIf="formControls.lastName.errors?.pattern">
+                                        Invalid Last name.
+                                    </div>
+                                    <div *ngIf="formControls.lastName.errors?.maxlength">
+                                        Last name can be max 20 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+             
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="email">Email address <span>*</span></label>
+                                <input type="email" formControlName="email" class="form-control" placeholder="Email">
+                                <div *ngIf="(formControls.email.invalid) && (submitted || formControls.email.dirty || formControls.email.touched)" class="text-danger">
+                                    <div *ngIf="formControls.email.errors?.required">
+                                        Email address is required.
+                                    </div>
+                                    <div *ngIf="formControls.email.errors?.pattern">
+                                        Invalid email address.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="message">Message<span>*</span></label>
+                                <textarea type="message" formControlName="message" class="form-control" placeholder="Message">
+                                    </textarea>
+                                    <div *ngIf="(formControls.message.invalid) && (submitted || formControls.message.dirty || formControls.message.touched)" class="text-danger">
+                                        <div *ngIf="formControls.message.errors?.required">
+                                            Message is required.
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-sm-6">
+                <div class="ho-save-info-box ho-save-info-box-new">
+                    <button type="submit" style="margin-bottom: 62px;" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

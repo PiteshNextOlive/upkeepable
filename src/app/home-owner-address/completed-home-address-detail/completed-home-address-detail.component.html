@@ -1,0 +1,1355 @@
+<div *ngIf="userJwtDecodedInfo?.RoleName=='REAL_ESTATE_USER'" class="rea-ro-space"></div>
+<!-- Address Bar Section-->
+<section id="addressbar-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul>
+                    <li>
+                        <h2 style="margin:0;color:#fff;">{{homeOwnerName}}'s Home</h2>
+                    </li>
+                    <li class="add-bar-space">
+                        <h5>|</h5>
+                    </li>
+                    <li>
+                        <h5><i class="fas fa-map-marker"></i> {{homeFullAddress}}
+                            <a href="javascript:;" (click)="openEditClientModal(homeOwnerAddressId, editClientModalContent)"><i class=" fas fa-edit"></i></a>
+                        </h5>
+                    </li>
+                    <!-- <li>
+                        <h5><a href="javascript:;" (click)="openEditClientModal(homeOwnerAddressId, editClientModalContent)"><i class=" fas fa-edit"></i></a>
+                        </h5>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Modal -->
+    <div class="create-new-owner-modal">
+        <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- <div class="modal-content"> -->
+                <ng-template #editClientModalContent let-modal>
+                    <form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" (click)="onClickCloseModal()" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="add-footer-modal-heading">
+                                <h4>Edit Homeowner Address</h4>
+                            </div>
+                            <div class="create-new-owner-modal-form">
+                                <div class="row">
+                                    <!--  col-md-6   -->
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Home address <span>*</span></label>
+                                            <input type="text" class="form-control" placeholder="Home address" formControlName="address">
+                                            <div *ngIf="editClientformControls.address.invalid && (submitted || editClientformControls.address.dirty || editClientformControls.address.touched)" class="text-danger">
+                                                <div *ngIf="editClientformControls.address.errors?.required">
+                                                    Address is required.
+                                                </div>
+                                                <div *ngIf="editClientformControls.address.errors?.pattern">
+                                                    Invalid Address.
+                                                </div>
+                                                <div *ngIf="editClientformControls?.address?.errors?.maxlength">
+                                                    Address can be max 40 characters long.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  col-md-6   -->
+
+                                </div>
+                                <div class="row">
+                                    <!-- <div class="col-lg-4 col-md-12">
+                                        <div class="form-group">
+                                            <div class="select-dropdown">
+                                                <select class="form-select" formControlName="stateCode" aria-label="Default select example">
+                                                <option value="" selected>State Name</option>
+                                                <option *ngFor="let state of states" value="{{state.stateCode}}">
+                                                    {{state.stateTitle}}
+                                                </option>
+                                            </select>
+                                                <div *ngIf="(editClientformControls.stateCode.invalid) && (submitted || editClientformControls.stateCode.dirty || editClientformControls.stateCode.touched)" class="text-danger">
+                                                    <div *ngIf="editClientformControls.stateCode.errors?.required || editClientformControls.stateCode.value==0">
+                                                        State is required.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <!--  col-md-4   -->
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <div class="select-dropdown">
+                                                <!-- <select class="form-select" formControlName="cityRefId"
+                                                aria-label="Default select example">
+                                                <option value="" selected>City Name</option>
+                                                <option *ngFor="let cityType of cityTypeEnum" value="{{cityType.value}}">
+                                                    {{cityType.description}}
+                                                </option>
+                                            </select> -->
+                                                <input type="text" class="form-control" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'cityName')" placeholder="City Name" formControlName="cityName">
+                                                <div *ngIf="(editClientformControls.cityName.invalid) && (submitted || editClientformControls.cityName.dirty || editClientformControls.cityName.touched)" class="text-danger">
+                                                    <div *ngIf="editClientformControls.cityName.errors?.required">
+                                                        City is required.
+                                                    </div>
+                                                    <div *ngIf="editClientformControls.cityName.errors?.pattern">
+                                                        Invalid City.
+                                                    </div>
+                                                    <div *ngIf="editClientformControls.cityName?.errors?.maxlength">
+                                                        City can be max 20 characters long.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  col-md-4   -->
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip Code">
+                                            <div *ngIf="(editClientformControls.zipCode.invalid) && (submitted || editClientformControls.zipCode.dirty || editClientformControls.zipCode.touched)" class="text-danger">
+                                                <div *ngIf="editClientformControls.zipCode.errors?.required">
+                                                    Zip code is required.
+                                                </div>
+                                                <div *ngIf="editClientformControls.zipCode.errors?.pattern">
+                                                    Invalid zip code.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  col-md-4   -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save Information</button>
+                        </div>
+                    </form>
+                </ng-template>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Home Information Section-->
+<section class="home-information-completed" id="S1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-md-12">
+                <div class="home-information-block">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-img-header-block">
+                                <div class="home-img-box">
+                                    <img *ngIf="mainCategories[0]?.iconName" src="assets/img/{{mainCategories[0]?.iconName}}" class="iZoticus-logo" alt="detail-home-icon">
+                                    <h4>{{mainCategories[0]?.title}}</h4>
+                                </div>
+                                <a *ngIf="generalDetailStatusType==1; else detailNotFilled" class="home-img-check-box link-without-pointer">
+                                    <img src="assets/img/check-icon.svg" alt="check-icon">
+                                </a>
+                                <ng-template #detailNotFilled>
+                                    <!-- <a href="#!">
+                                        <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                    </a> -->
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="home-information-box">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th>{{mainCategories[0]?.homeVariableSubCategories[0]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="generalDetailStatusType==1; else noInfo">
+                                                    {{getEnumDescription('HomeTypeEnum',
+                                                    homeAddressGeneralDetail?.homeType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[0]?.homeVariableSubCategories[1]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="generalDetailStatusType==1; else noInfo">
+                                                    <span *ngIf="homeAddressGeneralDetail?.homeAge_Month == 1 || homeAddressGeneralDetail?.homeAge_Month == 0">
+                                                        {{homeAddressGeneralDetail?.homeAge_Month}} year
+                                                    </span>
+                                                    <span *ngIf="homeAddressGeneralDetail?.homeAge_Month > 1">
+                                                        {{homeAddressGeneralDetail?.homeAge_Month}} years
+                                                    </span>
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[0]?.homeVariableSubCategories[2]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="generalDetailStatusType==1 || homeAddressGeneralDetail?.homeTotalArea_SqFt==0; else noInfo">
+                                                    {{homeAddressGeneralDetail?.homeTotalArea_SqFt}} square feet
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[0]?.homeVariableSubCategories[3]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="generalDetailStatusType==1; else noInfo">
+                                                    <span *ngIf="homeAddressGeneralDetail?.floorsCount == 1">
+                                                        {{homeAddressGeneralDetail?.floorsCount}} floor
+                                                    </span>
+                                                    <span *ngIf="homeAddressGeneralDetail?.floorsCount > 1">
+                                                        {{homeAddressGeneralDetail?.floorsCount}} floors
+                                                    </span>
+                                                    <span *ngIf="homeAddressGeneralDetail?.floorsCount < 1">
+                                                        None
+                                                    </span>
+                                                </span>
+                                               
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[0]?.homeVariableSubCategories[4]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="generalDetailStatusType==1; else noInfo">
+                                                    {{getEnumMultipleDescriptions('HomeFloorTypeEnum',
+                                                    this.floorTypesArray)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                                <!-- {{getEnumMultipleDescriptions('HomeTypeEnum', homeAddressGeneralDetail?.floorTypesArray)}} -->
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[0]?.homeVariableSubCategories[5]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="generalDetailStatusType==1; else noInfo">
+                                                    {{getEnumDescription('HomeSidingTypeEnum',
+                                                    homeAddressGeneralDetail?.homeSidingType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[0]?.homeVariableSubCategories[6]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="generalDetailStatusType==1; else noInfo">
+                                                    {{convertBoolToYesNo(homeAddressGeneralDetail?.isGarage)}},
+
+                                                    <span *ngIf="homeAddressGeneralDetail?.isGarage; else noGarage">
+                                                        Size 
+                                                        <span *ngIf="homeAddressGeneralDetail?.garageSize==21">
+                                                            1 Car
+                                                        </span>
+                                                <span *ngIf="homeAddressGeneralDetail?.garageSize==22">
+                                                            2 Cars
+                                                        </span>
+                                                <span *ngIf="homeAddressGeneralDetail?.garageSize==66">
+                                                            3 Cars
+                                                        </span>
+                                                <span *ngIf="homeAddressGeneralDetail?.garageSize==67">
+                                                            4 Cars
+                                                        </span>
+                                                <span *ngIf="homeAddressGeneralDetail?.garageSize==68">
+                                                            More than 4 cars
+                                                        </span>
+
+                                                </span>
+                                                <ng-template #noGarage>
+                                                    No size
+                                                </ng-template>
+
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="heat-home-modal-img">
+                                <img src="assets/img/home-icon-info.svg" class="home-icon-info" alt="home-icon-info">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-edit-box-link">
+                                <a (click)="onClickEdit(1)" style="cursor: pointer;" class="btn-secondary">Edit information</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Home Information Section-->
+<section class="home-information-completed" id="S2">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-md-12">
+                <div class="home-information-block">
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <div class="home-img-header-block">
+                                <div class="home-img-box">
+                                    <img *ngIf="mainCategories[1]?.iconName" src="assets/img/{{mainCategories[1]?.iconName}}" class="heat-home-icon" alt="detail-home-icon">
+                                    <h4>{{mainCategories[1]?.title}}</h4>
+                                </div>
+                                <!-- <a (click)="onClickEdit(2)" style="cursor: pointer;">
+                                    <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                </a> -->
+                                <a *ngIf="heatingDetailStatusType==1; else detailNotFilled1" class="home-img-check-box link-without-pointer">
+                                    <img src="assets/img/check-icon.svg" alt="check-icon">
+                                </a>
+                                <ng-template #detailNotFilled1>
+                                    <!-- <a href="#!">
+                                        <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                    </a> -->
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="heatingDetailStatusType==1 && homeAddressHeatingDetails; else noHeatInfo">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="custom-slider">
+                                    <h5>Heating Settings</h5>
+                                    <ngx-slider [(value)]="homeAddressHeatingDetails.thermostatTemperature" [options]="options"></ngx-slider>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row margin-heat-source" *ngFor="let homeAddressHeatingDetail of homeAddressHeatingDetails?.homeAddressHeatingDetailParmMappings; let i = index">
+                            <div class="col-lg-8">
+                                <div class="home-information-box">
+                                    <h5>Heating source {{i+1}}</h5>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>{{mainCategories[1]?.homeVariableSubCategories[0]?.title}}</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <span *ngIf="heatingDetailStatusType==1; else noInfo">
+                                                        {{getEnumDescription('HeatingSystemTypeEnum',
+                                                        homeAddressHeatingDetail?.heatingSystemType)}}
+                                                    </span>
+                                                    <ng-template #noInfo>
+                                                        {{infoNotAvailableText}}
+                                                    </ng-template>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{mainCategories[1]?.homeVariableSubCategories[1]?.title}}</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <!-- <span *ngIf="heatingDetailStatusType==1 && homeAddressHeatingDetail?.heatingSystemType != 0; else noInfo"> -->
+                                                        <span *ngIf="heatingDetailStatusType==1 && (homeAddressHeatingDetail?.age_Year !== 0 || homeAddressHeatingDetail?.age_Month !== 0); else noInfo">
+                                                        
+                                                        <span *ngIf="homeAddressHeatingDetail?.age_Year==-1; else yearVal">
+                                                            Don't know,
+                                                        </span>
+                                                    <ng-template  #yearVal>
+                                                        <span *ngIf="homeAddressHeatingDetail?.age_Year==1">
+                                                            {{homeAddressHeatingDetail?.age_Year}} year,
+                                                        </span>
+                                                        <span *ngIf="homeAddressHeatingDetail?.age_Year>1">
+                                                            {{homeAddressHeatingDetail?.age_Year}} years,
+                                                        </span>
+                                                    </ng-template>
+
+                                                    <span *ngIf="homeAddressHeatingDetail?.age_Month==-1; else monthVal">
+                                                        Don't know 
+                                                        </span>
+                                                    <ng-template #monthVal>
+                                                        <span *ngIf="homeAddressHeatingDetail?.age_Month==0">
+                                                            {{homeAddressHeatingDetail?.age_Month}} month
+                                                        </span>
+                                                        <span *ngIf="homeAddressHeatingDetail?.age_Month==1">
+                                                            {{homeAddressHeatingDetail?.age_Month}} month
+                                                        </span>
+                                                        <span *ngIf="homeAddressHeatingDetail?.age_Month>1">
+                                                            {{homeAddressHeatingDetail?.age_Month}} months
+                                                        </span>
+                                                    </ng-template>
+
+
+                                                    </span>
+                                                    <ng-template #noInfo>
+                                                        {{infoNotAvailableText}}
+                                                    </ng-template>
+                                                </td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <th>Use</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <span *ngIf="heatingDetailStatusType==1; else noInfo">
+                                                        {{getEnumDescription('HeatingSystemUsageFrequencyTypeEnum',
+                                                        homeAddressHeatingDetail?.heatingSystemUsageFrequencyType)}}
+                                                    </span>
+                                                    <ng-template #noInfo>
+                                                        {{infoNotAvailableText}}
+                                                    </ng-template>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Area</th>
+                                                <td>:</td>
+                                                <td>
+                                                    {{getEnumMultipleDescriptions('HeatingSystemAreaTypeEnum',
+                                                    homeAddressHeatingDetail?.areaTypeArray)}}
+                                                </td>
+                                            </tr> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" *ngIf="i == 0">
+                                <div class="heat-home-modal-img">
+                                    <img src="assets/img/heat-icon-info-1.svg" class="heat-icon-info" alt="heat-icon-info">
+                                </div>
+                            </div>
+                        </div>
+
+                    </ng-container>
+                    <ng-template #noHeatInfo>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="home-information-box">
+                                    <h5>Heating source 1</h5>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>{{mainCategories[1]?.homeVariableSubCategories[0]?.title}}</th>
+                                                <td>:</td>
+                                                <td>
+                                                    {{infoNotAvailableText}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{mainCategories[1]?.homeVariableSubCategories[1]?.title}}</th>
+                                                <td>:</td>
+                                                <td>
+                                                    {{infoNotAvailableText}}
+                                                </td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <th>Use</th>
+                                                <td>:</td>
+                                                <td>
+                                                    {{infoNotAvailableText}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Area</th>
+                                                <td>:</td>
+                                                <td>
+                                                    {{infoNotAvailableText}}
+                                                </td>
+                                            </tr> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="heat-home-modal-img">
+                                    <img src="assets/img/heat-icon-info-1.svg" class="heat-icon-info" alt="heat-icon-info">
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-edit-box-link">
+                                <a (click)="onClickEdit(2)" style="cursor: pointer;" class="btn-secondary">Edit information</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Home Information Section-->
+<section class="home-information-completed" id="S3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-md-12">
+                <div class="home-information-block">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-img-header-block">
+                                <div class="home-img-box">
+                                    <img *ngIf="mainCategories[2]?.iconName" src="assets/img/{{mainCategories[2]?.iconName}}" class="cooling-home-icon" alt="cooling-home-icon">
+                                    <h4>{{mainCategories[2]?.title}}</h4>
+                                </div>
+                                <!-- <a (click)="onClickEdit(3)" style="cursor: pointer;">
+                                    <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                </a> -->
+                                <a *ngIf="coolingDetailStatusType==1; else detailNotFilled2" class="home-img-check-box link-without-pointer">
+                                    <img src="assets/img/check-icon.svg" alt="check-icon">
+                                </a>
+                                <ng-template #detailNotFilled2>
+                                    <!-- <a href="#!">
+                                        <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                    </a> -->
+                                </ng-template>
+                            </div>
+                            <!-- <div *ngIf="coolingDetailStatusType==0 && homeAddressCoolingDetails" class="cooling-setting-slider">
+                                <h5>{{mainCategories[2]?.homeVariableSubCategories[0]?.title}}</h5>
+
+                            </div> -->
+                        </div>
+                    </div>
+                    <ng-container *ngIf="coolingDetailStatusType==1 && homeAddressCoolingDetails; else noCoolingInfo">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="custom-slider">
+                                    <h5>{{mainCategories[2]?.homeVariableSubCategories[1]?.title}}</h5>
+                                    <ngx-slider [(value)]="homeAddressCoolingDetails.thermostatTemperature" [options]="options"></ngx-slider>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngFor="let homeAddressCoolingDetail of homeAddressCoolingDetails?.homeAddressCoolingDetailParmMappings;let i=index">
+
+                            <div class="col-lg-8">
+                                <div class="home-information-box">
+                                    <h5>Cooling source {{i+1}}</h5>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>{{mainCategories[2]?.homeVariableSubCategories[2]?.title}}</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <span *ngIf="coolingDetailStatusType==1; else noInfo">
+                                                        {{getEnumDescription('CoolingSystemTypeEnum',
+                                                        homeAddressCoolingDetail?.coolingSystemType)}}
+                                                    </span>
+                                                    <ng-template #noInfo>
+                                                        {{infoNotAvailableText}}
+                                                    </ng-template>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{mainCategories[2]?.homeVariableSubCategories[3]?.title}}</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <!-- <span *ngIf="coolingDetailStatusType==1 && homeAddressCoolingDetail?.coolingSystemType != 0 ; else noInfo"> -->
+                                                        <span *ngIf="coolingDetailStatusType==1 && (homeAddressCoolingDetail?.age_Year !== 0 || homeAddressCoolingDetail?.age_Month !== 0); else noInfo">
+                                                        <span *ngIf="homeAddressCoolingDetail?.age_Year==-1; else yearVal">
+                                                            Don't know,
+                                                        </span>
+                                                    <ng-template #yearVal>
+                                                        <span *ngIf="homeAddressCoolingDetail?.age_Year==1">
+                                                            {{homeAddressCoolingDetail?.age_Year}} year,
+                                                        </span>
+                                                        <span *ngIf="homeAddressCoolingDetail?.age_Year>1">
+                                                            {{homeAddressCoolingDetail?.age_Year}} years,
+                                                        </span>
+                                                    </ng-template>
+
+                                                    <span *ngIf="homeAddressCoolingDetail?.age_Month==-1; else monthVal">
+                                                        Don't know
+                                                        </span>
+                                                    <ng-template #monthVal>
+                                                        <span *ngIf="homeAddressCoolingDetail?.age_Month==0">
+                                                            {{homeAddressCoolingDetail?.age_Month}} month
+                                                        </span>
+                                                        <span *ngIf="homeAddressCoolingDetail?.age_Month==1">
+                                                            {{homeAddressCoolingDetail?.age_Month}} month
+                                                        </span>
+                                                        <span *ngIf="homeAddressCoolingDetail?.age_Month>1">
+                                                            {{homeAddressCoolingDetail?.age_Month}} months
+                                                        </span>
+                                                    </ng-template>
+
+                                                    <!-- 
+                                                        {{homeAddressCoolingDetail?.age_Year}} years,
+                                                        {{homeAddressCoolingDetail?.age_Month}} months -->
+                                                    </span>
+                                                    <ng-template #noInfo>
+                                                        {{infoNotAvailableText}}
+                                                    </ng-template>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{mainCategories[2]?.homeVariableSubCategories[4]?.title}}</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <span *ngIf="coolingDetailStatusType==1; else noInfo">
+                                                        {{getEnumDescription('CoolingSystemUsageFrequencyTypeEnum',
+                                                        homeAddressCoolingDetail?.coolingSystemUsageFrequencyType)}}
+                                                    </span>
+                                                    <ng-template #noInfo>
+                                                        {{infoNotAvailableText}}
+                                                    </ng-template>
+                                                </td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <th>Area</th>
+                                                <td>:</td>
+                                                <td>
+                                                    {{getEnumMultipleDescriptions('CoolingSystemAreaTypeEnum',
+                                                    homeAddressCoolingDetail?.areaTypeArray)}}
+                                                </td>
+                                            </tr> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" *ngIf="i==0">
+                                <div class="heat-home-modal-img">
+                                    <img src="assets/img/cooling-icon-info-{{i+1}}.svg" class="cooling-icon-info" alt="cooling-icon-info">
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #noCoolingInfo>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="home-information-box">
+                                    <h5>Cooling source 1</h5>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>{{mainCategories[2]?.homeVariableSubCategories[0]?.title}}</th>
+                                                <td>:</td>
+                                                <td>{{infoNotAvailableText}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{mainCategories[2]?.homeVariableSubCategories[1]?.title}}</th>
+                                                <td>:</td>
+                                                <td>{{infoNotAvailableText}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>{{mainCategories[2]?.homeVariableSubCategories[2]?.title}}</th>
+                                                <td>:</td>
+                                                <td>{{infoNotAvailableText}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{mainCategories[2]?.homeVariableSubCategories[3]?.title}}</th>
+                                                <td>:</td>
+                                                <td>{{infoNotAvailableText}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="heat-home-modal-img">
+                                    <img src="assets/img/cooling-icon-info-1.svg" class="cooling-icon-info" alt="cooling-icon-info">
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-edit-box-link">
+                                <a (click)="onClickEdit(3)" style="cursor: pointer;" class="btn-secondary">Edit information</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- Home Information Section-->
+<section class="home-information-completed" id="S4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-md-12">
+                <div class="home-information-block">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-img-header-block">
+                                <div class="home-img-box">
+                                    <img *ngIf="mainCategories[3]?.iconName" src="assets/img/{{mainCategories[3]?.iconName}}" class="treat-water-home-icon" alt="treat-water-home-icon">
+                                    <h4>{{mainCategories[3]?.title}}</h4>
+                                </div>
+                                <!-- <a (click)="onClickEdit(4)" style="cursor: pointer;">
+                                    <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                </a> -->
+                                <a *ngIf="waterTreatmentDetailStatusType==1; else detailNotFilled3" class="home-img-check-box link-without-pointer">
+                                    <img src="assets/img/check-icon.svg" alt="check-icon">
+                                </a>
+                                <ng-template #detailNotFilled3>
+                                    <!-- <a href="#!">
+                                        <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                    </a> -->
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="home-information-box">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th>{{mainCategories[3]?.homeVariableSubCategories[0]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="waterTreatmentDetailStatusType==1; else noInfo">
+                                                    {{getEnumDescription('WaterTreatmentHeatingTypeEnum',
+                                                    homeAddressWaterTreatmentDetail?.waterTreatmentHeatingType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[3]?.homeVariableSubCategories[1]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="waterTreatmentDetailStatusType==1; else noInfo">
+                                                    <span
+                                                        *ngIf="!homeAddressWaterTreatmentDetail?.isHeatingTemperatureKnown; else tempKnows">
+                                                        Don't know
+                                                    </span>
+                                                <ng-template #tempKnows>
+                                                    {{homeAddressWaterTreatmentDetail?.heatingTemperature}}
+                                                </ng-template>
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[3]?.homeVariableSubCategories[2]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="waterTreatmentDetailStatusType==1; else noInfo">
+                                                    {{getEnumDescription('WaterTreatmentFilterTypeEnum',
+                                                    homeAddressWaterTreatmentDetail?.waterTreatmentFilterType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[3]?.homeVariableSubCategories[3]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="waterTreatmentDetailStatusType==1 && homeAddressWaterTreatmentDetail?.waterTreatmentFilterType != 0 ; else noInfo">
+                                                    <span
+                                                        *ngIf="!homeAddressWaterTreatmentDetail?.isFilterAgeKnown; else tempKnows">
+                                                        Don't know
+                                                    </span>
+                                                <ng-template #tempKnows>
+                                                    <span *ngIf="homeAddressWaterTreatmentDetail?.filterAge==1">
+                                                        {{homeAddressWaterTreatmentDetail?.filterAge}} month
+                                                    </span>
+                                                    <span *ngIf="homeAddressWaterTreatmentDetail?.filterAge>1">
+                                                        {{homeAddressWaterTreatmentDetail?.filterAge}} months
+                                                    </span>
+                                                </ng-template>
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[3]?.homeVariableSubCategories[4]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="waterTreatmentDetailStatusType==1 && homeAddressWaterTreatmentDetail?.waterTreatmentSoftenerType !=3; else noInfo">
+                                                    <span *ngIf="homeAddressWaterTreatmentDetail?.waterTreatmentSoftenerType==1; else noSoftner">
+                                                        Yes
+                                                    </span>
+                                                <ng-template #noSoftner>
+                                                    No
+                                                </ng-template>
+                                                <!-- <span *ngIf="homeAddressWaterTreatmentDetail?.waterTreatmentSoftenerType"></span>
+
+                                                    {{getEnumDescription('WaterTreatmentSoftenerTypeEnum',
+                                                    homeAddressWaterTreatmentDetail?.waterTreatmentSoftenerType)}} -->
+                                                    <ng-template #noInfo>
+                                                        {{infoNotAvailableText}}
+                                                    </ng-template>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="heat-home-modal-img">
+                                <img src="assets/img/water-icon-info.svg" class="water-icon-info" alt="water-icon-info">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-edit-box-link">
+                                <a (click)="onClickEdit(4)" style="cursor: pointer;" class="btn-secondary">Edit information</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Home Information Section-->
+<section class="home-information-completed" id="S5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-md-12">
+                <div class="home-information-block">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-img-header-block">
+                                <div class="home-img-box">
+                                    <img *ngIf="mainCategories[4]?.iconName" src="assets/img/{{mainCategories[4]?.iconName}}" class="outside-Home-icon" alt="outside-Home-icon">
+                                    <h4>{{mainCategories[4]?.title}}</h4>
+                                </div>
+                                <!-- <a (click)="onClickEdit(5)" style="cursor: pointer;">
+                                    <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                </a> -->
+                                <a *ngIf="outsideDetailStatusType==1; else detailNotFilled4" class="home-img-check-box link-without-pointer">
+                                    <img src="assets/img/check-icon.svg" alt="check-icon">
+                                </a>
+                                <ng-template #detailNotFilled4>
+                                    <!-- <a href="#!">
+                                    <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                </a> -->
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-information-box">
+                                <table class="table full-width-table">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[4]?.homeVariableSubCategories[0]?.iconName" src="assets/img/{{mainCategories[4]?.homeVariableSubCategories[0]?.iconName}}" alt="lawn-home-icon">
+                                            </td>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[0]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1&& homeAddressOutsideDetail?.hasLawn != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressOutsideDetail?.hasLawn)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[1]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasLawn; else noInfo">
+                                                    {{ getEnumDescription('GrassTypeEnum',
+                                                    homeAddressOutsideDetail?.grassType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[4]?.homeVariableSubCategories[2]?.iconName" src="assets/img/{{mainCategories[4]?.homeVariableSubCategories[2]?.iconName}}" alt="fence-home-icon">
+                                            </td>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[2]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1&& homeAddressOutsideDetail?.hasFense != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressOutsideDetail?.hasFense)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[3]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasFense; else noInfo">
+                                                    {{ getEnumDescription('FenseTypeEnum',
+                                                    homeAddressOutsideDetail?.fenseType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[4]?.homeVariableSubCategories[4]?.iconName" src="assets/img/{{mainCategories[4]?.homeVariableSubCategories[4]?.iconName}}" alt="sprinklers-home-icon"> </td>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[4]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasSpinklers != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressOutsideDetail?.hasSpinklers)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[4]?.homeVariableSubCategories[5]?.iconName" src="assets/img/{{mainCategories[4]?.homeVariableSubCategories[5]?.iconName}}" alt="tree-home-icon">
+                                            </td>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[5]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasTrees != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressOutsideDetail?.hasTrees)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[6]?.title}} Types of trees</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasTrees; else noInfo">
+                                                    {{ getEnumDescription('TreeTypeEnum',
+                                                    homeAddressOutsideDetail?.treeType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr> -->
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[4]?.homeVariableSubCategories[6]?.iconName" src="assets/img/{{mainCategories[4]?.homeVariableSubCategories[6]?.iconName}}" alt="shrubs-home-icon">
+                                            </td>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[6]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasShrubs != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressOutsideDetail?.hasShrubs)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[7]?.title}} Types of shrubs</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasShrubs; else noInfo">
+                                                    {{ getEnumDescription('ShrubsTypeEnum',
+                                                    homeAddressOutsideDetail?.shrubsType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr> -->
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[4]?.homeVariableSubCategories[7]?.iconName" src="assets/img/{{mainCategories[4]?.homeVariableSubCategories[7]?.iconName}}" alt="pool-home-icon">
+                                            </td>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[7]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasPool != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressOutsideDetail?.hasPool)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[8]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasPool; else noInfo">
+                                                    {{ getEnumDescription('PoolTypeEnum',
+                                                    homeAddressOutsideDetail?.poolType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[4]?.homeVariableSubCategories[9]?.iconName" src="assets/img/{{mainCategories[4]?.homeVariableSubCategories[9]?.iconName}}" alt="hot-tub-icon">
+                                            </td>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[9]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasHotTub != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressOutsideDetail?.hasHotTub)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <th>{{mainCategories[4]?.homeVariableSubCategories[10]?.title}} Types of hot tub</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    *ngIf="outsideDetailStatusType==1 && homeAddressOutsideDetail?.hasHotTub; else noInfo">
+                                                    {{ getEnumDescription('HotTubTypeEnum',
+                                                    homeAddressOutsideDetail?.hotTubType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr> -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-edit-box-link">
+                                <a (click)="onClickEdit(5)" style="cursor: pointer;" class="btn-secondary">Edit information</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Home Information Section-->
+<section class="home-information-completed" id="S6">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-md-12">
+                <div class="home-information-block">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-img-header-block">
+                                <div class="home-img-box">
+                                    <img *ngIf="mainCategories[5]?.iconName" src="assets/img/{{mainCategories[5]?.iconName}}" class="home-appliances-icon" alt="home-appliances-icon">
+                                    <h4>{{mainCategories[5]?.title}}</h4>
+                                </div>
+                                <!-- <a (click)="onClickEdit(6)" style="cursor: pointer;">
+                                    <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                </a> -->
+                                <a *ngIf="applianceDetailStatusType==1; else detailNotFilled5" class="home-img-check-box link-without-pointer">
+                                    <img src="assets/img/check-icon.svg" alt="check-icon">
+                                </a>
+                                <ng-template #detailNotFilled5>
+                                    <!-- <a href="#!">
+                                        <img src="assets/img/edit-info-icon.svg" alt="check-icon">
+                                    </a> -->
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-information-box">
+                                <table class="table full-width-table">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[0]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[0]?.iconName}}" alt="smart-light-icon">
+                                            </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[0]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasSmartLight != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressApplianceDetail?.hasSmartLight)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[1]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasSmartLight; else noInfo">
+                                                    <!-- {{ getEnumDescription('SmartLightTypeEnum', homeAddressApplianceDetail?.hasSmartLight)}} -->
+
+
+                                                    {{getEnumMultipleDescriptions('SmartLightTypeEnum',
+                                                    homeAddressApplianceDetail?.smartLightTypeArray)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[2]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[2]?.iconName}}" alt="washing-machine-icon"> </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[2]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasWashingMachine != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressApplianceDetail?.hasWashingMachine)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[3]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasWashingMachine; else noInfo">
+                                                    {{ getEnumDescription('WashingMachineTypeEnum',
+                                                    homeAddressApplianceDetail?.washingMachineType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[4]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[4]?.iconName}}" alt="dryer-home-icon">
+                                            </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[4]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasDryer != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressApplianceDetail?.hasDryer)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[5]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasDryer; else noInfo">
+                                                    {{ getEnumDescription('DryerTypeEnum',
+                                                    homeAddressApplianceDetail?.dryerType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[6]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[6]?.iconName}}" alt="range-hood-icon">
+                                            </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[6]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasRangeHood != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressApplianceDetail?.hasRangeHood)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[7]?.title}} Types of range hood</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasRangeHood; else noInfo">
+                                                    {{ getEnumDescription('RangeHoodTypeEnum',
+                                                    homeAddressApplianceDetail?.rangeHoodType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr> -->
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[7]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[7]?.iconName}}" alt="dishwasher-home-icon"> </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[7]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasDishwasher != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressApplianceDetail?.hasDishwasher)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[8]?.title}} Types of dishwasher</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span
+                                                    *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasDishwasher; else noInfo">
+                                                    {{ getEnumDescription('DishwasherTypeEnum',
+                                                    homeAddressApplianceDetail?.dishwasherType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr> -->
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[8]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[8]?.iconName}}" alt="microwave-home-icon"> </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[8]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasOven != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressApplianceDetail?.hasOven)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[11]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[11]?.iconName}}" alt="microwave-home-icon"> </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[11]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasMicrowave != 3; else noInfo">
+                                                    {{ convertNumberToYesNo(homeAddressApplianceDetail?.hasMicrowave)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+
+                                        <tr>
+                                            <td rowspan="2"><img *ngIf="mainCategories[5]?.homeVariableSubCategories[9]?.iconName" class="home-appiance-img" src="assets/img/{{mainCategories[5]?.homeVariableSubCategories[9]?.iconName}}" alt="stove-tub-icon">
+                                            </td>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[9]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasStove != 3; else noInfo">
+                                                    {{convertNumberToYesNo(homeAddressApplianceDetail?.hasStove)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{mainCategories[5]?.homeVariableSubCategories[10]?.title}}</th>
+                                            <td>:</td>
+                                            <td>
+                                                <span *ngIf="applianceDetailStatusType==1 && homeAddressApplianceDetail?.hasStove; else noInfo">
+                                                    {{ getEnumDescription('StoveTypeEnum',
+                                                    homeAddressApplianceDetail?.stoveType)}}
+                                                </span>
+                                                <ng-template #noInfo>
+                                                    {{infoNotAvailableText}}
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-edit-box-link">
+                                <a (click)="onClickEdit(6)" style="cursor: pointer;" class="btn-secondary">Edit information</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<div class="loc-dashboard-row">
+    <button class="loc-dashboard btn-primary" (click)="navigateToHome()">Dashboard</button>
+</div>

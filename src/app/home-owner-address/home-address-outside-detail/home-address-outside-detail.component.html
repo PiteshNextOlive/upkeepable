@@ -1,0 +1,231 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <div class="modal-inner">
+        <div class="modal-header">
+            <div class="home-img-box">
+                <img src="assets/img/{{mainCategory?.iconName}}" class="outside-Home-icon" alt="outside-Home-icon">
+                <h4>{{mainCategory?.title}}</h4>
+            </div>
+            <button type="button" (click)="closeFormEvent.emit()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <input type="hidden" formControlName="homeOwnerAddressAttributeRefId">
+            <input type="hidden" formControlName="homeAddressOutsideDetailId">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[0]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" (change)="onChangeYesNo('grassType')" aria-label="Default select example" formControlName="hasLawn">
+                                <option selected value="3">Select {{subCategories[0]?.title}}</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[1]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" [attr.disabled]="formControls.hasLawn.value==1 ? null : 'disabled'" [ngClass]="{'disabled-input': formControls.hasLawn.value==0}" formControlName="grassType" aria-label="Default select example">
+                                <option value="0">Select {{subCategories[1]?.title}}</option>
+                                <option *ngFor="let grassType of subCategories[1]?.homeVariableSubCategoryListItems" value="{{grassType.homeVariableSubCategoryListItemId}}">
+                                    {{grassType.title}}</option>
+                            </select>
+                            <div *ngIf="formControls.hasLawn.value==1 && formControls.grassType.value==0 && submitted" class="text-danger">
+                                {{subCategories[1]?.title}} is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[2]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" (change)="onChangeYesNo('fenseType')" aria-label="Default select example" formControlName="hasFense">
+                                <option selected value="3">Select {{subCategories[2]?.title}}</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[3]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" [attr.disabled]="formControls.hasFense.value==1 ? null : 'disabled'" [ngClass]="{'disabled-input': formControls.hasFense.value==0}" formControlName="fenseType" aria-label="Default select example">
+                                <option value="0">Select {{subCategories[3]?.title}}</option>
+                                <option *ngFor="let fenseType of subCategories[3]?.homeVariableSubCategoryListItems" value="{{fenseType.homeVariableSubCategoryListItemId}}">
+                                    {{fenseType.title}}</option>
+                            </select>
+                            <div *ngIf="formControls.hasFense.value==1 && formControls.fenseType.value==0 && submitted" class="text-danger">
+                                {{subCategories[3]?.title}} is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last">{{subCategories[4]?.title}}</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="hasSpinklers">
+                            <option selected value="3">Select {{subCategories[4]?.title}}</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!--  row   -->
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[5]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" (change)="onChangeYesNo('treeType')" aria-label="Default select example" formControlName="hasTrees">
+                                <option selected value="3">Select {{subCategories[5]?.title}}</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!--  col-md-6   -->
+
+                <!-- <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">Type of tree</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" [attr.disabled]="formControls.hasTrees.value==1 ? null : 'disabled'" aria-label="Default select example" formControlName="treeType"
+                                aria-label="Default select example">
+                                <option *ngFor="let treeType of treeTypeEnum" value="{{treeType.value}}">
+                                    {{treeType.description}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[6]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" (change)="onChangeYesNo('shrubsType')"  aria-label="Default select example" formControlName="hasShrubs">
+                                <option selected value="3">Select {{subCategories[6]?.title}}</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <!-- <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">Shrubs</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" (change)="onChangeYesNo('shrubsType')"  aria-label="Default select example" formControlName="hasShrubs">
+                                <option selected value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+                <!--  col-md-6   -->
+
+                <!-- <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">Type of shrubs</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" [attr.disabled]="formControls.hasShrubs.value==1 ? null : 'disabled'" aria-label="Default select example" formControlName="shrubsType"
+                                aria-label="Default select example">
+                                <option *ngFor="let shrubsType of shrubsTypeEnum" value="{{shrubsType.value}}">
+                                    {{shrubsType.description}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[7]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" (change)="onChangeYesNo('poolType')"  aria-label="Default select example" formControlName="hasPool">
+                                <option selected value="3">Select {{subCategories[7]?.title}}</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[8]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" [attr.disabled]="formControls.hasPool.value==1 ? null : 'disabled'" [ngClass]="{'disabled-input': formControls.hasPool.value==0}" aria-label="Default select example" formControlName="poolType"
+                                aria-label="Default select example">
+                                <option value="0">Select {{subCategories[8]?.title}}</option>
+                                <option *ngFor="let poolType of subCategories[8]?.homeVariableSubCategoryListItems" value="{{poolType.homeVariableSubCategoryListItemId}}">
+                                    {{poolType.title}}</option>
+                            </select>
+                            <div *ngIf="formControls.hasPool.value==1 && formControls.poolType.value==0 && submitted" class="text-danger">
+                                {{subCategories[8]?.title}} is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[9]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" (change)="onChangeYesNo('hotTubType')"  aria-label="Default select example" formControlName="hasHotTub">
+                                <option selected value="3">Select {{subCategories[9]?.title}}</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+                    <!-- <div class="form-group">
+                        <label for="first">Type of hot tub</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" [attr.disabled]="formControls.hasHotTub.value==1 ? null : 'disabled'" aria-label="Default select example" formControlName="hotTubType"
+                                aria-label="Default select example">
+                                <option *ngFor="let hotTubType of hotTubTypeEnum" value="{{hotTubType.value}}">
+                                    {{hotTubType.description}}</option>
+                            </select>
+                        </div>
+                    </div> -->
+                </div>
+                <!--  col-md-6   -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="closeFormEvent.emit()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>

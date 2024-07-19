@@ -1,0 +1,397 @@
+[{
+        "iconName": "Ftr_AC_Unit",
+        "IconFile": "Ftr_AC_Unit.svg"
+    },
+    {
+        "iconName": "Ftr_Bathtub",
+        "IconFile": "Ftr_Bathtub.svg"
+    },
+    {
+        "iconName": "Ftr_Batteries",
+        "IconFile": "Ftr_Batteries.svg"
+    },
+    {
+        "iconName": "Ftr_Bed",
+        "IconFile": "Ftr_Bed.svg"
+    },
+    {
+        "iconName": "Ftr_Birdhouse _(Outdoor)",
+        "IconFile": "Ftr_Birdhouse _(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_Blender",
+        "IconFile": "Ftr_Blender.svg"
+    },
+    {
+        "iconName": "Ftr_Bookshelf",
+        "IconFile": "Ftr_Bookshelf.svg"
+    },
+    {
+        "iconName": "Ftr_Brick_Wall",
+        "IconFile": "Ftr_Brick_Wall.svg"
+    },
+    {
+        "iconName": "Ftr_Broom",
+        "IconFile": "Ftr_Broom.svg"
+    },
+    {
+        "iconName": "Ftr_Bucket",
+        "IconFile": "Ftr_Bucket.svg"
+    },
+    {
+        "iconName": "Ftr_Cabinet",
+        "IconFile": "Ftr_Cabinet.svg"
+    },
+    {
+        "iconName": "Ftr_Calendar",
+        "IconFile": "Ftr_Calendar.svg"
+    },
+    {
+        "iconName": "Ftr_Can_Opener",
+        "IconFile": "Ftr_Can_Opener.svg"
+    },
+    {
+        "iconName": "Ftr_Chair",
+        "IconFile": "Ftr_Chair.svg"
+    },
+    {
+        "iconName": "Ftr_Checklist",
+        "IconFile": "Ftr_Checklist.svg"
+    },
+    {
+        "iconName": "Ftr_Clock",
+        "IconFile": "Ftr_Clock.svg"
+    },
+    {
+        "iconName": "Ftr_Coffee_Maker",
+        "IconFile": "Ftr_Coffee_Maker.svg"
+    },
+    {
+        "iconName": "Ftr_Computer",
+        "IconFile": "Ftr_Computer.svg"
+    },
+    {
+        "iconName": "Ftr_Couch",
+        "IconFile": "Ftr_Couch.svg"
+    },
+    {
+        "iconName": "Ftr_Curtains",
+        "IconFile": "Ftr_Curtains.svg"
+    },
+    {
+        "iconName": "Ftr_Desk",
+        "IconFile": "Ftr_Desk.svg"
+    },
+    {
+        "iconName": "Ftr_Dining_Table",
+        "IconFile": "Ftr_Dining_Table.svg"
+    },
+    {
+        "iconName": "Ftr_Dishwasher",
+        "IconFile": "Ftr_Dishwasher.svg"
+    },
+    {
+        "iconName": "Ftr_Door",
+        "IconFile": "Ftr_Door.svg"
+    },
+    {
+        "iconName": "Ftr_Dresser",
+        "IconFile": "Ftr_Dresser.svg"
+    },
+    {
+        "iconName": "Ftr_Drill",
+        "IconFile": "Ftr_Drill.svg"
+    },
+    {
+        "iconName": "Ftr_DVD_Player",
+        "IconFile": "Ftr_DVD_Player.svg"
+    },
+    {
+        "iconName": "Ftr_Electrical_Outlet",
+        "IconFile": "Ftr_Electrical_Outlet.svg"
+    },
+    {
+        "iconName": "Ftr_Elevator",
+        "IconFile": "Ftr_Elevator.svg"
+    },
+    {
+        "iconName": "Ftr_External _Hard_Drive",
+        "IconFile": "Ftr_External _Hard_Drive.svg"
+    },
+    {
+        "iconName": "Ftr_Fan",
+        "IconFile": "Ftr_Fan.svg"
+    },
+    {
+        "iconName": "Ftr_Faucet",
+        "IconFile": "Ftr_Faucet.svg"
+    },
+    {
+        "iconName": "Ftr_Fence",
+        "IconFile": "Ftr_Fence.svg"
+    },
+    {
+        "iconName": "Ftr_Fire_Extinguisher",
+        "IconFile": "Ftr_Fire_Extinguisher.svg"
+    },
+    {
+        "iconName": "Ftr_Fork_and_Spoon",
+        "IconFile": "Ftr_Fork_and_Spoon.svg"
+    },
+    {
+        "iconName": "Ftr_Game_Console",
+        "IconFile": "Ftr_Game_Console.svg"
+    },
+    {
+        "iconName": "Ftr_Garage",
+        "IconFile": "Ftr_Garage.svg"
+    },
+    {
+        "iconName": "ftr_garden_hose_outdoor",
+        "IconFile": "ftr_garden_hose_outdoor.svg"
+    },
+    {
+        "iconName": "ftr_grill_outdoor",
+        "IconFile": "ftr_grill_outdoor.svg"
+    },
+    {
+        "iconName": "Ftr_Hammer",
+        "IconFile": "Ftr_Hammer.svg"
+    },
+    {
+        "iconName": "Ftr_Heater",
+        "IconFile": "Ftr_Heater.svg"
+    },
+    {
+        "iconName": "Ftr_House",
+        "IconFile": "Ftr_House.svg"
+    },
+    {
+        "iconName": "Ftr_Iron",
+        "IconFile": "Ftr_Iron.svg"
+    },
+    {
+        "iconName": "Ftr_Knife",
+        "IconFile": "Ftr_Knife.svg"
+    },
+    {
+        "iconName": "Ftr_Ladder",
+        "IconFile": "Ftr_Ladder.svg"
+    },
+    {
+        "iconName": "Ftr_Lamp",
+        "IconFile": "Ftr_Lamp.svg"
+    },
+    {
+        "iconName": "Ftr_Laundry-Basket",
+        "IconFile": "Ftr_Laundry-Basket.svg"
+    },
+    {
+        "iconName": "Ftr_Lawn-Mower-(Outdoor)",
+        "IconFile": "Ftr_Lawn-Mower-(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_Lightbulb",
+        "IconFile": "Ftr_Lightbulb.svg"
+    },
+    {
+        "iconName": "Ftr_Microwave",
+        "IconFile": "Ftr_Microwave.svg"
+    },
+    {
+        "iconName": "Ftr_Mirror",
+        "IconFile": "Ftr_Mirror.svg"
+    },
+    {
+        "iconName": "Ftr_Mixer",
+        "IconFile": "Ftr_Mixer.svg"
+    },
+    {
+        "iconName": "Ftr_Oven",
+        "IconFile": "Ftr_Oven.svg"
+    },
+    {
+        "iconName": "Ftr_Paint Can",
+        "IconFile": "Ftr_Paint Can.svg"
+    },
+    {
+        "iconName": "Ftr_Paintbrush",
+        "IconFile": "Ftr_Paintbrush.svg"
+    },
+    {
+        "iconName": "Ftr_Pan",
+        "IconFile": "Ftr_Pan.svg"
+    },
+    {
+        "iconName": "Ftr_Patio-Furniture-(Outdoor)",
+        "IconFile": "Ftr_Patio-Furniture-(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_Phone",
+        "IconFile": "Ftr_Phone.svg"
+    },
+    {
+        "iconName": "Ftr_Picture-Frame",
+        "IconFile": "Ftr_Picture-Frame.svg"
+    },
+    {
+        "iconName": "Ftr_Plate",
+        "IconFile": "Ftr_Plate.svg"
+    },
+    {
+        "iconName": "Ftr_Pool-(Outdoor)",
+        "IconFile": "Ftr_Pool-(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_Pot",
+        "IconFile": "Ftr_Pot.svg"
+    },
+    {
+        "iconName": "Ftr_Printer",
+        "IconFile": "Ftr_Printer.svg"
+    },
+    {
+        "iconName": "Ftr_Rake_(Outdoor)",
+        "IconFile": "Ftr_Rake_(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_Recycling-Bin",
+        "IconFile": "Ftr_Recycling-Bin.svg"
+    },
+    {
+        "iconName": "Ftr_Refrigerator",
+        "IconFile": "Ftr_Refrigerator.svg"
+    },
+    {
+        "iconName": "Ftr_Remote_Control",
+        "IconFile": "Ftr_Remote_Control.svg"
+    },
+    {
+        "iconName": "Ftr_Roof",
+        "IconFile": "Ftr_Roof.svg"
+    },
+    {
+        "iconName": "Ftr_Rug",
+        "IconFile": "Ftr_Rug.svg"
+    },
+    {
+        "iconName": "Ftr_Safety-Pin",
+        "IconFile": "Ftr_Safety-Pin.svg"
+    },
+    {
+        "iconName": "Ftr_Saw",
+        "IconFile": "Ftr_Saw.svg"
+    },
+    {
+        "iconName": "Ftr_Scissors",
+        "IconFile": "Ftr_Scissors.svg"
+    },
+    {
+        "iconName": "Ftr_Screwdriver",
+        "IconFile": "Ftr_Screwdriver.svg"
+    },
+    {
+        "iconName": "Ftr_SD-Card",
+        "IconFile": "Ftr_SD-Card.svg"
+    },
+    {
+        "iconName": "ftr_sewing-machine",
+        "IconFile": "ftr_sewing-machine.svg"
+    },
+    {
+        "iconName": "Ftr_Shovel-(Outdoor)",
+        "IconFile": "Ftr_Shovel-(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_Shower",
+        "IconFile": "Ftr_Shower.svg"
+    },
+    {
+        "iconName": "Ftr_Sink",
+        "IconFile": "Ftr_Sink.svg"
+    },
+    {
+        "iconName": "Ftr_Smoke-Detector",
+        "IconFile": "Ftr_Smoke-Detector.svg"
+    },
+    {
+        "iconName": "Ftr_Sprinkler-(Outdoor)",
+        "IconFile": "Ftr_Sprinkler-(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_Stairs",
+        "IconFile": "Ftr_Stairs.svg"
+    },
+    {
+        "iconName": "Ftr_Stereo",
+        "IconFile": "Ftr_Stereo.svg"
+    },
+    {
+        "iconName": "Ftr_Stove",
+        "IconFile": "Ftr_Stove.svg"
+    },
+    {
+        "iconName": "Ftr_Television",
+        "IconFile": "Ftr_Television.svg"
+    },
+    {
+        "iconName": "Ftr_Thermometer",
+        "IconFile": "Ftr_Thermometer.svg"
+    },
+    {
+        "iconName": "Ftr_Toaster",
+        "IconFile": "Ftr_Toaster.svg"
+    },
+    {
+        "iconName": "Ftr_Toilet",
+        "IconFile": "Ftr_Toilet.svg"
+    },
+    {
+        "iconName": "Ftr_Toolbox",
+        "IconFile": "Ftr_Toolbox.svg"
+    },
+    {
+        "iconName": "Ftr_Trash-Can",
+        "IconFile": "Ftr_Trash-Can.svg"
+    },
+    {
+        "iconName": "Ftr_Tree-(Outdoor)",
+        "IconFile": "Ftr_Tree-(Outdoor).svg"
+    },
+    {
+        "iconName": "Ftr_USB-Stick",
+        "IconFile": "Ftr_USB-Stick.svg"
+    },
+    {
+        "iconName": "Ftr_Vacuum-Cleaner",
+        "IconFile": "Ftr_Vacuum-Cleaner.svg"
+    },
+    {
+        "iconName": "Ftr_Wardrobe",
+        "IconFile": "Ftr_Wardrobe.svg"
+    },
+    {
+        "iconName": "Ftr_Washing-Machine",
+        "IconFile": "Ftr_Washing-Machine.svg"
+    },
+    {
+        "iconName": "Ftr_Water-Drop",
+        "IconFile": "Ftr_Water-Drop.svg"
+    },
+    {
+        "iconName": "Ftr_WiFi-Signal",
+        "IconFile": "Ftr_WiFi-Signal.svg"
+    },
+    {
+        "iconName": "Ftr_Window",
+        "IconFile": "Ftr_Window.svg"
+    },
+    {
+        "iconName": "Ftr_Wine-Glass",
+        "IconFile": "Ftr_Wine-Glass.svg"
+    },
+    {
+        "iconName": "Ftr_Wrench",
+        "IconFile": "Ftr_Wrench.svg"
+    }
+]

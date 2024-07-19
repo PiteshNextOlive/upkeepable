@@ -1,0 +1,30 @@
+.loading-spinner {
+    background-color: #0000001f;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: grid;
+    z-index: 2000;
+    /* overflow: hidden; */
+}
+
+.loading-spinner img {
+    align-self: end;
+}
+
+.loading-message {
+    text-align: center;
+    align-self: start;
+}
+
+.loading-message.text-white {
+    background-color: #fff;
+    color: #0061C1!important;
+    padding: 10px 25px;
+    top:30px;
+    position: relative;
+}

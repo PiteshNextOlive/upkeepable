@@ -1,0 +1,1005 @@
+<section class="admin-recommendation-section admin-recommendation-new">
+    <div class="container">
+        <!-- <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="dashboard-search admin-panel-search">
+
+                    <div class="form-group">
+                        <i class="fas fa-search"></i>
+                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search by Home Recommendations">
+                        <button class="btn btn-lg btn-success" type="submit"></button>
+                    </div>
+
+                </div>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="accordion-recommendation-section">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-heading">
+
+                                            <div class="recommendation-img-dev"><img *ngIf="mainCategories?.[0]?.iconName" src="assets/img/{{mainCategories?.[0]?.iconName}}"> </div>
+                                            <h5>{{mainCategories[0]?.title}}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-link">
+                                            <ul>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories?.[0]?.homeVariableMainCategoryId, 0, editIconModalContent, 'I')"><i
+                                                            class="fas fa-edit"></i> Edit Icon</a></li>
+                                                <li>
+                                                    <a href="javascript:;" (click)="openEditTitleModal(0,mainCategories?.[0]?.homeVariableMainCategoryId, 0, editTitleModalContent, 'T')">
+                                                        <i class="fas fa-edit"></i> Edit Title</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="accordion-button" [ngClass]="{'collapsed': isCollapsedShown('collapseOne')}" (click)="toggleCollapse('collapseOne', mainCategories[0]?.homeVariableMainCategoryId)" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div *ngFor="let subCategory of subCategories" class="accordion-body">
+
+
+                                    <div class="row heading-accordion-bg">
+                                        <div class="col-lg-6 col-md-5 col-sm-12">
+                                            <div class="inner-accordion-recommendation-heading">
+                                                <h5>{{subCategory.title}}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-7 col-sm-12">
+                                            <div class="inner-accordion-recommendation-link">
+                                                <ul>
+                                                    <li [ngStyle]="{'display':(subCategory.homeVariableSubCategoryId==1 || subCategory.homeVariableSubCategoryId==5 || subCategory.homeVariableSubCategoryId==6) ? 'block' : 'none'}">
+                                                        <a href="javascript:;" (click)="openAddSubCategoryItemModal(subCategory.homeVariableSubCategoryId, addItemTitleModalContent)"><i
+                                                                class="fas fa-plus"></i> Add Sub Category</a>
+                                                    </li>
+                                                    <li><a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubTitleModalContent, 'T')"><i
+                                                                class="fas fa-edit"></i> Edit Title</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="subCategory.homeVariableSubCategoryId==1 || subCategory.homeVariableSubCategoryId==5 || subCategory.homeVariableSubCategoryId==6 || subCategory.homeVariableSubCategoryId==7">
+                                        <div *ngFor="let item of subCategory.homeVariableSubCategoryListItems" class="row inner-accordion-bg">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-heading">
+                                                    <p>{{item.title}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-link">
+                                                    <ul>
+                                                        <li><a href="javascript:;" (click)="openEditTitleModal(2,item.homeVariableSubCategoryRefId, item.homeVariableSubCategoryListItemId, editItemTitleModalContent, 'T')"><i
+                                                                    class="fas fa-edit"></i> Edit Title</a></li>
+                                                        <li><a href="javascript:;" (click)="openDeleteSubItemModal(item.homeVariableSubCategoryListItemId, item.homeVariableSubCategoryRefId, deleteSubItemAlertModel)"><i
+                                                                    class="fas fa-trash-alt"></i> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-heading">
+                                            <div class="recommendation-img-dev"><img *ngIf="mainCategories?.[1]?.iconName" src="assets/img/{{mainCategories?.[1]?.iconName}}"></div>
+                                            <h5>{{mainCategories[1]?.title}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-link">
+                                            <ul>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories?.[1]?.homeVariableMainCategoryId, 0, editIconModalContent, 'I')"><i
+                                                            class="fas fa-edit"></i> Edit Icon</a></li>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories?.[1]?.homeVariableMainCategoryId, 0, editTitleModalContent, 'T')"><i
+                                                            class="fas fa-edit"></i> Edit Title</a></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <button class="accordion-button" [ngClass]="{'collapsed': isCollapsedShown('collapseTwo')}" (click)="toggleCollapse('collapseTwo', mainCategories[1]?.homeVariableMainCategoryId)" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                                    aria-controls="collapseTwo">
+
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div *ngFor="let subCategory of subCategories" class="accordion-body">
+
+
+                                    <div class="row heading-accordion-bg">
+                                        <div class="col-lg-6 col-md-5 col-sm-12">
+                                            <div class="inner-accordion-recommendation-heading">
+                                                <h5>{{subCategory.title}}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-7 col-sm-12">
+                                            <div class="inner-accordion-recommendation-link">
+                                                <ul>
+                                                    <li [ngStyle]="{'display':(subCategory.homeVariableSubCategoryId==8) ? 'block' : 'none'}">
+                                                        <a href="javascript:;" (click)="openAddSubCategoryItemModal(subCategory.homeVariableSubCategoryId, addItemTitleModalContent)"><i
+                                                                class="fas fa-plus"></i> Add Sub Category</a>
+                                                    </li>
+                                                    <li><a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubTitleModalContent, 'T')"><i
+                                                                class="fas fa-edit"></i> Edit Title</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="subCategory.homeVariableSubCategoryId==8">
+                                        <div *ngFor="let item of subCategory.homeVariableSubCategoryListItems" class="row inner-accordion-bg">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-heading">
+                                                    <p>{{item.title}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-link">
+                                                    <ul>
+                                                        <li><a href="javascript:;" (click)="openEditTitleModal(2,item.homeVariableSubCategoryRefId, item.homeVariableSubCategoryListItemId, editItemTitleModalContent, 'T')"><i
+                                                                    class="fas fa-edit"></i> Edit Title</a></li>
+                                                        <li><a href="javascript:;" (click)="openDeleteSubItemModal(item.homeVariableSubCategoryListItemId, item.homeVariableSubCategoryRefId, deleteSubItemAlertModel)"><i
+                                                                    class="fas fa-trash-alt"></i> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-heading">
+                                            <div class="recommendation-img-dev"><img *ngIf="mainCategories?.[2]?.iconName" src="assets/img/{{mainCategories?.[2]?.iconName}}"></div>
+                                            <h5>{{mainCategories[2]?.title}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-link">
+                                            <ul>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[2]?.homeVariableMainCategoryId, 0, editIconModalContent, 'I')"><i
+                                                            class="fas fa-edit"></i> Edit Icon</a></li>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[2]?.homeVariableMainCategoryId, 0, editTitleModalContent, 'T')"><i
+                                                            class="fas fa-edit"></i> Edit Title</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <button class="accordion-button" [ngClass]="{'collapsed': isCollapsedShown('collapseThree')}" (click)="toggleCollapse('collapseThree', mainCategories[2]?.homeVariableMainCategoryId)" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                    aria-expanded="false" aria-controls="collapseThree">
+
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                <div *ngFor="let subCategory of subCategories" class="accordion-body">
+
+
+                                    <div class="row heading-accordion-bg">
+                                        <div class="col-lg-6 col-md-5 col-sm-12">
+                                            <div class="inner-accordion-recommendation-heading">
+                                                <h5>{{subCategory.title}}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-7 col-sm-12">
+                                            <div class="inner-accordion-recommendation-link">
+                                                <ul>
+                                                    <li [ngStyle]="{'display':(subCategory.homeVariableSubCategoryId==12 || subCategory.homeVariableSubCategoryId==14) ? 'block' : 'none'}">
+                                                        <a href="javascript:;" (click)="openAddSubCategoryItemModal(subCategory.homeVariableSubCategoryId, addItemTitleModalContent)"><i
+                                                                class="fas fa-plus"></i> Add Sub Category</a>
+                                                    </li>
+                                                    <li><a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubTitleModalContent, 'T')"><i
+                                                                class="fas fa-edit"></i> Edit Title</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <ng-container  *ngIf="subCategory.homeVariableSubCategoryId==11">
+                                        <div class="row inner-accordion-bg">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-heading">
+                                                    <p>Set Temperature</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-link">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="form-group font-weight-bold">
+                                                                {{subCategory?.homeVariableSubCategoryRangeItems?.[0].minRange}} F
+                                                            </div>
+                                                            <li>
+                                                                <li>
+                                                                    <p>to</p>
+                                                                    <li>
+                                                                        <li>
+                                                                            <div class="form-group font-weight-bold">
+                                                                                {{subCategory?.homeVariableSubCategoryRangeItems?.[0].maxRange}} F
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="form-group">
+                                                                                <a href="javascript:;" (click)="openEditTitleModal(2,subCategory?.homeVariableSubCategoryRangeItems?.[0].homeVariableSubCategoryRefId, subCategory?.homeVariableSubCategoryRangeItems?.[0].homeVariableSubCategoryListRangeItemId, editTempratureSettingModalContent, 'T')"><i class="fas fa-edit"></i> Edit temperature</a>
+                                                                            </div>
+                                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container> -->
+
+                                    <ng-container *ngIf="subCategory.homeVariableSubCategoryId==12 || subCategory.homeVariableSubCategoryId==14">
+                                        <div *ngFor="let item of subCategory.homeVariableSubCategoryListItems" class="row inner-accordion-bg">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-heading">
+                                                    <p>{{item.title}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-link">
+                                                    <ul>
+                                                        <li><a href="javascript:;" (click)="openEditTitleModal(2,item.homeVariableSubCategoryRefId, item.homeVariableSubCategoryListItemId, editItemTitleModalContent, 'T')"><i
+                                                                    class="fas fa-edit"></i> Edit Title</a></li>
+                                                        <li><a href="javascript:;" (click)="openDeleteSubItemModal(item.homeVariableSubCategoryListItemId, item.homeVariableSubCategoryRefId, deleteSubItemAlertModel)"><i
+                                                                    class="fas fa-trash-alt"></i> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-heading">
+                                            <div class="recommendation-img-dev"><img *ngIf="mainCategories?.[3]?.iconName" src="assets/img/{{mainCategories?.[3]?.iconName}}"></div>
+                                            <h5>{{mainCategories[3]?.title}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-link">
+                                            <ul>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[3]?.homeVariableMainCategoryId, 0, editIconModalContent, 'I')"><i
+                                                            class="fas fa-edit"></i> Edit Icon</a></li>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[3]?.homeVariableMainCategoryId, 0, editTitleModalContent, 'T')"><i
+                                                            class="fas fa-edit"></i> Edit Title</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <button class="accordion-button" [ngClass]="{'collapsed': isCollapsedShown('collapseFour')}" (click)="toggleCollapse('collapseFour', mainCategories[3]?.homeVariableMainCategoryId)" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                    aria-expanded="false" aria-controls="collapseFour">
+
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                <div *ngFor="let subCategory of subCategories" class="accordion-body">
+
+
+                                    <div class="row heading-accordion-bg">
+                                        <div class="col-lg-6 col-md-5 col-sm-12">
+                                            <div class="inner-accordion-recommendation-heading">
+                                                <h5>{{subCategory.title}}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-7 col-sm-12">
+                                            <div class="inner-accordion-recommendation-link">
+                                                <ul>
+                                                    <li [ngStyle]="{'display':(subCategory.homeVariableSubCategoryId==15 || subCategory.homeVariableSubCategoryId==17) ? 'block' : 'none'}">
+                                                        <a href="javascript:;" (click)="openAddSubCategoryItemModal(subCategory.homeVariableSubCategoryId, addItemTitleModalContent)"><i
+                                                                class="fas fa-plus"></i> Add Sub Category</a>
+                                                    </li>
+                                                    <li><a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubTitleModalContent, 'T')"><i
+                                                                class="fas fa-edit"></i> Edit Title</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="subCategory.homeVariableSubCategoryId==15 || subCategory.homeVariableSubCategoryId==17">
+                                        <div *ngFor="let item of subCategory.homeVariableSubCategoryListItems" class="row inner-accordion-bg">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-heading">
+                                                    <p>{{item.title}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-link">
+                                                    <ul>
+                                                        <li><a href="javascript:;" (click)="openEditTitleModal(2,item.homeVariableSubCategoryRefId, item.homeVariableSubCategoryListItemId, editItemTitleModalContent, 'T')"><i
+                                                                    class="fas fa-edit"></i> Edit Title</a></li>
+                                                        <li><a href="javascript:;" (click)="openDeleteSubItemModal(item.homeVariableSubCategoryListItemId, item.homeVariableSubCategoryRefId, deleteSubItemAlertModel)"><i
+                                                                    class="fas fa-trash-alt"></i> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-heading">
+                                            <div class="recommendation-img-dev"><img *ngIf="mainCategories?.[4]?.iconName" src="assets/img/{{mainCategories?.[4]?.iconName}}"></div>
+                                            <h5>{{mainCategories[4]?.title}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-link">
+                                            <ul>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[4]?.homeVariableMainCategoryId, 0, editIconModalContent, 'I')"><i
+                                                            class="fas fa-edit"></i> Edit Icon</a></li>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[4]?.homeVariableMainCategoryId, 0, editTitleModalContent, 'T')"><i
+                                                            class="fas fa-edit"></i> Edit Title</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <button class="accordion-button" [ngClass]="{'collapsed': isCollapsedShown('collapseFive')}" (click)="toggleCollapse('collapseFive', mainCategories[4]?.homeVariableMainCategoryId)" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive"
+                                    aria-expanded="false" aria-controls="collapseFive">
+
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div *ngFor="let subCategory of subCategories" class="accordion-body">
+
+
+                                    <div class="row heading-accordion-bg">
+                                        <div class="col-lg-6 col-md-5 col-sm-12">
+                                            <div class="inner-accordion-recommendation-heading">
+                                                <img *ngIf="subCategory?.iconName" src="assets/img/{{subCategory?.iconName}}">
+                                                <h5>{{subCategory.title}}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-7 col-sm-12">
+                                            <div class="inner-accordion-recommendation-link">
+                                                <ul>
+                                                    <li [ngStyle]="{'display':(subCategory.homeVariableSubCategoryId==21 || subCategory.homeVariableSubCategoryId==23 || subCategory.homeVariableSubCategoryId==28) ? 'block' : 'none'}">
+                                                        <a href="javascript:;" (click)="openAddSubCategoryItemModal(subCategory.homeVariableSubCategoryId, addItemTitleModalContent)"><i
+                                                                class="fas fa-plus"></i> Add Sub Category</a>
+                                                    </li>
+                                                    <li><a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubTitleModalContent, 'T')"><i
+                                                                class="fas fa-edit"></i> Edit Title</a>
+                                                    </li>
+                                                    <li *ngIf="subCategory.homeVariableSubCategoryId==20
+                                                        || subCategory.homeVariableSubCategoryId==22
+                                                        || subCategory.homeVariableSubCategoryId==24
+                                                        || subCategory.homeVariableSubCategoryId==25
+                                                        || subCategory.homeVariableSubCategoryId==26
+                                                        || subCategory.homeVariableSubCategoryId==27
+                                                        || subCategory.homeVariableSubCategoryId==29">
+                                                        <a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubItemIconModalContent, 'I')"><i
+                                                                class="fas fa-edit"></i> Edit Icon</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="subCategory.homeVariableSubCategoryId==21 || subCategory.homeVariableSubCategoryId==23 || subCategory.homeVariableSubCategoryId==28">
+                                        <div *ngFor="let item of subCategory.homeVariableSubCategoryListItems" class="row inner-accordion-bg">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-heading">
+                                                    <p>{{item.title}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-link">
+                                                    <ul>
+                                                        <li><a href="javascript:;" (click)="openEditTitleModal(2,item.homeVariableSubCategoryRefId, item.homeVariableSubCategoryListItemId, editItemTitleModalContent, 'T')"><i
+                                                                    class="fas fa-edit"></i> Edit Title</a></li>
+                                                        <li><a href="javascript:;" (click)="openDeleteSubItemModal(item.homeVariableSubCategoryListItemId, item.homeVariableSubCategoryRefId, deleteSubItemAlertModel)"><i
+                                                                    class="fas fa-trash-alt"></i> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSix">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-heading">
+                                            <div class="recommendation-img-dev"><img *ngIf="mainCategories?.[5]?.iconName" src="assets/img/{{mainCategories?.[5]?.iconName}}"></div>
+                                            <h5>{{mainCategories[5]?.title}}</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="accordion-recommendation-link">
+                                            <ul>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[5]?.homeVariableMainCategoryId, 0, editIconModalContent, 'I')"><i
+                                                            class="fas fa-edit"></i> Edit Icon</a></li>
+                                                <li><a href="javascript:;" (click)="openEditTitleModal(0,mainCategories[5]?.homeVariableMainCategoryId, 0, editTitleModalContent, 'T')"><i
+                                                            class="fas fa-edit"></i> Edit Title</a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <button class="accordion-button" [ngClass]="{'collapsed': isCollapsedShown('collapseSix')}" (click)="toggleCollapse('collapseSix', mainCategories[5]?.homeVariableMainCategoryId)" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false"
+                                    aria-controls="collapseSix">
+                                </button>
+                            </h2>
+                            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                                <div *ngFor="let subCategory of subCategories" class="accordion-body">
+
+
+                                    <div class="row heading-accordion-bg">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="inner-accordion-recommendation-heading">
+                                                <img *ngIf="subCategory?.iconName" src="assets/img/{{subCategory?.iconName}}">
+                                                <h5>{{subCategory.title}}</h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="inner-accordion-recommendation-link">
+                                                <ul>
+                                                    <li [ngStyle]="{'display':(subCategory.homeVariableSubCategoryId==31 || subCategory.homeVariableSubCategoryId==33 || subCategory.homeVariableSubCategoryId==35 || subCategory.homeVariableSubCategoryId==41) ? 'block' : 'none'}">
+                                                        <a href="javascript:;" (click)="openAddSubCategoryItemModal(subCategory.homeVariableSubCategoryId, addItemTitleModalContent)"><i
+                                                                class="fas fa-plus"></i> Add Sub Category</a>
+                                                    </li>
+                                                    <li><a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubTitleModalContent, 'T')"><i
+                                                                class="fas fa-edit"></i> Edit Title</a></li>
+                                                    <li *ngIf="subCategory.homeVariableSubCategoryId==30 
+                                                    || subCategory.homeVariableSubCategoryId==32 
+                                                    || subCategory.homeVariableSubCategoryId==34 
+                                                    || subCategory.homeVariableSubCategoryId==36
+                                                    || subCategory.homeVariableSubCategoryId==37
+                                                    || subCategory.homeVariableSubCategoryId==39
+                                                    || subCategory.homeVariableSubCategoryId==40
+                                                    || subCategory.homeVariableSubCategoryId==44">
+                                                        <a href="javascript:;" (click)="openEditTitleModal(1,subCategory.homeVariableSubCategoryId,0 , editSubItemIconModalContent, 'I')"><i
+                                                                class="fas fa-edit"></i> Edit Icon</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-container *ngIf="subCategory.homeVariableSubCategoryId==31 || subCategory.homeVariableSubCategoryId==33 || subCategory.homeVariableSubCategoryId==35 || subCategory.homeVariableSubCategoryId==41">
+                                        <div *ngFor="let item of subCategory.homeVariableSubCategoryListItems" class="row inner-accordion-bg">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-heading">
+                                                    <p>{{item.title}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="inner-accordion-recommendation-link">
+                                                    <ul>
+                                                        <li><a href="javascript:;" (click)="openEditTitleModal(2,item.homeVariableSubCategoryRefId, item.homeVariableSubCategoryListItemId, editItemTitleModalContent, 'T')"><i
+                                                                    class="fas fa-edit"></i> Edit Title</a></li>
+                                                        <li><a href="javascript:;" (click)="openDeleteSubItemModal(item.homeVariableSubCategoryListItemId, item.homeVariableSubCategoryRefId, deleteSubItemAlertModel)"><i
+                                                                    class="fas fa-trash-alt"></i> Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="add-footer-link-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #editTitleModalContent let-modal>
+                <form [formGroup]="inputFormMainCategory" (ngSubmit)="onSubmitMainCategory()">
+                    <div class="modal-header">
+                        <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4>Edit Category Title</h4>
+                        </div>
+                        <div class="add-footer-modal-form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">New Category Title *</label>
+                                        <input type="text" class="form-control facebook-input" placeholder="Type Category Title" id="address" formControlName="title">
+                                        <div *ngIf="formControlsMainCategory.title.invalid && (formControlsMainCategory.title.dirty || formControlsMainCategory.title.touched)" class="text-danger">
+                                            <div *ngIf="formControlsMainCategory.title.errors?.required">
+                                                Category Title is required.
+                                            </div>
+                                            <div *ngIf="formControlsMainCategory.title.errors?.pattern">
+                                                Category Title is invalid.
+                                            </div>
+                                            <div *ngIf="formControlsMainCategory.title.errors?.maxlength">
+                                                Category Title can be max 80 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="closeAllModals()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" [disabled]="formControlsMainCategory.title.invalid" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="create-new-owner-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #editIconModalContent let-modal>
+                <form [formGroup]="inputFormMainCategory" (ngSubmit)="onSubmitMainCategory()">
+                    <div class="modal-header">
+                        <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4>Edit Icon Image</h4>
+                        </div>
+                        <div class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- <label for="email">New Category Icon *</label> 
+                                    <input type="hidden" class="form-control facebook-input"
+                                        placeholder="Type Category Title" id="address" formControlName="iconName">
+                                     <div *ngIf="formControlsMainCategory.iconName.invalid && (formControlsMainCategory.iconName.dirty || formControlsMainCategory.iconName.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="formControlsMainCategory.iconName.errors?.required">
+                                            Category Icon is required.
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <ul>
+                                            <li *ngFor="let icon of icons">
+                                                <a (click)="setCategoryIcon(0, icon.IconFile)" href="javascript:;"> <img
+                                                        src="assets/img/home-variable-icons/{{icon.IconFile}}"
+                                                        >
+                                                    <span>{{icon.iconName}}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div> -->
+
+                                    <div class="selects-icon-image">
+                                        <dl class="dropdown">
+                                            <dt>
+                                                <a href="javascript:;" (click)="toggleIconGallery()">
+                                                    <span class="hida">
+                                                        {{selectedIconName}}
+                                                        <input type="hidden" class="form-control facebook-input"
+                                                            placeholder="Type Category Title" id="address"
+                                                            formControlName="iconName">
+
+
+                                                    </span>
+                                                    <p class="multiSel"></p>
+                                                </a>
+                                            </dt>
+
+                                            <a href="javascript:;" class="drop-icon"><i
+                                                    class="fas fa-angle-down"></i></a>
+                                            <div *ngIf="formControlsMainCategory.iconName.invalid && (formControlsMainCategory.iconName.dirty || formControlsMainCategory.iconName.touched)" class="text-danger">
+                                                <div *ngIf="formControlsMainCategory.iconName.errors?.required">
+                                                    Category Icon is required.
+                                                </div>
+                                            </div>
+                                            <dd>
+                                                <div class="mutliSelect">
+                                                    <ul id="iconGallery">
+                                                        <li *ngFor="let icon of icons">
+                                                            <a (click)="setCategoryIcon(0, icon.IconFile)" href="javascript:;">
+                                                                <img *ngIf="icon?.IconFile" src="assets/img/home-variable-icons-gallary/{{icon?.IconFile}}">
+                                                                <!-- <span>{{icon.iconName}}</span> -->
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </dd>
+
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" (click)="closeAllModals()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="add-footer-link-modal">
+        <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- <div class="modal-content"> -->
+                <ng-template #editSubTitleModalContent let-modal>
+                    <form [formGroup]="inputFormSubCategory" (ngSubmit)="onSubmitSubCategory()">
+                        <div class="modal-header">
+                            <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="add-footer-modal-heading">
+                                <h4>Edit Sub Category Title</h4>
+                            </div>
+                            <div class="add-footer-modal-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">New Sub Category Title *</label>
+                                            <input type="text" class="form-control facebook-input" placeholder="Type Sub Category Title" id="address" formControlName="title">
+                                            <div *ngIf="formControlsSubCategory.title.invalid && (formControlsSubCategory.title.dirty || formControlsSubCategory.title.touched)" class="text-danger">
+                                                <div *ngIf="formControlsSubCategory.title.errors?.required">
+                                                    Sub Category Title is required.
+                                                </div>
+                                                <div *ngIf="formControlsSubCategory.title.errors?.pattern">
+                                                    Invalid Sub Category Title.
+                                                </div>
+                                                <div *ngIf="formControlsSubCategory.title.errors?.maxlength">
+                                                    Sub Category Title can be max 80 characters long.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  col-md-6   -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" (click)="closeAllModals()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" [disabled]="formControlsSubCategory.title.invalid" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </ng-template>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="add-footer-link-modal">
+        <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- <div class="modal-content"> -->
+                <ng-template #editItemTitleModalContent let-modal>
+                    <form [formGroup]="inputFormSubCategoryItem" (ngSubmit)="onSubmitSubCategoryItem()">
+                        <div class="modal-header">
+                            <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="add-footer-modal-heading">
+                                <h4>Edit Sub Category Title</h4>
+                            </div>
+                            <div class="add-footer-modal-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">New Sub Category Item Title *</label>
+                                            <input type="text" class="form-control facebook-input" placeholder="Type Sub Category Title" id="address" formControlName="title">
+                                            <div *ngIf="formControlsSubCategoryItem.title.invalid && (formControlsSubCategoryItem.title.dirty || formControlsSubCategoryItem.title.touched)" class="text-danger">
+                                                <div *ngIf="formControlsSubCategoryItem.title.errors?.required">
+                                                    Title is required.
+                                                </div>
+                                                <div *ngIf="formControlsSubCategoryItem.title.errors?.pattern">
+                                                    Invalid Title.
+                                                </div>
+                                                <div *ngIf="formControlsSubCategoryItem.title.errors?.maxlength">
+                                                    Title can be max 80 characters long.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  col-md-6   -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" (click)="closeAllModals()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" [disabled]="formControlsSubCategoryItem.title.invalid" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </ng-template>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+
+
+    <ng-template #deleteSubItemAlertModel let-modal>
+        <div class="skip-recommendations">
+            <div class="modal-header">
+                <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+                <p>Are you sure you want to Delete this item?</p>
+                <p class="notification-text-account">This cannot be undone</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeAllModals()" data-bs-dismiss="modal">No</button>
+                <button type="button" (click)="onDeleteItemModelYesClick()" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </ng-template>
+
+
+
+    <!-- Modal -->
+    <div class="add-footer-link-modal">
+        <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- <div class="modal-content"> -->
+                <ng-template #addItemTitleModalContent let-modal>
+                    <form [formGroup]="inputFormSubCategoryItem" (ngSubmit)="onSubmitSubCategoryItem()">
+                        <div class="modal-header">
+                            <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="add-footer-modal-heading">
+                                <h4>Add New Sub Category Title</h4>
+                            </div>
+                            <div class="add-footer-modal-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">New Sub Category Item Title *</label>
+                                            <input type="text" class="form-control facebook-input" placeholder="Type Sub Category Title" id="address" formControlName="title">
+                                            <div *ngIf="formControlsSubCategoryItem.title.invalid && (formControlsSubCategoryItem.title.dirty || formControlsSubCategoryItem.title.touched)" class="text-danger">
+                                                <div *ngIf="formControlsSubCategoryItem.title.errors?.required">
+                                                    Title is required.
+                                                </div>
+                                                <div *ngIf="formControlsSubCategoryItem.title.errors?.pattern">
+                                                    Invalid Title.
+                                                </div>
+                                                <div *ngIf="formControlsSubCategoryItem.title.errors?.maxlength">
+                                                    Title can be max 80 characters long.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  col-md-6   -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" (click)="closeAllModals()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" [disabled]="formControlsSubCategoryItem.title.invalid" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                </ng-template>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="add-footer-link-modal">
+        <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- <div class="modal-content"> -->
+                <ng-template #editSubItemIconModalContent let-modal>
+                    <form [formGroup]="inputFormSubCategory" (ngSubmit)="onSubmitSubCategory()">
+                        <div class="modal-header">
+                            <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="add-footer-modal-heading">
+                                <h4>Edit Sub Category Icon</h4>
+                            </div>
+                            <div class="add-footer-modal-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="selects-icon-image">
+                                            <dl class="dropdown">
+                                                <dt>
+                                                    <a href="javascript:;" (click)="toggleIconGallery()">
+                                                        <span class="hida">
+                                                            {{selectedIconName}}
+                                                            <input type="hidden" class="form-control facebook-input" placeholder="Type Category Title" id="address" formControlName="iconName">
+                                                        </span>
+                                                        <p class="multiSel"></p>
+                                                    </a>
+                                                </dt>
+
+                                                <a href="javascript:;" class="drop-icon"><i
+                                                        class="fas fa-angle-down"></i></a>
+                                                <div *ngIf="formControlsSubCategory.iconName.invalid && (formControlsSubCategory.iconName.dirty || formControlsSubCategory.iconName.touched)" class="text-danger">
+                                                    <div *ngIf="formControlsSubCategory.iconName.errors?.required">
+                                                        Icon is required.
+                                                    </div>
+                                                </div>
+                                                <dd>
+                                                    <div class="mutliSelect">
+                                                        <ul id="iconGallery">
+                                                            <li *ngFor="let icon of icons">
+                                                                <a (click)="setCategoryIcon(1, icon.IconFile)" href="javascript:;"> <img *ngIf="icon?.IconFile" src="assets/img/home-variable-icons-gallary/{{icon?.IconFile}}">
+                                                                    <!-- <span>{{icon.iconName}}</span> -->
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </dd>
+
+                                            </dl>
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                    <!--  col-md-6   -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" (click)="closeAllModals()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </ng-template>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Modal -->
+    <div class="add-footer-link-modal">
+        <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- <div class="modal-content"> -->
+                <ng-template #editTempratureSettingModalContent let-modal>
+                    <form [formGroup]="inputFormSubCategoryRangeItem" (ngSubmit)="onSubmitSubCategoryRangeItem()">
+                        <div class="modal-header">
+                            <button type="button" (click)="closeAllModals()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="add-footer-modal-heading">
+                                <h4>Edit Temperature Setting</h4>
+                            </div>
+                            <div class="add-footer-modal-form">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="email">Minimum Temperature *</label>
+                                            <input type="text" class="form-control facebook-input" placeholder="Type Sub Category Title" id="minRange" formControlName="minRange">
+                                            <div *ngIf="formControlsSubCategoryRangeItem.minRange.invalid && (formControlsSubCategoryRangeItem.minRange.dirty || formControlsSubCategoryRangeItem.minRange.touched)" class="text-danger">
+                                                <div *ngIf="formControlsSubCategoryRangeItem.minRange.errors?.required">
+                                                    Minimum Temperature is required.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="maxRange">Maximum Temperature *</label>
+                                            <input type="text" class="form-control facebook-input" placeholder="Type Sub Category Title" id="maxRange" formControlName="maxRange">
+                                            <div *ngIf="formControlsSubCategoryRangeItem.maxRange.invalid && (formControlsSubCategoryRangeItem.maxRange.dirty || formControlsSubCategoryRangeItem.maxRange.touched)" class="text-danger">
+                                                <div *ngIf="formControlsSubCategoryRangeItem.maxRange.errors?.required">
+                                                    Maximum Temperature is required.
+                                                </div>
+                                            </div>
+                                            <div class="text-danger" *ngIf="formControlsSubCategoryRangeItem.maxRange.value > 0 && formControlsSubCategoryRangeItem.minRange.value >= formControlsSubCategoryRangeItem.maxRange.value && ((formControlsSubCategoryRangeItem.maxRange.dirty || formControlsSubCategoryRangeItem.maxRange.touched))">
+                                                Invalid Range.!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  col-md-6   -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" (click)="closeAllModals()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </ng-template>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>

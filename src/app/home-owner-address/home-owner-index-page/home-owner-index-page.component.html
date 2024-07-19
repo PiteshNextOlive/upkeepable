@@ -1,0 +1,1257 @@
+<!--<button (click)="toTop()">click me</button>-->
+ 
+
+<div class="skip-recommendations">
+    <!-- [ngStyle]="{'display': isKeepDialogClosed ? 'none' : 'block' }" -->
+    <div [ngStyle]="{'display': isKeepDialogClosed ? 'none' : 'block' }" class="modal welcome-modal" [ngClass]="{
+        'welcome-block': !isKeepDialogClosed,
+        '': isKeepDialogClosed
+      }" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-backdrop="static"
+        data-keyboard="false" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" (click)="closeDialog()" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="assets/img/home-modal-img.svg" class="iZoticus-logo" alt="modal-home-icon">
+                    <h5>Welcome to Upkeepable!</h5>
+                    <p>Don't forget to finish filling out your home profile to get the best upkeep recommendations</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="closeDialog()" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Skip</button>
+                    <button type="button" (click)="onClickEditHomeDetail()" class="btn btn-primary">continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Home Image Section-->
+<section id="home-img-section">
+    <div class="container-fluids">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="home-img-profile" *ngIf="pageAdditionalInfo?.homeProfileImageBase64 != null">
+                    <input type="file" accept="image/png, image/jpeg" id="homePhotoBrowserInput"
+                        (change)="onPhotoBrowserInputChange($event,'homePhotoImgElement', '4.52')"
+                        style="display: none;">
+                    <a (click)="passClickToFileInput('homePhotoBrowserInput')"
+                        onclick="homePhotoBrowserInput.value = null" class="edit-home-img-icon"><img
+                            src="assets/img/edit-home-img.svg" class="iZoticus-logo" alt="edit-home-img"></a>
+                    <img class="img-fluid" id="homePhotoImgElement" style="height: 317px" [src]="defaultHomePhoto"
+                        alt="home-img">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- Address Bar Section-->
+<section id="addressbar-section" style="margin-top:0px;cursor:pointer;" class="wow fadeInDown" data-wow-delay=".25s">
+    <div class="clickFunction" (click)="openProfileManagerPage()"></div>
+    <!-- <div class="home-img-profile ho-remove-pro-img" *ngIf="pageAdditionalInfo?.homeProfileImageBase64 == null">
+        <input type="file" accept="image/png, image/jpeg" id="homePhotoBrowserInput" (change)="onPhotoBrowserInputChange($event,'homePhotoImgElement', '4.52')" style="display: none;">
+        <a (click)="passClickToFileInput('homePhotoBrowserInput')" onclick="homePhotoBrowserInput.value = null" class="edit-home-img-icon"><img src="assets/img/edit-home-img.svg" class="iZoticus-logo" alt="edit-home-img"></a>
+         </div> -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul>
+                    <li>
+                        <h2 style="margin:0;color:#fff;">{{homeOwnerName}}'s Home</h2>
+                    </li>
+                    <li class="add-bar-space">
+                        <h5>|</h5>
+                    </li>
+                    <li>
+                        <h5 class="home-add-text-b"><i class="fas fa-map-marker"></i> {{homeFullAddress}}</h5>
+                        <div class="home-img-profile ho-remove-pro-img"
+                            *ngIf="pageAdditionalInfo?.homeProfileImageBase64 == null">
+                            <input type="file" accept="image/png, image/jpeg" id="homePhotoBrowserInput"
+                                (change)="onPhotoBrowserInputChange($event,'homePhotoImgElement', '4.52')"
+                                style="display: none;">
+                            <a (click)="passClickToFileInput('homePhotoBrowserInput')"
+                                onclick="homePhotoBrowserInput.value = null" class="edit-home-img-icon"><img
+                                    src="assets/img/edit-home-img.svg" class="iZoticus-logo" alt="edit-home-img"></a>
+                        </div>
+                    </li>
+                    <!-- <li>
+                        <h5><a href="javascript:;"><i style="font-size: 24px;margin: 5px 0 0;" class="fas fa-edit"></i></a>
+                        </h5>
+                    </li> -->
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Complete Notification Section-->
+<section id="profile-complete-notification-section" *ngIf="!isProfileCompleted" class="wow fadeInUp"
+    data-wow-delay=".95s">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-end">
+                <a (click)="onClickEditHomeDetail()" style="cursor:pointer;" class="skip-icon"><img
+                        src="assets/img/skip-icon.svg" alt="skip-icon"></a>
+            </div>
+            <!-- <div class="col-xl-8 col-lg-9 col-md-12"> -->
+            <div class="">
+                <div class="profile-complete-box">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <p>Complete your home profile to optimize maintenance recommendations.</p>
+                    <!-- <a (click)="onClickEditHomeDetail()" style="cursor:pointer;">Click Here </a> -->
+                    <a (click)="onClickEditHomeDetail()" style="cursor:pointer;">Update Home Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- REA Message Section-->
+<section id="rea-message-section" *ngIf="pageAdditionalInfo?.realEstateAgentMessageInfo"
+    class="wow slideInLeft animated" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="rea-message-box">
+
+                            <div class="rea-agent-img">
+
+                                <img *ngIf="pageAdditionalInfo?.realEstateAgentProfileImageBase64"
+                                    [src]="pageAdditionalInfo?.realEstateAgentProfileImageBase64" alt="rea-profile-img">
+                                <img *ngIf="pageAdditionalInfo?.realEstateAgentProfileImageBase64==null"
+                                    [src]="defaultProfilePhoto" alt="rea-profile-img">
+                            </div>
+
+                            <div class="rea-message-text">
+                                <h5>A message from
+                                    <span>{{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.firstName}}
+                                        {{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.lastName}}</span>
+                                </h5>
+
+
+                                <!-- <p>{{pageAdditionalInfo?.realEstateAgentMessageInfo?.messageText}}
+                                </p> -->
+
+                                <p class="limitedTextSection limited-section-p-popup" [class.showFullText]="show1">
+                                    {{pageAdditionalInfo?.realEstateAgentMessageInfo?.messageText}}</p>
+                                <!-- <a *ngIf="pageAdditionalInfo?.realEstateAgentMessageInfo?.messageText" (click)="show = !show">{{ show ?
+                                    'Show less': 'Show More...' }}</a> -->
+
+                                <!-- -->
+                                <a data-bs-toggle="modal" (click)="open(content)"
+                                    data-bs-target="#exampleModalMessage">Read More <i
+                                        class="fa fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="tabs-section" class="home-tab-nav">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/HomeAddress/Dashboard']"
+                            [ngClass]="{'active': tabCode === 1}" data-bs-toggle="tab" (click)="setTabCode(1)"
+                            href="javascript:;">MY RECOMMENDATIONS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/HomeAddress/Dashboard']"
+                            [ngClass]="{'active': tabCode === 2}" data-bs-toggle="tab" (click)="setTabCode(2)"
+                            href="javascript:;">History</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 1}" *ngIf="tabCode==1">
+            <!-- Recommendations section-->
+            <section id="recommendations-section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-11 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="choose-date-rec">
+                                        <a (click)="showNextMonthRecomendations(caroRecomendations)">
+                                            <i [ngStyle]="{'background-color': isLastRecommendationMonth ? '#D6DBDF' : '#0061C1'}"
+                                                class="fa fa-angle-left"></i>
+                                        </a>
+                                        <h5>{{currentRecommedationMonthName}} {{currentRecommedationYear}}</h5>
+                                        <a (click)="showPreviousMonthRecomendations(caroRecomendations)">
+                                            <i [ngStyle]="{'background-color': isFirstRecommendationMonth ? '#D6DBDF' : '#0061C1'}"
+                                                class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="recommendations-heading-text">
+                                        <h4 *ngIf="totalRecommendations>1">You have
+                                            <span>{{totalRecommendations}}</span> upkeep recommendations
+                                        </h4>
+                                        <h4 *ngIf="totalRecommendations<1">You have no upkeep recommendation right now
+                                        </h4>
+                                        <!-- <ng-template #zeroRecommendation>
+                                                <h4>You have no upkeep recommendation right now</h4>
+                                            </ng-template> -->
+                                        <h4 *ngIf="totalRecommendations==1">You have
+                                            <span>{{totalRecommendations}}</span> upkeep recommendation
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row"> -->
+                            <ngb-carousel #caroRecomendations [interval]="false" data-pause="true"
+                                (slide)="onSlide($event)">
+                                <ng-template ngbSlide
+                                    *ngFor="let homeAddressRecommendationDetail of pageAdditionalInfo?.homeAddressRecommendationDetailList; let homeRecomendationListIndex = index"
+                                    id="slide_{{homeRecomendationListIndex}}">
+                                    <div class="row justify-content-center"
+                                        *ngIf="homeAddressRecommendationDetail?.recommendations?.length>0; else noRecommendationSec">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 mb-4 wow fadeInUp" data-wow-delay="0.1s"
+                                            *ngFor="let recommendation of homeAddressRecommendationDetail?.recommendations; let recommendationIndex = index">
+                                            <div class="recommendations-box"
+                                                [ngClass]="{'check-swap': recommendation.homeAddressRecommendationStausType==1}"
+                                                (click)="openRecommendationModal(recommendationModalContent, recommendation.homeAddressRecommendationId, homeRecomendationListIndex, recommendationIndex, caroRecomendations)">
+                                                <a class="flip_modal_opener"></a>
+                                                <div [ngStyle]="{'display':(recommendation.homeAddressRecommendationStausType==2) ? 'block' : 'none'}"
+                                                    class="skipped-icon-box">
+                                                    <img src="assets/img/skipped-icon.svg" alt="skipped-icon">
+                                                </div>
+                                                <div class="img-swap">
+                                                    <img *ngIf="recommendation?.homeAddressRecommendationStausType==1"
+                                                        src="assets/img/check-icon.svg" alt="hvac-icon">
+                                                    <img *ngIf="recommendation?.homeAddressRecommendationStausType!=1 && recommendation?.iconFile"
+                                                        src="assets/img/home-variable-icons/{{recommendation.iconFile}}"
+                                                        alt="hvac-icon">
+                                                </div>
+                                                <div class="rec-text-swap">
+                                                    <p>{{recommendation.recommendationTitle}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #noRecommendationSec>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 mb-12 text-center">
+                                                <div class="new-home-row">
+                                                    <img src="assets/img/NoRecommendation.svg" alt="no-recom">
+                                                    <!-- <h4>For a loveier Home</h4>
+                                                    <h6>Our enthusiasm for home equipment never stops</h6> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+
+
+                                </ng-template>
+                            </ngb-carousel>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="historylog-section">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+
+                            <div class="row justify-content-center"
+                                *ngIf="historyLogList?.length>0; else noHistoryLogList">
+                                <div class="col-lg-12">
+                                    <div class="recommendations-heading-text home-reminer-heading">
+                                        <h4>My Home Reminders</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.1s"
+                                    *ngFor="let historyLog of historyLogList; let historyLogIndex = index">
+                                    <div class="recommendations-box"
+                                        [ngClass]="{'no_image': historyLog?.homeOwnerEntryImages[0]?.imageFileBase64 === null}">
+                                        <a href="javascript:;"
+                                            (click)="openAddNewEntryModal(historyLog.homeOwnerEntryId, vistoryLogViewContent, historyLog)"></a>
+                                        <div class="img-swap-history">
+                                            <img src="assets/img/no-img.svg" alt="history-img"
+                                                *ngIf="historyLog?.homeOwnerEntryImages[0]?.imageFileBase64 === null;">
+                                            <img [src]="historyLog?.homeOwnerEntryImages[0]?.imageFileBase64"
+                                                alt="check-icon" *ngIf="historyLog?.homeOwnerEntryImages[0] != null;">
+                                        </div>
+                                        <p>{{historyLog.title}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <ng-template #noHistoryLogList>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 mb-12 text-center">
+                                        <div class="new-home-row">
+                                            <h4>No data yet....</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template> -->
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+        <!-- History Log Tab -->
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 2}" *ngIf="tabCode==2">
+            <!-- History log section-->
+            <section id="history-log-section">
+                <div class="container">
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <div class="home-reminer-history-heading">
+                                <h4>My Home Reminders</h4>
+                                <div class="recently-added-btn-main">
+                                    <a href="javascript:;" (click)="openAddNewEntryModal(0, addNewEntryModalContent)"
+                                        class="btn-primary-small">+ add a new entry</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row justify-content-center">
+
+                        <!-- <div class="col-lg-12"> -->
+                        <div class="col-lg-12">
+                            <!-- <div class="scroll-log" *ngIf="newEntryList?.length>0; else noNewEntryList"> -->
+                            <div class="" *ngIf="newEntryList?.length>0; else noNewEntryList">
+
+                                <div class="row justify-content-center">
+                                    <!-- <div class="col-lg-6 col-md-12 col-sm-12" *ngFor="let newEntry of newEntryList; let newEntryIndex = index"> -->
+                                    <div class="col-lg-8 "
+                                        *ngFor="let newEntry of newEntryList; let newEntryIndex = index">
+                                        <div class="home-reminders-history-box wow fadeInUp"  *ngIf="newEntry.recommendationRefId === 0" data-wow-delay="0.1s">
+                                            <div class="home-reminders-history-box-edit">
+                                                <a href="javascript:;" *ngIf="newEntry.recommendationRefId === 0"
+                                                    (click)="openAddNewEntryModal(newEntry.homeOwnerEntryId, addNewEntryModalContent, newEntry)"><i
+                                                        class="fas fa-edit"></i></a>
+                                                <!-- <a href="javascript:;" class="flip_modal_opener"
+                                                    *ngIf="newEntry.recommendationRefId !== 0"
+                                                    (click)="openAddNewNotesHistoryModal(newEntry.homeOwnerEntryId,newEntry.recommendationRefId,1)"><i
+                                                        class="fas fa-edit"></i></a> -->
+                                            </div>
+
+                                            <div class="variables-article-modal-text">
+                                                <h4 *ngIf="newEntry.title != 'null'">{{newEntry.title}}</h4>
+                                                <p>{{newEntry.descriptionText}}</p>
+                                            </div>
+                                            <div class="ho-home-reminder-img">
+                                                <ul>
+                                                    <li
+                                                        *ngFor="let img of newEntry?.homeOwnerEntryImages; let imgIndex = index">
+                                                        <img [src]="img?.imageFileBase64" alt="check-icon">
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+
+                                            <div class="ho-home-reminder-time home-reminders-history">
+                                                <p><i class="fas fa-clock"></i> <b>When : </b>{{newEntry.startedOn}}</p>
+                                                <p><i class="fas fa-bell"></i> <b>Next Reminder :
+                                                    </b>{{newEntry.nextOnReminder}}</p>
+                                            </div>
+
+                                        </div>
+                                        <div class="home-reminders-history-box wow fadeInUp logdet"  *ngIf="newEntry.recommendationRefId !== 0"
+                                        (click)="openHistoryRecommendationDetails(homeOwnerAddressId,newEntry.recommendationRefId)" data-wow-delay="0.1s">
+                                            <div class="home-reminders-history-box-edit">
+                                                <a href="javascript:;" *ngIf="newEntry.recommendationRefId === 0"
+                                                    (click)="openAddNewEntryModal(newEntry.homeOwnerEntryId, addNewEntryModalContent, newEntry)"><i
+                                                        class="fas fa-edit"></i></a>
+                                                <!-- <a href="javascript:;" class="flip_modal_opener"
+                                                    *ngIf="newEntry.recommendationRefId !== 0"
+                                                    (click)="openAddNewNotesHistoryModal(newEntry.homeOwnerEntryId,newEntry.recommendationRefId,1)"><i
+                                                        class="fas fa-edit"></i></a> -->
+                                            </div>
+
+                                            <div class="variables-article-modal-text">
+                                                <h4 *ngIf="newEntry.title != 'null'">{{newEntry.title}}</h4>
+                                                <p>{{newEntry.descriptionText}}</p>
+                                            </div>
+                                            <div class="ho-home-reminder-img">
+                                                <ul>
+                                                    <li
+                                                        *ngFor="let img of newEntry?.homeOwnerEntryImages; let imgIndex = index">
+                                                        <img [src]="img?.imageFileBase64" alt="check-icon">
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+
+                                            <div class="ho-home-reminder-time home-reminders-history">
+                                                <p><i class="fas fa-clock"></i> <b>When : </b>{{newEntry.startedOn}}</p>
+                                                <p><i class="fas fa-bell"></i> <b>Next Reminder :
+                                                    </b>{{newEntry.nextOnReminder}}</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <ng-template #noNewEntryList>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 mb-12 text-center wow fadeInUp"
+                                        data-wow-delay="0.1s">
+                                        <div class="new-home-row">
+                                            <h4 class="his-nothing-text">Nothing Yet...</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+
+<div class="create-new-entry-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <ng-template #addNewEntryModalContent let-modal>
+
+                <form [formGroup]="inputForm" (ngSubmit)="saveEntry()">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            value="admin-home-owner" (click)="onCloseAllModels(1)"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4 *ngIf="entryId==0">Add a New Log Entry</h4>
+                            <h4 *ngIf="entryId!=0">Edit a Log Entry</h4>
+                            <p>Please fill out the details below, you can add an optional image</p>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label for="title">Enter a Title For Entry<span>*</span></label>
+                                    <input type="text" class="form-control" formControlName="title"
+                                        placeholder="Add Entry Title" id="title"
+                                        (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'title')">
+                                    <div *ngIf="(formControls?.title?.invalid) && (submitted || formControls?.title?.dirty || formControls?.title?.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="formControls?.title?.errors?.required">
+                                            Title name is required.
+                                        </div>
+                                        <div *ngIf="formControls.title.errors?.maxlength">
+                                            Title can be max 150 characters long.
+                                        </div>
+                                        <div *ngIf="formControls.title.errors?.pattern">
+                                            Invalid Title.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="short-description">Enter a Description <span>*</span></label>
+                                    <textarea id="short-description" formControlName="descriptionText"
+                                        class="form-control" rows="5" cols="50" placeholder="Write Description here."
+                                        (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'descriptionText')"></textarea>
+                                    <div *ngIf="(formControls?.descriptionText?.invalid) && (submitted || formControls?.descriptionText?.dirty || formControls?.descriptionText?.touched)"
+                                        class="text-danger">
+                                        <div
+                                            *ngIf="formControls?.descriptionText?.errors?.required || formControls?.descriptionText?.value==0">
+                                            Description is required.
+                                        </div>
+                                        <div *ngIf="formControls?.descriptionText?.errors?.maxlength">
+                                            Description can be max 500 characters long.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group month-block start-specfic-date-box">
+                                    <label for="company">When Did This Happen? <span>*</span></label>
+                                    <div class="month-block">
+                                        <input type="text" class="form-control" placeholder="Choose Date"
+                                            id="first-name" formControlName="startDateJson" [maxDate]=maxPickerDate
+                                            ngbDatepicker #d2="ngbDatepicker" (click)="d2.toggle()">
+                                        <a href="javascript:;" (click)="d2.toggle()"><i
+                                                class="fas fa-calendar-alt"></i></a>
+                                    </div>
+                                    <div *ngIf="(formControls?.startDateJson?.invalid) && (submitted || formControls?.startDateJson?.dirty)"
+                                        class="text-danger">
+                                        <div *ngIf="formControls?.startDateJson?.errors?.required">
+                                            When Did This Happen? is required.
+                                        </div>
+                                        <div
+                                            *ngIf="formControls?.startDateJson?.invalid && !formControls?.startDateJson?.errors?.required">
+                                            Please enter valid Date format (yyyy-mm-dd).
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label for="title">Remind Me Every(In Months)</label>
+                                    <input type="text" class="form-control" formControlName="rememberMe"
+                                        placeholder="Remind Me Every(In Months)" id="rememberMe"
+                                        (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'rememberMe')">
+                                    <div *ngIf="(formControls?.rememberMe?.invalid) && (submitted || formControls?.rememberMe?.dirty || formControls?.rememberMe?.touched)"
+                                        class="text-danger">
+                                        <div *ngIf="formControls?.rememberMe?.errors?.pattern">
+                                            Invalid Remind Me Value.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="upload-image-box rec-home-pic" *ngIf="profilePhoto!=null">
+
+                                    <ng-container *ngFor="let multiple of profilePhoto;let newEntryIndex = index;">
+                                        <div class="home-log-img-up">
+                                            <img [src]="multiple?.imageFileBase64" id="newEntryIndex"
+                                                alt="profile-change-img" /> <a href="javascript:;"
+                                                (click)="removeImage(newEntryIndex)"><i class="fas fa-times"></i></a>
+                                        </div>
+                                    </ng-container>
+
+                                </div>
+                                <ul class="upload-image-box-link">
+                                    <li>
+
+                                        <input type="file" accept="image/png, image/jpeg" id="profilePhotoBrowserInput"
+                                            (change)="onProfilePhotoBrowserInputChange($event,'profilePhotoImgElement', '4.52')"
+                                            style="display: none;">
+
+                                        <a href="javascript:;" *ngIf="profilePhoto?.length<=2"
+                                            (click)="passClickToProfileFileInput('profilePhotoBrowserInput')"
+                                            onclick="profilePhotoBrowserInput.value = ''" class="btn-primary-small">Add
+                                            an Image</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" *ngIf="entryId!=0"
+                            (click)="open1(cancelAccountAlertModel,entryId)">Remove</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="history-log-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <ng-template #vistoryLogViewContent let-modal>
+                <div class="modal-header prev-modal-log-head prev-modal-log-head-history">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        value="admin-home-owner" (click)="onCloseAllModels('1')"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="variables-article-modal-text">
+                        <p>{{historyLogDescriptionText}}</p>
+                    </div>
+                    <div class="ho-home-reminder-img prev-modal-log-img">
+                        <ul>
+                            <li *ngFor="let multiple of profilePhoto;let newEntryIndex = index;"><img
+                                    [src]="multiple?.imageFileBase64" alt="check-icon"> </li>
+                        </ul>
+                    </div>
+                    <div class="ho-home-reminder-time">
+                        <p><i class="fas fa-clock"></i> <b>When : </b>{{startedOn}}</p>
+                    </div>
+                </div>
+
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #cancelAccountAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onConfirmationModal_No()" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <!-- <p *ngIf="selectedRealEstateAgentMessageIds.length==1 && deleteSingle==false">Are you sure you want to Delete this entry?</p> -->
+            <p>Are you sure you want to Delete this entry?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onConfirmationModal_No()"
+                data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onConfirmationModal_Yes(entryId)" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- <section id="rea-article-section">
+    <div class="container px-4">
+
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="article-card">
+                    <div class="article-img-box">
+                        <img class="img-fluid" src="assets/img/intro-img-1.jpg" alt="bookkeeping-services-img">
+                    </div>
+                    <div class="article-body-text">
+                        <h6>Lorem Ipsum is simply dummy text of the printing industry</h6>
+                        <p>This is a short summary description of the administrator, Articles are selectively content
+                            manager, or real estate agent. Articles are selectively zip code, house type, age, articles
+                            etc.</p>
+                        <a href="#!" class="btn-primary">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="article-card">
+                    <div class="article-img-box">
+                        <img class="img-fluid" src="assets/img/intro-img-2.jpg" alt="bookkeeping-services-img">
+                    </div>
+                    <div class="article-body-text">
+                        <h6>Lorem Ipsum is simply dummy text of the printing industry</h6>
+                        <p>This is a short summary description of the administrator, Articles are selectively content
+                            manager, or real estate agent. Articles are selectively zip code, house type, age, articles
+                            etc.</p>
+                        <a href="#!" class="btn-primary">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-4">
+                <div class="article-card">
+                    <div class="article-img-box">
+                        <img class="img-fluid" src="assets/img/intro-img-3.jpg" alt="bookkeeping-services-img">
+                    </div>
+                    <div class="article-body-text">
+                        <h6>Lorem Ipsum is simply dummy text of the printing industry</h6>
+                        <p>This is a short summary description of the administrator, Articles are selectively content
+                            manager, or real estate agent. Articles are selectively zip code, house type, age, articles
+                            etc.</p>
+                        <a href="#!" class="btn-primary">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</section> -->
+
+<section id="rea-article-section">
+    <div class="container">
+        <owl-carousel-o [options]="customOptions">
+
+            <ng-template carouselSlide *ngFor="let article of pageAdditionalInfo?.articles; let articlesIndex = index"
+                id="owl-slide-{{articlesIndex}}">
+                <div class="item wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="article-card" (click)="openArticleViewModal(article.articleId, articleModalContent)">
+                        <a href="javascript:;">
+                            <div class="article-img-box">
+                                <img class="img-fluid" src="{{defaultApiRoot + '/Uploads/Images/' + article.imageFile}}"
+                                    alt="{{article?.imageFile}}">
+                            </div>
+
+                            <div class="article-body-text">
+                                <h6>{{article?.articleTitle}}</h6>
+                                <div class="article-body-text-box article-body-ho-text">
+
+                                    <p>{{article.descriptionText}}</p>
+                                </div>
+
+                                <a href="javascript:;" class="btn-primary">Read More <i
+                                        class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </ng-template>
+
+        </owl-carousel-o>
+
+    </div>
+</section>
+
+<!-- 
+<section id="rea-article-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="choose-date-rec">
+                    <a (click)="showPreviousarticle(carArticle)">
+                        <i [ngStyle]="{'background-color': isFirstRecommendationMonth ? '#D6DBDF' : '#0061C1'}" class="fa fa-angle-left"></i>
+                    </a>
+                    <a (click)="showNextarticle(carArticle)">
+                        <i [ngStyle]="{'background-color': isLastRecommendationMonth ? '#D6DBDF' : '#0061C1'}" class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+        <div class="col-lg-4">
+        <ngb-carousel #carArticle  [showNavigationArrows]="true"
+        [showNavigationIndicators]="true"
+        [interval]="1000"
+        [keyboard]="true"
+        [pauseOnHover]="true"
+        [wrap]="true" (slide)="onSlideArticle($event)">
+            <ng-template ngbSlide *ngFor="let article of pageAdditionalInfo?.articles; let articlesIndex = index">
+                <div class="item">
+                    <div class="article-card">
+                        <div class="article-img-box">
+                            <img class="img-fluid" src="{{defaultApiRoot + '/Uploads/Images/' + article.imageFile}}" alt="{{article?.imageFile}}">
+                        </div>
+                        <div class="article-body-text">
+                            <h6>{{article?.articleTitle}}</h6>
+                            <div class="article-body-text-box article-body-ho-text">
+        
+                                <p>{{article.descriptionText}}</p>
+                            </div>
+                            <a href="javascript:;" (click)="openArticleViewModal(article.articleId, articleModalContent)" class="btn-primary">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-carousel>
+    </div>
+</div>
+</div>
+</section> -->
+
+<!-- REA and Admin links section-->
+<section id="rea-admin-links">
+    <div class="container px-4">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="rea-links-box">
+                    <h4>Helpful Links</h4>
+
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-6 col-md-6 wow fadeInLeft animated" data-wow-delay="0.5s">
+
+                <div class="rea-links-box ho-links-box-new">
+                    <!-- <h4 style="visibility: hidden;">Lorem Ipsum is dummy text</h4> -->
+                    <!-- <h4>Lorem Ipsum Title Link Text</h4> -->
+                    <ul>
+                        <li *ngFor="let link of getFooterLinksBySourceType(1)">
+                            <a target="_blank" [href]="link?.linkUrl">{{link?.linkTitle}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 wow fadeInRight animated" data-wow-delay="0.5s"
+                *ngIf="pageAdditionalInfo?.realEstateAgentMessageInfo">
+                <div class="rea-links-box extend-link-text">
+                    <!-- <h4>Lorem Ipsum Title Link Text</h4> -->
+                    <ul>
+                        <li *ngFor="let link of getFooterLinksBySourceType(2)">
+                            <a target="_blank" [href]="link.linkUrl">{{link?.linkTitle}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<!-- <div class="read-rea-message-modal"> -->
+<!-- <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content"> -->
+<ng-template #content let-modal class="read-rea-message-modal" id="popup-container">
+    <div class="modal-header modal-info-header-block">
+        <div class="modal-header-btn-height"> <button type="button" (click)="onModalCloseClick()" class="btn-close"
+                data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div *ngIf="pageAdditionalInfo?.realEstateAgentMessageImageBase64" class="home-img-box-modal">
+            <img [src]="pageAdditionalInfo?.realEstateAgentMessageImageBase64" class="modal-home-img img-fluid"
+                alt="modal-home-img">
+        </div>
+
+    </div>
+    <div class="modal-body text-center read-rea-message-modal">
+
+        <div class="rea-profile-img rea-new-img">
+            <img *ngIf="pageAdditionalInfo?.realEstateAgentProfileImageBase64"
+                [src]="pageAdditionalInfo?.realEstateAgentProfileImageBase64" class="rea-profile-img"
+                alt="rea-profile-img">
+            <img *ngIf="pageAdditionalInfo?.realEstateAgentProfileImageBase64==null" [src]="defaultProfilePhoto"
+                class="rea-profile-img" alt="rea-profile-img">
+        </div>
+        <h4>{{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.firstName}}
+            {{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.lastName}}
+        </h4>
+        <!-- <h6>Real Estate Agent</h6> -->
+        <div class="rea-profile-message admin-rea-msg">
+            <p class="limitedTextSection" [class.showFullText]="show">
+                {{pageAdditionalInfo?.realEstateAgentMessageInfo?.messageText}}</p>
+            <!-- <a *ngIf="pageAdditionalInfo?.realEstateAgentMessageInfo?.messageText" (click)="show = !show">{{ show ?
+                'Show less': 'Show More...' }}</a> -->
+        </div>
+
+        <div class="rea-profile-link rea-profile-link-mob">
+            <ul>
+                <li *ngFor="let link of pageAdditionalInfo?.realEstateAgentMessageInfo?.realEstateAgentMessageLinks">
+                    <a [href]="link.linkUrl" target="_blank">{{link.linkUrl}}</a>
+                </li>
+
+            </ul>
+        </div>
+
+
+        <div class="rea-profile-contact">
+            <h6>Get in touch today!</h6>
+            <ul>
+                <li><a
+                        href="tel:{{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.phone}}">{{formatededphoneNumber}}</a>
+                </li>
+                <li>
+                    <a
+                        href="mailto:{{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.email}}">{{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.email}}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="footer-social-modal">
+            <ul class="list-unstyled">
+                <li class="list-inline-item"
+                    *ngFor="let link of pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.applicationUserSocialNetworkLinks">
+                    <a [href]="link.websiteLink" target="_blank">
+                        <i class="fab"
+                            [ngClass]="{'fa-facebook-f': link.socialNetworkLinkType==1, 'fa-twitter':link.socialNetworkLinkType==2, 'fa-instagram':link.socialNetworkLinkType==3, 'fa-youtube':link.socialNetworkLinkType==4 }"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Text {{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.firstName}}</button>
+                        </div> -->
+    </div>
+</ng-template>
+<!-- </div>
+        </div>
+    </div> -->
+<!-- </div> -->
+
+
+<ng-template #cropImageModal let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio"
+        (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>
+
+
+<!-- Recommendations Modal -->
+
+
+<div class="flip_modal_upper_wrapper">
+    <div class="flip_modal_wrapper">
+        <div class="flip_modal" [ngClass]="{'hide_modal1': isHide}">
+            <div class="modal_1">
+                <div class="modal-header">
+                    <div class="home-img-box-rec" *ngIf="!modalBool && homeOwnerEntryId === 0">
+                        <img [src]="recommendationImage" class="change-air-filters-img img-fluid"
+                            alt="change-air-filters-img">
+                    </div>
+                    <!-- <div class="img-swap" *ngIf="!modalBool && homeOwnerEntryId !== 0">
+                        <img [src]="'assets/img/home-variable-icons/' + iconFile1" alt="hvac-icon">
+                    </div> -->
+                    <div class="modal_header_inner">
+                        <div class="img-swap" *ngIf="!modalBool && homeOwnerEntryId !== 0">
+                            <img [src]="'assets/img/home-variable-icons/' + iconFile1" alt="hvac-icon">
+                        </div>
+                        <div class="right_content" *ngIf="!modalBool && homeOwnerEntryId !== 0">
+                            <h5>Completed on {{formattedDate}}</h5>
+                            <h3>{{recommendationTitle}}</h3>
+                            <p>{{descriptionText}}</p>
+                            <!-- <a href="#">https://www.nobroker.in/blog/voltas-ac-services</a>
+                            <div class="divider">
+                                <a href="#">https://www.blog/voltas-ac-services</a>
+                            </div> -->
+                            <div class="rea-profile-link">
+                                <ul>
+                                    <li *ngFor="let link of recommendationLinks">
+                                        <a target="_blank" [href]="link?.linkUrl">{{link?.linkUrl}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" *ngIf="!modalBool" (click)="onModalCloseClick()" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body ng-modal-center-text recommendationTitle-pera"
+                    [ngClass]="{'no_content': isNotesData}">
+                    <a *ngIf="!modalBool && homeOwnerEntryId === 0" href="#!" class="info-rec"><i
+                            class="fas fa-exclamation-circle"></i></a>
+                    <h5 *ngIf="!modalBool && homeOwnerEntryId === 0">{{recommendationTitle}}</h5>
+                    <p *ngIf="!modalBool && homeOwnerEntryId === 0">{{descriptionText}}</p>
+
+                    
+                    <div class="rea-profile-link" *ngIf="!modalBool && homeOwnerEntryId === 0">
+                        <ul>
+                            <li *ngFor="let link of recommendationLinks">
+                                <a target="_blank" [href]="link?.linkUrl">{{link?.linkUrl}}</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="modal_body_inner" *ngIf="!modalBool && homeOwnerEntryId !== 0">
+                        <div class="images" [ngClass]="{'multiple': isImageData}">
+                            <!-- <img [src]="recommendationImage" class="change-air-filters-img img-fluid"
+                                alt="change-air-filters-img"> -->
+                            <!-- <img src="assets/img/image1.jpg" class="change-air-filters-img img-fluid"
+                                alt="change-air-filters-img"> -->
+                            <ng-container *ngFor="let multiple of profilePhoto;">
+
+                                <img [src]="multiple?.imageFile" id="newEntryIndex1" alt="profile-change-img"
+                                    class="change-air-filters-img img-fluid view_full_image" />
+                                    <!-- <img [src]="multiple?.imageFile" id="newEntryIndex1" alt="profile-change-img"
+                                    class="change-air-filters-img img-fluid" /> -->
+                            </ng-container>
+                        </div>
+                        <div class="text">
+                            <h3>Notes</h3>
+                            <p>{{historyLogDescriptionText}} </p>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- <div *ngIf="!modalBool && homeOwnerEntryId !== 0">
+                    <div class="upload-image-box rec-home-pic" *ngIf="profilePhoto!=null">
+                        <ng-container *ngFor="let multiple of profilePhoto;">
+                            <div class="home-log-img-up">
+                                <img [src]="multiple?.imageFile" id="newEntryIndex1" alt="profile-change-img" />
+                            </div>
+                        </ng-container>
+
+                    </div>
+                    <div>Notes</div>
+                    <div>{{historyLogDescriptionText}}</div>
+                </div> -->
+                <div *ngIf="!modalBool && homeOwnerEntryId === 0" class="modal-footer">
+                    <button type="button" (click)="setRecommendationStatus(2)" class="btn btn-secondary btn-close"
+                        data-bs-dismiss="modal">Skip</button>
+                    <!-- <button type="button" (click)="setRecommendationStatus(1)" class="btn btn-primary">I did
+                        this</button> -->
+                    <a class="btn btn-primary flip_btn" id="Idid"
+                        (click)="openAddNewNotesHistoryModal(homeOwnerEntryId, homeAddressRecommendationId, true)">I
+                        did
+                        this</a>
+                </div>
+                <div *ngIf="!modalBool && homeOwnerEntryId !== 0" class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        (click)="onCancelAccountModelNoClick1()">Cancel</button>
+                    <button type="button"
+                        (click)="openAddNewNotesHistoryModal(homeOwnerEntryId, homeAddressRecommendationId, 1)"
+                        class="btn btn-primary flip_btn">{{isShownNextButton ? 'Edit' : 'submit'}}</button>
+                        <!-- <div>
+                                <button type="button" class="btn btn-primary" style="background-color: #04AA6D;border-color: #04AA6D; margin-top: inherit;" (click)="openAddNewNotesHistoryModalDetail(homeOwnerEntryId, recommendationLogModalContent)">view recommnedations history</button>
+                        </div> -->
+                        
+                </div>
+            </div>
+            <div class="modal_2">
+                <form [formGroup]="inputForm1" *ngIf="modalBool" (ngSubmit)="saveLogEntry()">
+                    <div class="modal-header">
+                        <button type="button"  *ngIf="!isShownNextButton || isShownNextButton" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            value="admin-home-owner" (click)="onCloseAllModels(1)"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4 *ngIf="!isShownNextButton">Add Optional Notes and Images</h4>
+                            <h4 *ngIf="isShownNextButton">Edit notes</h4>
+                        </div>
+
+
+                        <div class="row">
+                            <!--  col-md-6   -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="short-description">Notes</label>
+                                    <textarea id="short-description1" formControlName="descriptionText"
+                                        class="form-control" rows="5" cols="50" placeholder="Enter Description"
+                                        (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm1, 'descriptionText')"></textarea>
+                                    <div *ngIf="(formControls1?.descriptionText?.invalid) && (submitted || formControls1?.descriptionText?.dirty || formControls1?.descriptionText?.touched)"
+                                        class="text-danger">
+                                        <!-- <div
+                                        *ngIf="formControls1?.descriptionText?.errors?.required || formControls1?.descriptionText?.value==0">
+                                        Description is required.
+                                    </div> -->
+                                        <div *ngIf="formControls1?.descriptionText?.errors?.maxlength">
+                                            Description can be max 500 characters long.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group month-block start-specfic-date-box">
+                                    <label for="company">When Did This Happen? <span>*</span></label>
+                                    <div class="month-block">
+                                        <input type="text" class="form-control" placeholder="Choose Date"
+                                            id="first-name1" formControlName="startDateJson" [maxDate]=maxPickerDate1
+                                            ngbDatepicker #d2="ngbDatepicker" (click)="d2.toggle(); selectToday()">
+                                        <a href="javascript:;" (click)="d2.toggle(); selectToday()"><i
+                                                class="fas fa-calendar-alt"></i></a>
+                                    </div>
+                                    <div *ngIf="(formControls1?.startDateJson?.invalid) && (submitted || formControls1?.startDateJson?.dirty)"
+                                        class="text-danger">
+                                        <div *ngIf="formControls1?.startDateJson?.errors?.required">
+                                            When Did This Happen? is required.
+                                        </div>
+                                        <div
+                                            *ngIf="formControls1?.startDateJson?.invalid && !formControls1?.startDateJson?.errors?.required">
+                                            Please enter valid Date format (yyyy-mm-dd).
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="title">Remind Me Every(In Months)</label>
+                                <input type="text" class="form-control" formControlName="rememberMe" placeholder="Remind Me Every(In Months)" id="rememberMe1" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm1, 'rememberMe')">
+                                <div *ngIf="(formControls1?.rememberMe?.invalid) && (submitted || formControls1?.rememberMe?.dirty || formControls?.rememberMe?.touched)" class="text-danger">
+                                    <div *ngIf="formControls1?.rememberMe?.errors?.pattern">
+                                        Invalid Remind Me Value.
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="upload-image-box rec-home-pic" *ngIf="profilePhoto!=null">
+
+                                    <ng-container *ngFor="let multiple of profilePhoto;let newEntryIndex = index;">
+                                        <div class="home-log-img-up">
+                                            <img 
+                                                [src]="multiple?.imageFileBase64" id="newEntryIndex"
+                                                alt="profile-change-img" /> <a href="javascript:;"
+                                                (click)="removeImage(newEntryIndex)"><i class="fas fa-times"></i></a>
+                                        </div>
+                                    </ng-container>
+
+                                </div>
+                                <ul class="upload-image-box-link">
+                                    <li>
+
+                                        <input type="file" accept="image/png, image/jpeg" id="profilePhotoBrowserInput"
+                                            (change)="onProfilePhotoBrowserInputChange($event,'profilePhotoImgElement', '4.52')"
+                                            style="display: none;">
+
+                                        <a href="javascript:;" *ngIf="profilePhoto?.length<=2"
+                                            (click)="passClickToProfileFileInput('profilePhotoBrowserInput')"
+                                            onclick="profilePhotoBrowserInput.value = ''"
+                                            class="btn-primary-small">Upload Images</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary save_btn"
+                            (click)="onCancelAccountModelNoClick1()">Cancel</button>
+                        <button type="submit" class="btn btn-primary save_btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recommendations Modal end -->
+
+<!-- Article Information Modal -->
+<div class="vendor-article-modal-block">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #articleModalContent let-modal>
+                <div class="modal-header modal-vendor-article modal-info-header-block">
+
+                    <div class="modal-header-btn-height"><button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close" (click)="onCancelViewDetailModelNoClick()"></button></div>
+
+                    <div class="vendor-article-modal-heading-block">
+                        <h4>{{selectedArticle.articleTitle}}</h4>
+                        <h6>{{selectedArticle.shortDescriptionText}}</h6>
+                    </div>
+                    <div class="home-img-box-modal article-box-ho-new">
+                        <img src="{{selectedArticle?.imageFileBase64}}" class="modal-home-img img-fluid"
+                            alt="modal-home-img">
+                    </div>
+                    <button type="button" class="btn-close" (click)="dismissAllModals()" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="vendor-article-modal-text">
+                        <p>{{selectedArticle.descriptionText}}</p>
+                        <div *ngFor="let link of selectedArticle?.articleLinks">
+                            <a [href]="link?.linkUrl" target="_blank">{{link?.linkUrl}}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="dismissAllModals()" class="btn btn-primary">Close</button>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+
+<!-- View Full Image Modal -->
+<div class="modal" id="view_full_image" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close" (click)="dismissAllModals()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="full_image_container">
+                <!-- <img src="https://plus.unsplash.com/premium_photo-1670333291518-3eba705eb11c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyNXx8fGVufDB8fHx8fA%3D%3D" id="newEntryIndex" alt="profile-change-img" /> -->
+                <img [src]="imageFile1" id="newEntryIndex" alt="profile-change-img" />
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- End View Full Image Modal -->
+
+
+<!-- View Recommendation Modal-->
+<div class="vendor-article-modal-block">
+    <div class="modal" id="exampleModal12" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #recommendationLogModalContent let-modal>
+                <div class="modal-header modal-vendor-article modal-info-header-block">
+
+                    <div class="modal-header-btn-height"><button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close" (click)="onCancelViewDetailModelNoClick()"></button></div>
+                    <button type="button" class="btn-close" (click)="dismissAllModals()" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="variables-article-modal-text">
+                        <h4>{{newEntryList[0]?.title}}</h4>
+                        <p>{{newEntryList[0]?.descriptionText}}</p>
+                    </div>
+                    <div class="ho-home-reminder-img">
+                        <ul>
+                            <li
+                                *ngFor="let img of newEntryList[0]?.homeOwnerEntryImages; let imgIndex = index">
+                                <img [src]="img?.imageFileBase64" alt="check-icon">
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="ho-home-reminder-time home-reminders-history">
+                        <p><i class="fas fa-clock"></i> <b>When : </b>{{startedOn}}</p>
+                        <p><i class="fas fa-bell"></i> <b>Next Reminder :
+                            </b>{{nextOnReminder}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="dismissAllModals()" class="btn btn-primary">Close</button>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+<div class="modal" id="view__image" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close" (click)="dismissAllModals()" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="full_image_container">
+                <img [src]="" alt="profile-change-img" />
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

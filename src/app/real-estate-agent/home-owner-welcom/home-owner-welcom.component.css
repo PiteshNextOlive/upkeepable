@@ -1,0 +1,33 @@
+.registration-msg-sponsors-main {
+    text-align: center;
+}
+
+.registration-msg-sponsors-main h3 {
+    color: #0052A3;
+    margin-bottom: 30px;
+}
+
+.registration-msg-sponsors-main  img {
+    margin: 20px 0;
+}
+
+.registration-msg-sponsors-main a.btn-primary {
+    margin-top: 20px;
+    color: #fff;
+}
+
+.welcome-msg-sponsors-main {
+    margin-bottom: 50px;
+}
+
+#welcome-msg-sponsors-section {
+    padding: 50px 0 50px 0;
+    background: #e5f2ff;
+    margin-top: 50px;
+}
+.welcome-msg-sponsors-main .rea-profile-link li a {
+    font-size: 32px;
+}
+#welcome-msg-sponsors-section .col-xl-8 {
+    padding: 0 3px;
+}

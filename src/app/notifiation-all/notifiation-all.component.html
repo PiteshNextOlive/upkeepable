@@ -1,0 +1,166 @@
+<section class="notification-setting-section">
+    <div class="container">
+        <div class="row mx-auto justify-content-center">
+            <div class="col-lg-10 col-md-10 col-sm-12">
+
+
+                <ul *ngIf="notifications.length>0; else noNotification">
+                    <li>
+                        <div class="notification-heading">
+                            <h5>Notifications List</h5>
+                        </div>
+                    </li>
+
+                    <li *ngFor="let notification of notifications">
+
+                        <div class="notification-box">
+                            <!-- <span></span> -->
+                            <div class="notification-text-date">
+                                <p>{{notification.notificationTitle}}
+                                    <a (click)="goToHomePage()" *ngIf="notification.notificationType==3" href="javascript:;">View Recommendations</a>
+                                </p>
+                                <div class="date-noti">{{notification.createdOnFormatted}}</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <!-- <img src="assets/img/password-drop-icon.svg" alt="password-drop-icon"> -->
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>Lease complete your home profile.</p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/profile-drop-icon.svg" alt="profile-drop-icon">
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>You have 6 new recommendations <a href="#">Text Link</a></p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/profile-drop-icon.svg" alt="profile-drop-icon">
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>Your password has been successfully changed.</p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/password-drop-icon.svg" alt="password-drop-icon">
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>Lease complete your home profile. <a href="#">Text Link</a></p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/profile-drop-icon.svg" alt="profile-drop-icon">
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>You have 6 new recommendations</p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/profile-drop-icon.svg" alt="profile-drop-icon">
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>Your password has been successfully changed.</p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/password-drop-icon.svg" alt="password-drop-icon">
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>Lease complete your home profile.</p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/profile-drop-icon.svg" alt="profile-drop-icon">
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+
+                        <div class="notification-box">
+                            <span></span>
+                            <div class="notification-text-date">
+                                <p>You have 6 new recommendations <a href="#">Text Link</a></p>
+                                <div class="date-noti">June 23, 2022 at 09:15 AM</div>
+                            </div>
+                            <div class="notification-drop-icon">
+                                <img src="img/profile-drop-icon.svg" alt="profile-drop-icon">
+                            </div>
+                        </div>
+                    </li> -->
+
+                </ul>
+
+
+                <ng-template #noNotification>
+                    <ul>
+                       <li>
+                            <div class="notification-heading">
+                              <h5>Notifications List</h5>
+                            </div>
+                        </li>
+                        <li col-md-12>
+                            <div class="notification-box">
+                                No latest notification yet.
+                            </div>
+                         </li>
+                  </ul>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</section>

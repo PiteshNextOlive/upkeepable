@@ -1,0 +1,60 @@
+<div id="payment-details1" class="tabcontent mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-8 col-md-8 col-sm-12">
+            <div class="subscription-heading-text">
+                <h2 style="color: var(--0061C1-title-color) !important; font-size: 31px; margin-top: revert;">Subscription Details</h2>
+                <h6>Here‘s your subscription details.</h6>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="dummy-link" >
+                <div  class="wrapper">
+                    <div class="switch--box">
+                        <label class="cswitch">
+                          <span class="cswitch--label">Web Notifications</span>
+                          <input 
+                            class="cswitch--input" 
+                            type="checkbox"                              
+                            (change)="onNotificationToggle($event)"
+                            #notificationToggle
+                          />
+                          <span class="cswitch--trigger wrapper"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="subscription-quantity-shows">
+                <img src="../../../assets/img/dollor-icon-sub.svg" alt="dollor-icon-sub"/>
+                <h6>You have been given Upkeepable, valued at $99/year, by <span>{{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.firstName}}
+                    {{pageAdditionalInfo?.realEstateAgentMessageInfo?.applicationUser?.lastName}}</span>.</h6>
+            </div>
+        </div>
+        <!-- <button *ngIf="prevUserId==null" (click)="open(cancelAccountAlertModel)" class="tablinks">cancel account</button> -->
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="cancel-account-box">
+                <a *ngIf="prevUserId==null" (click)="open(cancelAccountAlertModel)" class="btn btn-secondary">cancel account</a>
+            </div>
+        </div>
+    </div>
+    <ng-template #cancelAccountAlertModel let-modal>
+        <div class="skip-recommendations">
+            <div class="modal-header">
+                <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon"/>
+                <p>Are you sure you want to close your account?</p>
+                <p class="notification-text-account">Your maintenance history and home details will not be saved</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="onCancelAccountModelNoClick()" data-bs-dismiss="modal">No</button>
+                <button type="button" (click)="onCancelAccountModelYesClick()" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

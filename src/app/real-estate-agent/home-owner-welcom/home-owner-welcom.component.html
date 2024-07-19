@@ -1,0 +1,78 @@
+
+<section id="registration-msg-sponsors-section-new">
+    <div class="container">
+    <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-8 col-md-12">
+    <div class="registration-msg-sponsors-main">
+     <img alt="email-icon-sponsor" src="assets/img/email-icon-sponsor.svg">
+    <h3>An email confirmation has been sent. Please check your inbox and spam to complete setup</h3>
+
+    <div class="registration-msg-sponsors-main-text">
+    <p>Thank you, We have sent you email to :</p>
+    <h6>{{homeownerEmail}}</h6>
+</div>
+
+    <div class="welcome-msg-sponsors-activate">
+    <p>Please click the in that message to activate your account.</p>
+    <p class="receive-email-heading">Still can’t find the email? No Problem. <br> <a (click)="onSubmit(true)" class="btn-primary">Click to resend</a></p>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </section>
+
+
+
+<section id="welcome-msg-sponsors-section" class="upkeepable-sponsors-box-new">
+   
+        <div class="container">
+        <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-8 col-md-12">
+            <div class="welcome-msg-sponsors-main">
+            <div class="sponsors-agent-img-ho">
+                <img *ngIf="pageAdditionalInfo?.userImageBase64" [src]="pageAdditionalInfo?.userImageBase64" class="rea-profile-img" alt="rea-profile-img">
+                <img *ngIf="pageAdditionalInfo?.userImageBase64==null" [src]="defaultProfilePhoto" class="rea-profile-img" alt="rea-profile-img">
+            
+            </div>
+            
+            <h5>{{pageAdditionalInfo?.firstName}} {{pageAdditionalInfo?.lastName}}</h5>
+            <h3>Welcome to Upkeepable</h3>
+           <h6>{{pageAdditionalInfo?.realEstateAgentMessageInfo1?.messageText}}</h6>
+
+           <div class="rea-profile-link rea-profile-link-mob">
+            <ul>
+                <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_FacebookUrl">
+                    <a href="{{pageAdditionalInfo?.socialMedia_FacebookUrl}}" target="_blank">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_InstagramUrl">
+                    <a href="{{pageAdditionalInfo?.socialMedia_InstagramUrl}}" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_TweeterUrl">
+                    <a href="{{pageAdditionalInfo?.socialMedia_TweeterUrl}}" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_YoutubeUrl">
+                    <a href="{{pageAdditionalInfo?.socialMedia_YoutubeUrl}}" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</section>
+
+
+
+
+
+

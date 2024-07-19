@@ -1,0 +1,291 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <div class="modal-inner">
+        <div class="modal-header">
+            <div class="home-img-box">
+                <img src="assets/img/{{mainCategory?.iconName}}" class="home-appliances-icon" alt="home-appliances-icon">
+                <h4>{{mainCategory?.title}}</h4>
+            </div>
+            <button type="button" (click)="closeFormEvent.emit()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            
+                <input type="hidden" formControlName="homeOwnerAddressAttributeRefId">
+                <input type="hidden" formControlName="homeAddressApplianceDetailId">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[0]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" (change)="onChangeYesNo('smartLightType')" aria-label="Default select example" formControlName="hasSmartLight">
+                                    <option selected value="3">Select {{subCategories[0]?.title}}</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-12   -->
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            
+                            <label for="first">{{subCategories[1]?.title}}</label>
+                            <div class="floor-group-type" [ngClass]="{'check-box-dis': formControls.hasSmartLight.value!=1}">
+                                <div class="checkbox-group" *ngFor="let smartLightType of subCategories[1]?.homeVariableSubCategoryListItems">
+                                    <input type="checkbox" id="{{smartLightType.homeVariableSubCategoryListItemId}}"
+                                        value="{{smartLightType.homeVariableSubCategoryListItemId}}" (change)="onChangeASmartLightTypeCheckBox($event)"
+                                        [checked]="commonOpsService.markCheckboxChecked(smartLightType.homeVariableSubCategoryListItemId, this.inputForm.controls.smartLightTypeArray.value)"
+                                        [attr.disabled]="formControls.hasSmartLight.value==1 ? null : true">
+                                    <label for="{{smartLightType.homeVariableSubCategoryListItemId}}">{{smartLightType.title}}
+                                    </label>
+                                 </div>
+                            </div>
+                            <!-- <div *ngIf="formControls.hasSmartLight.value && formControls.hasSmartLight.value==1 &&  (!formControls.smartLightTypeArray.value || formControls.smartLightTypeArray?.value?.length==0) && submitted" class="text-danger">
+                                {{subCategories[1]?.title}} is required.
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!--  row   -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[2]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" (change)="onChangeYesNo('washingMachineType')"  aria-label="Default select example" formControlName="hasWashingMachine">
+                                    <option selected value="3">Select {{subCategories[2]?.title}}</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[3]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" [attr.disabled]="formControls.hasWashingMachine.value==1 ? null : 'disabled'" [ngClass]="{'disabled-input': formControls.hasWashingMachine.value==0}" aria-label="Default select example" formControlName="washingMachineType" aria-label="Default select example">
+                                    <option value="0">Select {{subCategories[3]?.title}}</option>
+                                    <option *ngFor="let washingMachineType of subCategories[3]?.homeVariableSubCategoryListItems" value="{{washingMachineType.homeVariableSubCategoryListItemId}}">
+                                        {{washingMachineType.title}}
+                                    </option>
+                                </select>
+                                <!-- <div *ngIf="formControls.hasWashingMachine.value==1 && formControls.washingMachineType.value==0 && submitted" class="text-danger">
+                                    {{subCategories[3]?.title}} is required.
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="last">{{subCategories[4]?.title}}</label>
+                            <select class="form-select" aria-label="Default select example" (change)="onChangeYesNo('dryerType')" formControlName="hasDryer">
+                                <option selected value="3">Select {{subCategories[4]?.title}}</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="last">{{subCategories[5]?.title}}</label>
+                            <select class="form-select" [attr.disabled]="formControls.hasDryer.value==1 ? null : 'disabled'" [ngClass]="{'disabled-input': formControls.hasDryer.value==0}" aria-label="Default select example" formControlName="dryerType" aria-label="Default select example">
+                                <option value="0">Select {{subCategories[5]?.title}}</option>
+                                <option *ngFor="let dryerType of subCategories[5]?.homeVariableSubCategoryListItems" value="{{dryerType.homeVariableSubCategoryListItemId}}">
+                                    {{dryerType.title}}
+                                </option>
+                            </select>
+                            <!-- <div *ngIf="formControls.hasDryer.value==1 && formControls.dryerType.value==0 && submitted" class="text-danger">
+                                {{subCategories[5]?.title}} is required.
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!--  row   -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[6]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeYesNo('rangeHoodType')" formControlName="hasRangeHood">
+                                    <option selected value="3">Select {{subCategories[6]?.title}}</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+                    </div>
+                    <div class="row">
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">Type of range hood</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" [attr.disabled]="formControls.hasRangeHood.value==1 ? null : 'disabled'" formControlName="rangeHoodType" aria-label="Default select example">
+                                    <option *ngFor="let rangeHoodType of rangeHoodTypeEnum" value="{{rangeHoodType.value}}">
+                                        {{rangeHoodType.description}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[7]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeYesNo('dishwasherType')"  formControlName="hasDishwasher">
+                                    <option selected value="3">Select {{subCategories[7]?.title}}</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+                </div>
+                <div class="row">
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">Dishwasher</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeYesNo('dishwasherType')"  formControlName="hasDishwasher">
+                                    <option selected value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!--  col-md-6   -->
+    
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">Types of dishwasher</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" [attr.disabled]="formControls.hasDishwasher.value==1 ? null : 'disabled'" formControlName="dishwasherType" aria-label="Default select example">
+                                    <option *ngFor="let dishwasherType of dishwasherTypeEnum" value="{{dishwasherType.value}}">
+                                        {{dishwasherType.description}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!--  col-md-6   -->
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[8]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" (change)="onChangeYesNo('ovenType')"  aria-label="Default select example" formControlName="hasOven">
+                                    <option selected value="3">Select {{subCategories[8]?.title}}</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--  col-md-6   -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[11]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeYesNo('microwaveType')"  formControlName="hasMicrowave">
+                                    <option selected value="3">Select {{subCategories[11]?.title}}</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">Types of oven</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" [attr.disabled]="formControls.hasOven.value==1 ? null : 'disabled'" aria-label="Default select example" formControlName="ovenType" aria-label="Default select example">
+                                    <option *ngFor="let ovenType of ovenTypeEnum" value="{{ovenType.value}}">
+                                        {{ovenType.description}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!--  col-md-6   -->
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[9]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeYesNo('stoveType')"  formControlName="hasStove">
+                                    <option selected value="3">Select {{subCategories[9]?.title}}</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">{{subCategories[10]?.title}}</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" [attr.disabled]="formControls.hasStove.value==1 ? null : 'disabled'" [ngClass]="{'disabled-input': formControls.hasStove.value==0}" aria-label="Default select example" formControlName="stoveType" aria-label="Default select example">
+                                    <option value="0">Select {{subCategories[10]?.title}}</option>
+                                    <option *ngFor="let stoveType of subCategories[10]?.homeVariableSubCategoryListItems" value="{{stoveType.homeVariableSubCategoryListItemId}}">
+                                        {{stoveType.title}}
+                                    </option>
+                                </select>
+                                <!-- <div *ngIf="formControls.hasStove.value==1 && formControls.stoveType.value==0 && submitted" class="text-danger">
+                                    {{subCategories[10]?.title}} is required.
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!--  col-md-6   -->
+                </div>
+                <div class="row">
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">Microwave</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeYesNo('microwaveType')"  formControlName="hasMicrowave">
+                                    <option selected value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!--  col-md-6   -->
+    
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">Types of microwave</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" formControlName="microwaveType" [attr.disabled]="formControls.hasMicrowave.value==1 ? null : 'disabled'"
+                                    aria-label="Default select example">
+                                    <option *ngFor="let microwaveType of microwaveTypeEnum"  value="{{microwaveType.value}}">
+                                        {{microwaveType.description}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!--  col-md-6   -->
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button"(click)="closeFormEvent.emit()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+    </form>

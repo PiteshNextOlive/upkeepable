@@ -1,0 +1,2056 @@
+<section class="home-search-admin-section">
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+
+
+                <div class="dashboard-search admin-panel-search">
+
+                    <div class="form-group">
+                        <i class="fas fa-search"></i>
+                        <input class="form-control form-control-lg form-control-borderless" type="search" (keyup)="searchKeyUp($event)" (keydown)="searchPressed($event)" placeholder="Search by Home Recommendations" id="searchKeyword">
+                        <button class="btn btn-lg btn-danger" *ngIf="searchText.length>0" (click)="clearSearch()" type="button"></button>
+                        <button class="btn btn-lg btn-success" (click)="onClickSearchBar()" type="submit"></button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="recently-added-btn-main">
+                    <a href="javascript:;" (click)="openAddRecommendationModal(0,false, addRecommendationModalContent)" class="btn-primary-small">+ add a new home recommendation</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<div class="container">
+    <div class="row mb-3 mt-4">
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <div class="recently-added-heading-main">
+                <h4>Home Recommendations</h4>
+            </div>
+        </div>
+
+
+        <div class="col-xl-6 col-lg-6 col-md-12">
+
+            <div class="row">
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                    <div class="sorting-filter-main sorting-box-new all-client-list-box">
+                        <div class="form-group">
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeSortOrder($event)">
+                                    <option value="1">Sort Ascending</option>
+                                    <option value="2">Sort Descending</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <!-- <ngx-bootstrap-multiselect [options]="myOptions" [(ngModel)]="optionsModel"
+                        (ngModelChange)="onChange($event)"></ngx-bootstrap-multiselect> -->
+                    <div class="checkbox-dropdown" id="filterDropDown" (click)="OpenFilterDropDown()">
+                        Filter
+                        <ul class="checkbox-dropdown-list">
+                            <li>
+                                <label>
+                                    <input type="checkbox" value="1" id="filterOption_1"
+                                        (change)="onFilterOptionChange($event, 1)" />Active</label>
+                            </li>
+                            <!-- <li>
+                                <label>
+                                    <input type="checkbox" value="2" id="filterOption_2"
+                                        (change)="onFilterOptionChange($event, 2)" />Paused</label>
+                            </li> -->
+                            <li>
+                                <label>
+                                    <input type="checkbox" value="0" id="filterOption_0"
+                                        (change)="onFilterOptionChange($event, 0)" />Draft</label>
+                            </li>
+                            <!-- <li>
+                                <label>
+                                    <input type="checkbox" value="3" id="filterOption_3"
+                                        (change)="onFilterOptionChange($event, 3)" />Deleted</label>
+                            </li> -->
+
+                        </ul>
+                    </div>
+                    <!-- <div class="sorting-filter-main all-client-list-box">
+                        <div class="form-group">
+
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Filter</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Paused</option>
+                                    <option value="0">Pending</option>
+                                    <option value="3">Deleted</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="dis-table-container" class="recently-added-table home-owner-table table-responsive">
+                <table class="table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                Status
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'RecommendationStausType', 'fa-sort-up': (dataTableParams.sortColumn === 'RecommendationStausType' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'RecommendationStausType' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('RecommendationStausType')"></i>
+                            </th>
+                            <th>
+                                Recommendation Title
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'RecommendationTitle', 'fa-sort-up': (dataTableParams.sortColumn === 'RecommendationTitle' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'RecommendationTitle' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('RecommendationTitle')"></i>
+                            </th>
+                            <!-- <th>
+                                Description
+                                <i class="sort-icon fa fa-fw"
+                                    [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'DescriptionText', 'fa-sort-up': (dataTableParams.sortColumn === 'DescriptionText' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'DescriptionText' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('DescriptionText')"></i>
+                            </th> -->
+                            <th>
+                                Time frequency
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'RecommendationFrequencyType', 'fa-sort-up': (dataTableParams.sortColumn === 'RecommendationFrequencyType' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'RecommendationFrequencyType' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('RecommendationFrequencyType')"></i>
+                            </th>
+                            <th>
+                                Create Date
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'CreatedOn', 'fa-sort-up': (dataTableParams.sortColumn === 'CreatedOn' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'CreatedOn' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('CreatedOn')"></i>
+                            </th>
+
+                            <th>View Details</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="dataList.length>0; else noRecommendations">
+                        <tr *ngFor="let data of dataList; let i=index" [ngClass]="{'paused-section-status': data.recommendationStausType==2}">
+                            <td>
+                                <span *ngIf="data.recommendationStausType==0" class="pending-status">Draft</span>
+                                <span *ngIf="data.recommendationStausType==1" class="active-status">Active</span>
+                                <span *ngIf="data.recommendationStausType==2" class="paused-status">Paused</span>
+                                <span *ngIf="data.recommendationStausType==3" class="deleted-status">Deleted</span>
+                            </td>
+                            <td>
+                                <div class="home-rec-text-apl">
+                                    <div class="ellipsis">
+                                        {{data.recommendationTitle}}
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- <td>
+                                <div class="home-rec-text-exp">
+                                    <div class="ellipsis">
+                                        {{data.descriptionText}}
+                                    </div>
+                                </div>
+                            </td> -->
+                            <td>
+
+                                <span *ngIf="data.recommendationFrequencyType==0">
+                                    Default
+                                </span>
+
+                                <span *ngIf="data.recommendationFrequencyType==1">
+                                    Every Month
+                                </span>
+
+                                <span *ngIf="data.recommendationFrequencyType==2">
+                                    Every 2 Months
+                                </span>
+                                <span *ngIf="data.recommendationFrequencyType==3">
+                                    Every 3 Months
+                                </span>
+                                <span *ngIf="data.recommendationFrequencyType==4">
+                                    Every 4 Months
+                                </span>
+                                <span *ngIf="data.recommendationFrequencyType==5">
+                                    Once Every 6 Months
+                                </span>
+                                <span *ngIf="data.recommendationFrequencyType==6">
+                                    Once Every 12 Months
+                                </span>
+                                <span *ngIf="data.recommendationFrequencyType==7">
+                                    Once Every 24 Months
+                                </span>
+                            </td>
+                            <td>{{data.joinedOn}}</td>
+
+                            <td>
+                                <ul class="edit-footer-ul">
+                                    <li><a href="javascript:;" class="btn-secondary-small" data-bs-toggle="modal" data-bs-target="#exampleModalMessage" (click)="openAddRecommendationModal(data.recommendationId, false, viewRecommendationModalContent)">View
+                                            Details</a></li>
+                                </ul>
+                            </td>
+
+
+
+                            <td>
+                                <div class="select-block-drop">
+                                    <select name="recommendationDropDown" class="select-drop-new form-select" id="recommendationDropDown" (change)="onChangeOption($event.target, data)">
+                                        <option value="0">Choose Action</option>
+                                        <option value="1">Edit record</option>
+                                        <option *ngIf="data.recommendationStausType!=3" value="2">Delete record</option>
+                                        <option value="3">Duplicate record</option>
+                                    </select>
+                                </div>
+                                <!-- <div class="dropdown">
+                                    <button (click)="showDopdownMenu(i)" class="dropbtn"></button>
+                                    <div id="myDropdown{{i}}" class="dropdown-content">
+
+                                        <a href="javascript:;" (click)="openAddRecommendationModal(data.recommendationId, false, addRecommendationModalContent)">Edit recommendation</a>
+                                        <a href="javascript:;" *ngIf="data.recommendationStausType==1" (click)="openPauseRecommendationAlertModal(data.recommendationId, pauseRecommendationAlertModal)">Pause
+                                            recommendation</a> 
+                                       <a href="javascript:;" *ngIf="data.recommendationStausType==2" (click)="openUnPauseRecommendationAlertModal(data.recommendationId, unPauseRecommendationAlertModal)">Unpause 
+                                            recommendation</a>
+                                        <a href="javascript:;" *ngIf="data.recommendationStausType!=3" (click)="openDeleteRecommendationAlertModal(data.recommendationId, deleteRecommendationAlertModal)">Delete recommendation</a>
+                                        <a href="javascript:;"
+                                            (click)="openEditHomeDetail(client.homeOwnerAddressId)">Edit Home Profile</a> 
+                                        <a href="javascript:;" (click)="openAddRecommendationModal(data.recommendationId, true, addRecommendationModalContent)">Duplicate recommendation</a>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="dropdown">
+                                    <button onclick="myFunction()" class="dropbtn"></button>
+                                    <div id="myDropdown" class="dropdown-content">
+                                        <a href="#">Edit recommendation</a>
+                                        <a href="#">Pause recommendation</a>
+                                        <a href="#">Delete recommendation </a>
+                                        <a href="#">Duplicate Recommendation</a>
+                                    </div>
+                                </div> -->
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noRecommendations>
+                        <tbody>
+                            <tr>
+                                <td col-md-6>
+                                    No Recommendation yet..!
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="dataList.length>0">
+    <div class="row mb-5">
+
+
+        <div class="col-xl-6 col-lg-6 col-md-6">
+
+            <div class="pagination-per-page results-ine-box">
+                <div class="results-per-page-box">
+                    <p>Results per page:</p>
+                    <div class="form-group">
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" (change)="onChangePageSize($event)">
+                                <option value="10" selected>10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-6 col-lg-6 col-md-6">
+            <!-- <div [ngStyle]="{'visibility':(totalRecords > 0) ? 'visible' : 'hidden'}" class="pagination-per-page">
+
+
+                <div *ngIf="totalPages>1" class="pagination p1">
+                    <ul>
+                        <li [ngStyle]="{'display':(dataTableParams.pageNo > 1) ? 'block' : 'none'}" class="left-arrow-pagi"><a href="javascript:;" (click)="onClickPrevPage()"><i
+                                    class="fas fa-angle-left"></i></a></li>
+                        <li *ngFor="let a of fakeArray; let index = index"> <a [ngClass]="{'is-active': this.dataTableParams.pageNo === index+1}" href="javascript:;" (click)="onChangePageNumber(index+1)">{{index+1}}</a></li>
+                        <li [ngStyle]="{'display':(dataTableParams.pageNo < totalPages && totalRecords > 0) ? 'block' : 'none'}" class="right-arrow-pagi"><a href="javascript:;" (click)="onClickNextPage()"><i
+                                    class="fas fa-angle-right"></i></a></li>
+                    </ul>
+                </div>
+            </div> -->
+            <div class="pagination-block-up">
+                <ngb-pagination [maxSize]="5" [collectionSize]="totalRecords" [pageSize]="dataTableParams.pageSize" [page]="dataTableParams.pageNo" [rotate]="true" (pageChange)="loadPage($event)" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<ng-template #deleteRecommendationAlertModal let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onCloseAllModels()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Delete this recommendation?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCloseAllModels()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onDeleteRecommendationModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #pauseRecommendationAlertModal let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onCloseAllModels()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Pause this recommendation?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCloseAllModels()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onPauseRecommendationModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #unPauseRecommendationAlertModal let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onCloseAllModels()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Unpause this recommendation?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCloseAllModels()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onUnPauseRecommendationModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+<div class="create-new-owner-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <ng-template #addRecommendationModalContent let-modal>
+                <!-- <div class="modal-content"> -->
+                <form [formGroup]="inputForm" (ngSubmit)="saveRecommendation()">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" value="admin-home-owner" (click)="onCloseAllModels()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4 *ngIf="recommendationId==0">New Home Recommendation</h4>
+                            <h4 *ngIf="recommendationId!=0 && isDuplicate">Duplicate Recommendation</h4>
+                            <h4 *ngIf="recommendationId!=0 && !isDuplicate">Edit Home Recommendation</h4>
+                            <p>Fill the complete information about Home Recommendation</p>
+                        </div>
+
+                        <!-- <input type="hidden" formControlName="articleId"> -->
+                        <div *ngIf="stepCode==1" class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="enter-title-text">Recommendation Name <span>*</span></label>
+                                        <input type="text" class="form-control" formControlName="recommendationTitle" placeholder="Add Recommendation Name" id="enter-title-text" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'recommendationTitle')">
+                                        <div *ngIf="(formControls.recommendationTitle.invalid) && (submittedStep1 || formControls.recommendationTitle.dirty || formControls.recommendationTitle.touched)" class="text-danger">
+                                            <div *ngIf="formControls.recommendationTitle.errors?.required || formControls.recommendationTitle.value==0">
+                                                Recommendation name is required.
+                                            </div>
+                                            <div *ngIf="formControls.recommendationTitle.errors?.maxlength">
+                                                Recommendation name can be max 150 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="short-description">Description <span>*</span></label>
+                                        <textarea id="short-description" formControlName="descriptionText" class="form-control" rows="5" cols="50" placeholder="Write Description here." (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'descriptionText')"></textarea>
+                                        <div *ngIf="(formControls.descriptionText.invalid) && (submittedStep1 || formControls.descriptionText.dirty || formControls.descriptionText.touched)" class="text-danger">
+                                            <div *ngIf="formControls.descriptionText.errors?.required || formControls.descriptionText.value==0">
+                                                Description is required.
+                                            </div>
+                                            <div *ngIf="formControls.descriptionText.errors?.maxlength">
+                                                Description can be max 500 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="addOptionalress">Optional Links</label>
+                                        <div class="optional-links-box" *ngFor="let optionalLink of optionalLinks; let i=index">
+                                            <input type="text" class="form-control" placeholder="Add Optional Links" [value]="optionalLink">
+
+                                            <a href="javascript:;" (click)="onRemoveOptionalLink(i)" class="optional-links-add">-</a>
+                                        </div>
+                                        <div class="optional-links-box optional-display-off">
+                                            <div class="optional-block-rec-admin">
+                                                <input type="text" class="form-control" placeholder="Add Optional Links" id="addOptionalress" formControlName="optionalLinkText">
+                                                <a href="javascript:;" [ngClass]="!(formControls.optionalLinkText.value==0) ? '' : 'disabled-add-more-button'" (click)="onAddNewOptionalLink(formControls.optionalLinkText.value)" class="optional-links-add">+</a></div>
+                                            <div *ngIf="(formControls.optionalLinkText.invalid) && (submittedStep1 || formControls.optionalLinkText.dirty || formControls.optionalLinkText.touched)" class="text-danger">
+
+                                                <div *ngIf="formControls.optionalLinkText.errors?.pattern">
+                                                    Please provide valid url.
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="selectedIconName">Icon Image <span>*</span></label>
+
+                                        <div class="selects-icon-image">
+                                            <dl class="dropdown">
+                                                <dt>
+                                                    <a href="javascript:;" (click)="toggleIconGallery()">
+                                                        {{selectedIconName==''? 'Please select icon': selectedIconName}}
+                                                        <span class="hida">
+
+                                                            <input type="hidden" class="form-control facebook-input"
+                                                                placeholder="Type Category Title" id="selectedIconName"
+                                                                formControlName="iconFile">
+                                                        </span>
+                                                        <p class="multiSel"></p>
+                                                    </a>
+                                                </dt>
+
+                                                <a href="javascript:;" class="drop-icon"><i
+                                                        class="fas fa-angle-down"></i></a>
+
+                                                <dd>
+                                                    <div class="mutliSelect">
+                                                        <ul id="iconGallery">
+                                                            <li *ngFor="let icon of icons">
+                                                                <a (click)="setCategoryIcon(icon.IconFile)" href="javascript:;"> <img src="assets/img/home-variable-icons/{{icon.IconFile}}" alt="Edit-Icon">
+                                                                    <!-- <span>{{icon.iconName}}</span> -->
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </dd>
+
+                                            </dl>
+                                        </div>
+                                        <div *ngIf="formControls.iconFile.invalid && (submittedStep1 || formControls.iconFile.dirty || formControls.iconFile.touched)" class="text-danger">
+                                            <div *ngIf="formControls.iconFile.errors?.required">
+                                                Icon is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="upload-image-box rec-home-pic upload-home-owner" *ngIf="profilePhoto">
+                                        <img class="img-fluid" id="profilePhotoImgElement" [src]="profilePhoto" alt="profile-change-img">
+                                    </div>
+                                    <!-- <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                                        Maximum File Size Limit is 1MB
+                                    </div> -->
+                                    <ul class="upload-image-box-link">
+                                        <li>
+
+                                            <input type="file" accept="image/png, image/jpeg" id="profilePhotoBrowserInput" (change)="onProfilePhotoBrowserInputChange($event,'profilePhotoImgElement', '4.52')" style="display: none;">
+
+                                            <a href="javascript:;" (click)="passClickToProfileFileInput('profilePhotoBrowserInput')" onclick="profilePhotoBrowserInput.value = null" class="btn-primary-small">Upload Home Image</a>
+                                        </li>
+                                        <li> <a href="javascript:;" *ngIf="profilePhoto" (click)="onRemoveImage()" class="btn-secondary-small">Remove</a></li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                            <div class="row" *ngIf="!profilePhoto && submittedStep1">
+                                <div class="col-md-12 text-danger">
+                                    Image is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="stepCode==2" class="create-new-owner-modal-form">
+                            <div class="create-new-recommendation-modal-accordion">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="accordion" id="accordionExample">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseOne')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" (click)="toggleCollapse('collapseOne')">
+                                                         {{mainCategories[0]?.title}}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseOne" class="accordion-collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                                <div *ngFor="let subCategory of mainCategories[0]?.homeVariableSubCategories" class="form-group">
+                                                                    <h6 *ngIf="(!subCategory?.isHiddenInRecommendationCreate)">
+                                                                        {{subCategory?.title}}</h6>
+                                                                    <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==2 || subCategory?.homeVariableSubCategoryId==3 || subCategory?.homeVariableSubCategoryId==4 || subCategory?.homeVariableSubCategoryId==7); else checkBoxFields">
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==2">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="homeAgeValue" [(highValue)]="homeAgeMaxValue" [options]="options_HomeAge">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==3">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="homeAreaValue" [(highValue)]="homeAreaMaxValue" [options]="options_HomeArea">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==4">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="floorsCountValue" [(highValue)]="floorsCountMaxValue" [options]="options_FloorsCount">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==7">
+
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="isGarage"
+                                                                                            value="1" checked="checked"
+                                                                                            name="isGarage">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="isGarage"
+                                                                                            formControlName="isGarage"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="isGarage"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="isGarage">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <ng-template #checkBoxFields>
+                                                                        <div class="floor-group-type" *ngIf="subCategory?.homeVariableSubCategoryId==1 || subCategory?.homeVariableSubCategoryId==5 || subCategory?.homeVariableSubCategoryId==6 || subCategory?.homeVariableSubCategoryId==42">
+                                                                            <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                                <input type="checkbox" id="{{listItem.homeVariableSubCategoryListItemId}}" value="{{listItem.homeVariableSubCategoryListItemId}}" (change)="onChangeListItemsCheckBox($event)">
+                                                                                <!-- [checked]="commonOpsService.markCheckboxChecked(listItem.homeVariableSubCategoryListItemId, this.inputForm.controls.selectedSubCateListIds.value)"> -->
+                                                                                <label for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingTwo">
+                                                    <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseTwo')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" (click)="toggleCollapse('collapseTwo')">
+                                                          {{mainCategories[1]?.title}}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                                <div *ngFor="let subCategory of mainCategories[1]?.homeVariableSubCategories" class="form-group">
+
+                                                                    <!-- <h6 *ngIf="(!subCategory?.isHiddenInRecommendationCreate)">
+                                                                        {{subCategory?.title}}</h6> -->
+
+                                                                    <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==9 || subCategory?.homeVariableSubCategoryId==46); else checkBoxFields_Heat">
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==46">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="heatingTempratureValue" [(highValue)]="heatingTempratureMaxValue" [options]="options_HeatingTemprature">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==9">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="heatSourceAgeValue" [(highValue)]="heatSourceAgeMaxValue" [options]="options_HeatSourceAge">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <ng-template #checkBoxFields_Heat>
+                                                                        <div class="floor-group-type">
+                                                                            <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                                <input type="checkbox" id="{{listItem.homeVariableSubCategoryListItemId}}" value="{{listItem.homeVariableSubCategoryListItemId}}" (change)="onChangeListItemsCheckBox($event)">
+                                                                                <!-- [checked]="commonOpsService.markCheckboxChecked(listItem.homeVariableSubCategoryListItemId, this.inputForm.controls.selectedSubCateListIds.value)"> -->
+                                                                                <label for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</label>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </ng-template>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingThree">
+                                                    <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseThree')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" (click)="toggleCollapse('collapseThree')">
+                                                         {{mainCategories[2]?.title}}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                                <div *ngFor="let subCategory of mainCategories[2]?.homeVariableSubCategories" class="form-group">
+<!-- 
+                                                                    <h6 *ngIf="(!subCategory?.isHiddenInRecommendationCreate)">
+                                                                        {{subCategory?.title}}</h6> -->
+                                                                    <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==11 || subCategory?.homeVariableSubCategoryId==13); else checkBoxFields_Cooling">
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==11">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="coolingTempratureValue" [(highValue)]="coolingTempratureMaxValue" [options]="options_CoolingTemprature">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==13">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="coolingSourceAgeValue" [(highValue)]="coolingSourceAgeMaxValue" [options]="options_CoolingSourceAge">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <ng-template #checkBoxFields_Cooling>
+                                                                        <div class="floor-group-type">
+                                                                            <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                                <input type="checkbox" id="{{listItem.homeVariableSubCategoryListItemId}}" value="{{listItem.homeVariableSubCategoryListItemId}}" (change)="onChangeListItemsCheckBox($event)">
+                                                                                <!-- [checked]="commonOpsService.markCheckboxChecked(listItem.homeVariableSubCategoryListItemId, this.inputForm.controls.selectedSubCateListIds.value)"> -->
+                                                                                <label for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingFour">
+                                                    <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseFour')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" (click)="toggleCollapse('collapseFour')">
+                                                          {{mainCategories[3]?.title}}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                                <div *ngFor="let subCategory of mainCategories[3]?.homeVariableSubCategories" class="form-group">
+                                                                    <h6>{{subCategory?.title}}</h6>
+                                                                    <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==16 || subCategory?.homeVariableSubCategoryId==18 || subCategory?.homeVariableSubCategoryId==19); else checkBoxFields_WaterTreat">
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==16">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="waterTeat_TempratureValue" [(highValue)]="waterTeat_TempratureMaxValue" [options]="options_WaterTeat_Temprature">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==18">
+                                                                            <div class="custom-slider">
+                                                                                <ngx-slider [(value)]="waterTeat_FilterAgeValue" [(highValue)]="waterTeat_FilterAgeMaxValue" [options]="options_waterTeat_FilterAge">
+                                                                                </ngx-slider>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==19">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="waterTeat_IsSoftener"
+                                                                                            value="1" checked="checked"
+                                                                                            name="waterTeat_IsSoftener">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="waterTeat_IsSoftener"
+                                                                                            formControlName="waterTeat_IsSoftener"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="waterTeat_IsSoftener"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="waterTeat_IsSoftener">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                    <ng-template #checkBoxFields_WaterTreat>
+                                                                        <div class="floor-group-type">
+                                                                            <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                                <input type="checkbox" id="{{listItem.homeVariableSubCategoryListItemId}}" value="{{listItem.homeVariableSubCategoryListItemId}}" (change)="onChangeListItemsCheckBox($event)">
+                                                                                <!-- [checked]="commonOpsService.markCheckboxChecked(listItem.homeVariableSubCategoryListItemId, this.inputForm.controls.selectedSubCateListIds.value)"> -->
+                                                                                <label for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingFive">
+                                                    <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseFive')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" (click)="toggleCollapse('collapseFive')">
+                                                          {{mainCategories[4]?.title}}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                                <div *ngFor="let subCategory of mainCategories[4]?.homeVariableSubCategories" class="form-group">
+
+                                                                    <h6>{{subCategory?.title}}</h6>
+
+                                                                    <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==20 
+                                                                        || subCategory?.homeVariableSubCategoryId==22 
+                                                                        || subCategory?.homeVariableSubCategoryId==24
+                                                                        || subCategory?.homeVariableSubCategoryId==25
+                                                                        || subCategory?.homeVariableSubCategoryId==26
+                                                                        || subCategory?.homeVariableSubCategoryId==27
+                                                                        || subCategory?.homeVariableSubCategoryId==29); else checkBoxFields_HomeOutside">
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==20">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsLawn"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeOutside_IsLawn">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeOutside_IsLawn"
+                                                                                            formControlName="homeOutside_IsLawn"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsLawn"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeOutside_IsLawn">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==22">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsFence"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeOutside_IsFence">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeOutside_IsFence"
+                                                                                            formControlName="homeOutside_IsFence"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsFence"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeOutside_IsFence">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==24">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsSprinklers"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeOutside_IsSprinklers">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeOutside_IsSprinklers"
+                                                                                            formControlName="homeOutside_IsSprinklers"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsSprinklers"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeOutside_IsSprinklers">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==25">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsTree"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeOutside_IsTree">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeOutside_IsTree"
+                                                                                            formControlName="homeOutside_IsTree"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsTree"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeOutside_IsTree">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==26">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsShrubs"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeOutside_IsShrubs">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeOutside_IsShrubs"
+                                                                                            formControlName="homeOutside_IsShrubs"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsShrubs"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeOutside_IsShrubs">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==27">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsPool"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeOutside_IsPool">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeOutside_IsPool"
+                                                                                            formControlName="homeOutside_IsPool"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsPool"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeOutside_IsPool">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==29">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsHotTub"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeOutside_IsHotTub">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeOutside_IsHotTub"
+                                                                                            formControlName="homeOutside_IsHotTub"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeOutside_IsHotTub"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeOutside_IsHotTub">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <ng-template #checkBoxFields_HomeOutside>
+                                                                        <div class="floor-group-type">
+                                                                            <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                                <input type="checkbox" id="{{listItem.homeVariableSubCategoryListItemId}}" value="{{listItem.homeVariableSubCategoryListItemId}}" (change)="onChangeListItemsCheckBox($event)">
+                                                                                <!-- [checked]="commonOpsService.markCheckboxChecked(listItem.homeVariableSubCategoryListItemId, this.inputForm.controls.selectedSubCateListIds.value)"> -->
+                                                                                <label for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingSix">
+                                                    <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseSix')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" (click)="toggleCollapse('collapseSix')">
+                                                           {{mainCategories[5]?.title}}
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                                <div *ngFor="let subCategory of mainCategories[5]?.homeVariableSubCategories" class="form-group">
+
+                                                                    <h6>{{subCategory?.title}}</h6>
+
+                                                                    <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==30 
+                                                                    || subCategory?.homeVariableSubCategoryId==32
+                                                                    || subCategory?.homeVariableSubCategoryId==34
+                                                                    
+                                                                    || subCategory?.homeVariableSubCategoryId==36
+                                                                    || subCategory?.homeVariableSubCategoryId==37
+                                                                    || subCategory?.homeVariableSubCategoryId==39
+                                                                    
+                                                                    || subCategory?.homeVariableSubCategoryId==40 
+                                                                    || subCategory?.homeVariableSubCategoryId==44); else checkBoxFields_HomeAppliance">
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==30">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsSmartLight"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsSmartLight">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsSmartLight"
+                                                                                            formControlName="homeAppliance_IsSmartLight"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsSmartLight"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsSmartLight">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==32">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsWashingMachine"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsWashingMachine">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsWashingMachine"
+                                                                                            formControlName="homeAppliance_IsWashingMachine"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsWashingMachine"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsWashingMachine">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==34">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsDryer"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsDryer">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsDryer"
+                                                                                            formControlName="homeAppliance_IsDryer"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsDryer"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsDryer">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==36">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsRangeHood"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsRangeHood">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsRangeHood"
+                                                                                            formControlName="homeAppliance_IsRangeHood"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsRangeHood"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsRangeHood">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==37">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsDishwasher"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsDishwasher">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsDishwasher"
+                                                                                            formControlName="homeAppliance_IsDishwasher"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsDishwasher"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsDishwasher">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==39">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsOven"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsOven">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsOven"
+                                                                                            formControlName="homeAppliance_IsOven"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsOven"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsOven">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==40">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsStove"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsStove">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsStove"
+                                                                                            formControlName="homeAppliance_IsStove"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsStove"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsStove">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==44">
+                                                                            <div class="garage-check-box">
+                                                                                <div class="form-check-inline">
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Yes</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsMicrowave"
+                                                                                            value="1" checked="checked"
+                                                                                            name="homeAppliance_IsMicrowave">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">No</span>
+                                                                                        <input type="radio"
+                                                                                            name="homeAppliance_IsMicrowave"
+                                                                                            formControlName="homeAppliance_IsMicrowave"
+                                                                                            value="0">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+
+                                                                                    <label class="customradio"><span
+                                                                                            class="radiotextsty">Doesn't
+                                                                                            Matter</span>
+                                                                                        <input type="radio"
+                                                                                            formControlName="homeAppliance_IsMicrowave"
+                                                                                            value="-1" checked="checked"
+                                                                                            name="homeAppliance_IsMicrowave">
+                                                                                        <span class="checkmark"></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <ng-template #checkBoxFields_HomeAppliance>
+                                                                        <div class="floor-group-type">
+                                                                            <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                                <input type="checkbox" id="{{listItem.homeVariableSubCategoryListItemId}}" value="{{listItem.homeVariableSubCategoryListItemId}}" (change)="onChangeListItemsCheckBox($event)">
+                                                                                <!-- [checked]="commonOpsService.markCheckboxChecked(listItem.homeVariableSubCategoryListItemId, this.inputForm.controls.selectedSubCateListIds.value)"> -->
+                                                                                <label for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-12 col-md-12">
+
+                                        <div *ngIf="formControls.selectedSubCateListIds.invalid && (submittedStep2 || formControls.selectedSubCateListIds.dirty || formControls.selectedSubCateListIds.touched)" class="text-danger">
+                                            <div *ngIf="formControls.selectedSubCateListIds.errors?.required">
+                                                Please select any home variable..!
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="stepCode==3" class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <label for="frequency">Select the Frequency <span>*</span></label>
+                                        <div class="select-dropdown">
+                                            <select id="frequency" class="form-select" aria-label="Default select example" formControlName="recommendationFrequencyType">
+                                                <option selected value="">Add Frequency Months</option>
+                                                <option value="0">Default</option>
+                                                <option value="1">Every Month</option>
+                                                <option value="2">Every 2 Months</option>
+                                                <option value="3">Every 3 Months</option>
+                                                <option value="4">Every 4 Months</option>
+                                                <option value="5">Once Every 6 Months</option>
+                                                <option value="6">Once Every 12 Months</option>
+                                                <option value="7">Once Every 24 Months</option>
+                                            </select>
+                                            <div *ngIf="(formControls.recommendationFrequencyType.invalid) && (submitted || formControls.recommendationFrequencyType.dirty || formControls.recommendationFrequencyType.touched)" class="text-danger">
+                                                <div *ngIf="formControls.recommendationFrequencyType.errors?.required">
+                                                    Frequency is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group month-block start-specfic-date-box">
+                                        <label for="start-specific-date">Start Specific Date<span>*</span></label>
+                                        <div class="month-block" *ngIf="recommendationId==0">
+                                            <input type="text" readonly class="form-control" placeholder="Choose Date" id="start-specific-date" formControlName="startDateJson" [minDate]=minPickerDate ngbDatepicker #d2="ngbDatepicker" (click)="d2.toggle()">
+                                            <a href="javascript:;" (click)="d2.toggle()"><i
+                                                    class="fas fa-calendar-alt"></i></a>
+                                        </div>
+                                        <div class="month-block" *ngIf="recommendationId!=0">
+                                            <input type="text" readonly class="form-control" placeholder="Choose Date" id="start-specific-date" formControlName="startDateJson" ngbDatepicker #d2="ngbDatepicker" (click)="d2.toggle()">
+                                            <a href="javascript:;" (click)="d2.toggle()"><i
+                                                    class="fas fa-calendar-alt"></i></a>
+                                        </div>
+                                        <div *ngIf="(formControls.startDateJson.invalid) && (submitted || formControls.startDateJson.dirty || formControls.startDateJson.touched)" class="text-danger">
+                                            <div *ngIf="formControls.startDateJson.errors?.required">
+                                                Start specific date is required.
+                                            </div>
+                                        </div>
+                                        <div *ngIf="(formControls.startDateJson.invalid) && ( (submitted || formControls.startDateJson.dirty || formControls.startDateJson.touched))" class="text-danger">
+
+                                            <div *ngIf="formControls.startDateJson.invalid && !formControls.startDateJson.errors?.required">
+                                                Please enter valid Date format (yyyy-mm-dd).
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+
+
+                                <!--  col-md-6   -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="level">Select the Level <span>*</span></label>
+                                        <div class="garage-check-box">
+                                            <div class="form-check-inline">
+
+                                                <label class="customradio"><span class="radiotextsty">Basic </span>
+                                                    <input type="radio" checked="checked" value="1"
+                                                      id="level"  formControlName="membershipPlanType">
+                                                    <span class="checkmark"></span>
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="false-lable-text" for="company">&nbsp; </label>
+                                        <div class="garage-check-box">
+                                            <div class="form-check-inline">
+                                                <label class="customradio"><span class="radiotextsty">Premium</span>
+                                                    <input type="radio" value="2"
+                                                        formControlName="membershipPlanType">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" *ngIf="stepCode==2 || stepCode==3" (click)="backRecommendationStep(stepCode-1)" class="btn btn-secondary">Back</button>
+
+                        <button type="button" *ngIf="stepCode==1 || stepCode==2" (click)="setRecommendationModalStep(stepCode+1)" class="btn btn-primary">Next</button>
+                        <button type="submit" *ngIf="stepCode==3" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<ng-template #cropImageModal let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelCropImageModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>
+
+
+<!-- Home Information Modal -->
+<div class="vendor-article-modal-block">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #viewRecommendationModalContent let-modal>
+                <div class="modal-header">
+
+                    <div class="vendor-variables-modal-heading-block">
+                        <h4>{{formControls.recommendationTitle.value}}</h4>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" value="admin-home-owner" (click)="onCloseAllModels()"></button>
+                </div>
+                <div *ngIf="stepCode==1" class="modal-body">
+
+                    <div class="variables-article-modal-text">
+                        <p>{{formControls.descriptionText.value}}</p>
+                    </div>
+
+                    <div class="home-variables-article-section article-border-section">
+                        <div class="variables-article-optional-link">
+                            <h5>Optional Links</h5>
+                            <div *ngFor="let optionalLink of optionalLinks">
+                                <a [href]="optionalLink" target="_blank">{{optionalLink}}</a>
+                            </div>
+
+                        </div>
+
+                        <div class="variables-img-icon-modal">
+                            <h5>Variables Icon</h5>
+                            <div class="variables-img-icon-dis">
+                                <img src="assets/img/home-variable-icons/{{formControls.iconFile.value}}" alt="air-filters-icon">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="home-variables-img-box-modal">
+                        <h5>Home Variable Image</h5>
+                        <div class="rec-Variables-img">
+                            <img [src]="profilePhoto" class="change-air-filters-img img-fluid" alt="change-air-filters-img">
+                        </div>
+                    </div>
+
+
+                    <div class="variables-article-scroll-link">
+                        <h5>Home Variables Tags</h5>
+                        <a href="javascript:;" *ngIf="stepCode==1" (click)="setViewRecommendationModalStep(stepCode+1)" class="btn btn-secondary">See Home Recommendation Variable</a>
+                    </div>
+
+
+
+                    <div class="vendor-article-modal-link">
+
+                        <div class="vendor-article-optional-link">
+                            <h5>Home Variables Frequency</h5>
+                            <p *ngIf="formControls.recommendationFrequencyType.value==1">Every Month</p>
+                            <p *ngIf="formControls.recommendationFrequencyType.value==2">Every 2 Months</p>
+                            <p *ngIf="formControls.recommendationFrequencyType.value==3">Every 3 Months</p>
+                            <p *ngIf="formControls.recommendationFrequencyType.value==4">Every 4 Months</p>
+                            <p *ngIf="formControls.recommendationFrequencyType.value==5">Once Every 6 Months</p>
+                            <p *ngIf="formControls.recommendationFrequencyType.value==6">Once Every 12 Months</p>
+                            <p *ngIf="formControls.recommendationFrequencyType.value==7">Once Every 24 Months</p>
+                        </div>
+
+                        <div class="vendor-variables-optional-link">
+                            <h5>Start Specific Date </h5>
+                            <p>{{formControls.startDate.value | date: 'MMMM d, yyyy'}}</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="vendor-article-modal-start">
+
+                        <div class="vendor-specific-optional-link">
+                            <h5>Home Variables Level</h5>
+                            <p *ngIf="formControls.membershipPlanType.value==1">Basic</p>
+                            <p *ngIf="formControls.membershipPlanType.value==2">Premium</p>
+                        </div>
+
+                        <div class="vendor-variables-optional-link">
+                            <h5>Home Variables Status </h5>
+                            <p *ngIf="formControls.recommendationStausType.value==0" class="pending-status">Draft</p>
+                            <p *ngIf="formControls.recommendationStausType.value==1" class="active-status">Active</p>
+                            <p *ngIf="formControls.recommendationStausType.value==2" class="paused-status">Paused</p>
+                            <p *ngIf="formControls.recommendationStausType.value==3" class="deleted-status">Deleted</p>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div *ngIf="stepCode==2" class="modal-body">
+                    <div class="create-new-recommendation-modal-accordion view-rec-det">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseOne')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" (click)="toggleCollapse('collapseOne')">
+                                                 {{mainCategories[0]?.title}}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div *ngFor="let subCategory of mainCategories[0]?.homeVariableSubCategories" class="form-group">
+                                                            <h6 *ngIf="(!subCategory?.isHiddenInRecommendationCreate)">
+                                                                {{subCategory?.title}}</h6>
+                                                            <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==2 || subCategory?.homeVariableSubCategoryId==3 || subCategory?.homeVariableSubCategoryId==4 || subCategory?.homeVariableSubCategoryId==7); else checkBoxFields">
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==2 && homeAgeValue!=homeAgeMaxValue">
+                                                                    {{homeAgeValue}} to {{homeAgeMaxValue}} Years
+                                                                    <!-- <div class="custom-slider">
+                                                                        <ngx-slider [(value)]="homeAgeValue"
+                                                                            [options]="options_HomeAge">
+                                                                            </ngx-slider>  
+                                                                  </div> -->
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==2 && homeAgeValue==homeAgeMaxValue">
+                                                                    {{homeAgeMaxValue}} Years
+                                                                </div>
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==3 && homeAreaValue!=homeAreaMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{homeAreaValue}} to {{homeAreaMaxValue}} Sq. Ft.
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==3 && homeAreaValue==homeAreaMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{homeAreaMaxValue}} Sq. Ft.
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==4 && floorsCountValue!=floorsCountMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{floorsCountValue}} to {{floorsCountMaxValue}} Floors
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==4 && floorsCountValue==floorsCountMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{floorsCountMaxValue}} Floors
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==7">
+                                                                    <p *ngIf="formControls.isGarage.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.isGarage.value==0">No</p>
+                                                                    <p *ngIf="formControls.isGarage.value==-1">Doesn't Matter</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <ng-template #checkBoxFields>
+                                                                <div class="floor-group-type" *ngIf="subCategory?.homeVariableSubCategoryId==1 || subCategory?.homeVariableSubCategoryId==5 || subCategory?.homeVariableSubCategoryId==6 || subCategory?.homeVariableSubCategoryId==42">
+                                                                    <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                        <span style="display: none;" id="{{listItem.homeVariableSubCategoryListItemId}}" for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseTwo')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" (click)="toggleCollapse('collapseTwo')">
+                                                 {{mainCategories[1]?.title}}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div *ngFor="let subCategory of mainCategories[1]?.homeVariableSubCategories" class="form-group">
+
+                                                            <h6 *ngIf="(!subCategory?.isHiddenInRecommendationCreate)">
+                                                                {{subCategory?.title}}</h6>
+
+                                                            <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==9 || subCategory?.homeVariableSubCategoryId==46); else checkBoxFields_Heat">
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==46 && heatingTempratureValue!=heatingTempratureMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        <!-- <ngx-slider
+                                                                            [(value)]="coolingTempratureValue"
+                                                                            [options]="options_CoolingTemprature">
+                                                                        </ngx-slider> -->
+                                                                        {{heatingTempratureValue}} to {{heatingTempratureMaxValue}} F
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==46 && heatingTempratureValue==heatingTempratureMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{heatingTempratureMaxValue}} F
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==9 && heatSourceAgeValue!=heatSourceAgeMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{heatSourceAgeValue}} to {{heatSourceAgeMaxValue}} Years
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==9 && heatSourceAgeValue==heatSourceAgeMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{heatSourceAgeMaxValue}} Years
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <ng-template #checkBoxFields_Heat>
+                                                                <div class="floor-group-type">
+                                                                    <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                        <span style="display: none;" id="{{listItem.homeVariableSubCategoryListItemId}}" for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</span>
+                                                                    </div>
+
+                                                                </div>
+                                                            </ng-template>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseThree')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" (click)="toggleCollapse('collapseThree')">
+                                                 {{mainCategories[2]?.title}}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div *ngFor="let subCategory of mainCategories[2]?.homeVariableSubCategories" class="form-group">
+
+                                                            <h6 *ngIf="(!subCategory?.isHiddenInRecommendationCreate)">
+                                                                {{subCategory?.title}}</h6>
+                                                            <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==11 || subCategory?.homeVariableSubCategoryId==13); else checkBoxFields_Cooling">
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==11 && coolingTempratureValue!=coolingTempratureMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{coolingTempratureValue}} to {{coolingTempratureMaxValue}} F
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==11 && coolingTempratureValue==coolingTempratureMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{coolingTempratureMaxValue}} F
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==13 && coolingSourceAgeValue!=coolingSourceAgeMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{coolingSourceAgeValue}} to {{coolingSourceAgeMaxValue}} Years
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==13 && coolingSourceAgeValue==coolingSourceAgeMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{coolingSourceAgeMaxValue}} Years
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <ng-template #checkBoxFields_Cooling>
+                                                                <div class="floor-group-type">
+                                                                    <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                        <span style="display: none;" id="{{listItem.homeVariableSubCategoryListItemId}}" for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseFour')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" (click)="toggleCollapse('collapseFour')">
+                                                  {{mainCategories[3]?.title}}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div *ngFor="let subCategory of mainCategories[3]?.homeVariableSubCategories" class="form-group">
+                                                            <h6>{{subCategory?.title}}</h6>
+                                                            <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==16 || subCategory?.homeVariableSubCategoryId==18 || subCategory?.homeVariableSubCategoryId==19); else checkBoxFields_WaterTreat">
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==16 && waterTeat_TempratureValue!=waterTeat_TempratureMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{waterTeat_TempratureValue}} to {{waterTeat_TempratureMaxValue}} F
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==16 && waterTeat_TempratureValue==waterTeat_TempratureMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{waterTeat_TempratureMaxValue}} F
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==18 && waterTeat_FilterAgeValue!=waterTeat_FilterAgeMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{waterTeat_FilterAgeValue}} to {{waterTeat_FilterAgeMaxValue}} Months
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==18 && waterTeat_FilterAgeValue==waterTeat_FilterAgeMaxValue">
+                                                                    <div class="custom-slider">
+                                                                        {{waterTeat_FilterAgeMaxValue}} Months
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==19">
+                                                                    <p *ngIf="formControls.waterTeat_IsSoftener.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.waterTeat_IsSoftener.value==0">No</p>
+                                                                    <p *ngIf="formControls.waterTeat_IsSoftener.value==-1">Doesn't Matter</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <ng-template #checkBoxFields_WaterTreat>
+                                                                <div class="floor-group-type">
+                                                                    <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                        <span style="display: none;" id="{{listItem.homeVariableSubCategoryListItemId}}" for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFive">
+                                            <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseFive')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" (click)="toggleCollapse('collapseFive')">
+                                                  {{mainCategories[4]?.title}}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div *ngFor="let subCategory of mainCategories[4]?.homeVariableSubCategories" class="form-group">
+
+                                                            <h6>{{subCategory?.title}}</h6>
+
+                                                            <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==20 
+                                                                || subCategory?.homeVariableSubCategoryId==22 
+                                                                || subCategory?.homeVariableSubCategoryId==24
+                                                                || subCategory?.homeVariableSubCategoryId==25
+                                                                || subCategory?.homeVariableSubCategoryId==26
+                                                                || subCategory?.homeVariableSubCategoryId==27
+                                                                || subCategory?.homeVariableSubCategoryId==29); else checkBoxFields_HomeOutside">
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==20">
+                                                                    <p *ngIf="formControls.homeOutside_IsLawn.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsLawn.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsLawn.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==22">
+                                                                    <p *ngIf="formControls.homeOutside_IsFence.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsFence.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsFence.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==24">
+                                                                    <p *ngIf="formControls.homeOutside_IsSprinklers.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsSprinklers.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsSprinklers.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==25">
+                                                                    <p *ngIf="formControls.homeOutside_IsTree.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsTree.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsTree.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==26">
+                                                                    <p *ngIf="formControls.homeOutside_IsShrubs.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsShrubs.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsShrubs.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==27">
+                                                                    <p *ngIf="formControls.homeOutside_IsPool.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsPool.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsPool.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==29">
+                                                                    <p *ngIf="formControls.homeOutside_IsHotTub.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsHotTub.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeOutside_IsHotTub.value==-1">Doesn't Matter</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <ng-template #checkBoxFields_HomeOutside>
+                                                                <div class="floor-group-type">
+                                                                    <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                        <span style="display: none;" id="{{listItem.homeVariableSubCategoryListItemId}}" for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSix">
+                                            <button class="accordion-button" [ngClass]="{'collapsed': !isCollapsedShown('collapseSix')}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" (click)="toggleCollapse('collapseSix')">
+                                                 {{mainCategories[5]?.title}}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <div *ngFor="let subCategory of mainCategories[5]?.homeVariableSubCategories" class="form-group">
+
+                                                            <h6>{{subCategory?.title}}</h6>
+
+                                                            <div class="col-md-12" *ngIf="(!subCategory?.isHiddenInRecommendationCreate) && (subCategory?.homeVariableSubCategoryId==30 
+                                                            || subCategory?.homeVariableSubCategoryId==32
+                                                            || subCategory?.homeVariableSubCategoryId==34
+                                                            
+                                                            || subCategory?.homeVariableSubCategoryId==36
+                                                            || subCategory?.homeVariableSubCategoryId==37
+                                                            || subCategory?.homeVariableSubCategoryId==39
+                                                            
+                                                            || subCategory?.homeVariableSubCategoryId==40 
+                                                            || subCategory?.homeVariableSubCategoryId==44); else checkBoxFields_HomeAppliance">
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==30">
+                                                                    <p *ngIf="formControls.homeAppliance_IsSmartLight.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsSmartLight.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsSmartLight.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==32">
+                                                                    <p *ngIf="formControls.homeAppliance_IsWashingMachine.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsWashingMachine.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsWashingMachine.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==34">
+                                                                    <p *ngIf="formControls.homeAppliance_IsDryer.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsDryer.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsDryer.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==36">
+                                                                    <p *ngIf="formControls.homeAppliance_IsRangeHood.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsRangeHood.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsRangeHood.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==37">
+                                                                    <p *ngIf="formControls.homeAppliance_IsDishwasher.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsDishwasher.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsDishwasher.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==39">
+                                                                    <p *ngIf="formControls.homeAppliance_IsOven.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsOven.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsOven.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==40">
+                                                                    <p *ngIf="formControls.homeAppliance_IsStove.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsStove.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsStove.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+
+                                                                <div class="form-group" *ngIf="subCategory?.homeVariableSubCategoryId==44">
+                                                                    <p *ngIf="formControls.homeAppliance_IsMicrowave.value==1">Yes</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsMicrowave.value==0">No</p>
+                                                                    <p *ngIf="formControls.homeAppliance_IsMicrowave.value==-1">Doesn't Matter</p>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <ng-template #checkBoxFields_HomeAppliance>
+                                                                <div class="floor-group-type">
+                                                                    <div class="checkbox-group" *ngFor="let listItem of getListItemsOfSubCategory(subCategory?.homeVariableSubCategoryId)">
+                                                                        <span style="display: none;" id="{{listItem.homeVariableSubCategoryListItemId}}" for="{{listItem.homeVariableSubCategoryListItemId}}">{{listItem?.title}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-template>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" *ngIf="stepCode==2" (click)="backRecommendationStep(stepCode-1)" class="btn btn-secondary">Back</button>
+                    <button type="button" (click)="openEditRecommendationModal(addRecommendationModalContent)" class="btn btn-primary">Edit Home Recommendation</button>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

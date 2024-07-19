@@ -1,0 +1,512 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="breadcrumb-box">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:;" (click)="onClickDashboard()">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Message List</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-12">
+            <!--<div class="setting-heading-main">
+                <h4>Hello, {{this.userJwtDecodedInfo.FullName}}</h4>
+            </div> -->
+        </div>
+        <div class="col-xl-8 col-lg-8 col-md-12">
+            <div class="message-manage-btn rea-message-new-btn">
+                <div class="added-new-client-btn">
+                    <a href="javascript:;" (click)="openWelcomeModal(welcomeMessageModalContent)" class="btn-primary-small">Update Welcome Message</a>
+                </div>
+                <div class="added-new-client-btn">
+                    <a href="javascript:;" class="btn-primary-small" (click)="openModal(0, messageModalContent)">+
+                        Create New Message</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+            <div class="recently-added-heading-main msg-list-heading">
+                <h4>Messages List</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section id="tabs-section">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs msg-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active': tabCode === 1}" data-bs-toggle="tab" (click)="setTabCode(1)" href="javascript:;">Upcoming messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="{'active': tabCode === 2}" data-bs-toggle="tab" (click)="setTabCode(2)" href="javascript:;">Previously sent messages</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <section class="search-message">
+       <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="dashboard-search">
+                        <div class="form-group">
+                            <i class="fas fa-search"></i>
+                            <input class="form-control form-control-lg form-control-borderless" type="search" (keyup)="searchKeyUp($event)" (keydown)="searchPressed($event)" placeholder="Search by message or title" id="searchKeyword">
+                            <button class="btn btn-lg btn-danger" *ngIf="searchText.length>0" (click)="clearSearch()" type="button"></button>
+                            <button class="btn btn-lg btn-success" (click)="onClickSearchBar()"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row mb-3 mt-4">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <!-- <div class="recently-added-heading-main recently-inputForm msg-calander-ho"> -->
+                <!-- <form [formGroup]="inputForm">
+                        <app-month-year-picker name="monthStartJson" formControlName="monthStartJson"></app-month-year-picker>
+                    </form> -->
+                <!-- //<div class="col-lg-6 col-md-6 col-sm-12"> -->
+                <div class="choose-date-block-sub">
+                    <form [formGroup]="inputForm" (ngSubmit)="filterData()" class="choose-date-block-cal">
+                        <app-month-year-picker name="monthStartJson" [allMonths]="true" formControlName="monthStartJson" class="choose-date-full-cal">
+                        </app-month-year-picker>
+                        <button type="submit" class="btn btn-secondary-small filter-btn-cal">Submit</button>
+                        <button *ngIf="isFilter" class="btn btn-secondary-small filter-btn-cal clr-filter clr-filter-mob" (click)="clearFiletr()">Clear</button>
+                    </form>
+
+                </div>
+                <!-- </div> -->
+                <!-- {{inputForm.value | json}} -->
+                <!-- </div> -->
+            </div>
+
+            <div class="col-xl-3 col-lg-3 col-md-12"></div>
+
+            <div class="col-xl-3 col-lg-3 col-md-12">
+
+                <div *ngIf="totalRecords>0" class="sorting-filter-main sorting-box-new all-client-list-box">
+                    <div class="form-group">
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" id="sortDropDown" (change)="onChangeSortOrder($event)">
+                                <option value="1">Sort Ascending</option>
+                                <option value="2">Sort Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="col-xl-4 col-lg-6 col-md-6">
+
+                       <div class="checkbox-dropdown" id="filterDropDown" (click)="OpenFilterDropDown()">
+                                    Filter
+                                    <ul class="checkbox-dropdown-list">
+                                      <li>
+                                        <label>
+                                          <input type="checkbox" value="1" id="filterOption_1"  (change)="onFilterOptionChange($event, 1)" />Active</label>
+                                      </li>
+                                      <li>
+                                        <label>
+                                          <input type="checkbox" value="2" id="filterOption_2"  (change)="onFilterOptionChange($event, 2)"  />Paused</label>
+                                      </li>
+                                      <li>
+                                        <label>
+                                          <input type="checkbox" value="0" id="filterOption_0"  (change)="onFilterOptionChange($event, 0)"  />Pending</label>
+                                      </li>
+                                      <li>
+                                        <label>
+                                          <input type="checkbox" value="3" id="filterOption_3"  (change)="onFilterOptionChange($event, 3)"  />Deleted</label>
+                                      </li>
+                                      
+                                    </ul>
+                                  </div>
+
+                    </div> -->
+
+
+
+
+        </div>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 1}" *ngIf="tabCode==1">
+            <!-- <div class="row">
+                    <div class="col-xl-12">
+                        <div class="date-message-list">
+                            <p>Upcoming Message</p>
+                        </div>
+                    </div>
+                </div> -->
+
+
+
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="recently-added-table table-responsive view-all-msg">
+                            <div *ngIf="selectedRealEstateAgentMessageIds.length>0 && MessageList.length!=0">
+                                <a href="javascript:;" class="delete-all-message" (click)="deleteMultipleMessages(-1, cancelAccountAlertModel)"><i
+                                    class="fas fa-trash-alt"></i>
+                                <span>Delete Message</span></a></div>
+                            <table class="table" cellspacing="0">
+                                <tbody>
+    
+                                    <!-- <tr *ngIf="selectedRealEstateAgentMessageIds.length>0 && MessageList.length!=0">
+                                        <td class="delete-message-td">
+                                            <a href="javascript:;" class="delete-all-message" (click)="deleteMultipleMessages(-1, cancelAccountAlertModel)"><i
+                                                    class="fas fa-trash-alt"></i>
+                                                <span>Delete Message</span></a>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr> -->
+                                    <tr *ngIf="MessageList.length==0" class="no-upcoming-msg-bar">
+                                        <td colspan="5">No upcoming messages found..!</td>
+                                    </tr>
+                                    <tr *ngFor="let message of MessageList">
+                                        <!-- <td>
+                                            <div class="checkbox-setting msg-check-new">
+                                                <div class="checkbox-group">
+                                                    <input type="checkbox" id="{{message.realEstateAgentMessageId}}" value="{{message.realEstateAgentMessageId}}" (change)="onChangeSelectMessageCheckBox($event)">
+                                                    <label for="{{message.realEstateAgentMessageId}}"></label>
+                                                </div>
+                                            </div>
+                                        </td> -->
+                                        <td>
+                                            <div class="rea-msg-td-width-up">
+
+                                                <p>{{message.subject}}</p>
+
+                                                {{message.messageText}}
+
+                                            </div>
+
+                                        </td>
+                                        <td class="up-msg-date">
+                                            <p>{{getMonthNameByCode(message.month)}}, {{message.year}}</p>
+                                        </td>
+                                        <td class="up-msg-date">
+                                            <ul class="message-action">
+                                                <!-- <li><a href="javascript:;" (click)="openModal(message.realEstateAgentMessageId, messageModalContent)"><i
+                                                            class="fas fa-edit"></i></a></li> -->
+                                                <li><a href="javascript:;" (click)="deleteSingleMsg(message.realEstateAgentMessageId, cancelAccountAlertModel)"><i
+                                                            class="fas fa-trash-alt"></i></a></li>
+                                            </ul>
+                                        </td>
+                                        <td class="up-msg-date">
+                                            <ul class="edit-footer-ul">
+                                                <li>
+                                                        <a href="javascript:;" class="btn-secondary-small" data-bs-toggle="modal" data-bs-target="#exampleModalMessage" (click)="openPreviewMessageModal(message.realEstateAgentMessageId, previewMessageModalContent)">View
+                                                            Message</a>
+                                                    </li>
+                                            </ul>
+                                            <!-- <a href="javascript:;" (click)="openPreviewMessageModal(message.realEstateAgentMessageId, previewMessageModalContent)" class="message-disclose"><i class="fas fa-eye"></i></a> -->
+                                        </td>
+
+                                        <!-- <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td> -->
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="tab-pane" [ngClass]="{'active': tabCode === 2}" *ngIf="tabCode==2">
+            <!-- <div class="row">
+                    <div class="col-xl-12">
+                        <div class="date-message-list space-msg">
+                            <p>Previously sent messages</p>
+                        </div>
+                    </div>
+                </div>
+             -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="recently-added-table table-responsive view-all-msg">
+                            <table class="table" cellspacing="0">
+                                <tbody>
+
+                                    <tr *ngIf="MessageList.length==0" class="no-upcoming-msg-bar">
+                                        <td colspan="5">No previously sent messages found..!</td>
+                                    </tr>
+                                    <tr *ngFor="let message of MessageList">
+                                        <td>
+                                            <div class="rea-msg-td-width">
+
+                                                <p>{{message.subject}}</p>
+
+                                                {{message.messageText}}
+
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <p>{{getMonthNameByCode(message.month)}}, {{message.year}}</p>
+                                        </td>
+
+                                        <td class="up-msg-date">
+                                            <ul class="edit-footer-ul">
+                                                <li><a href="javascript:;" class="btn-secondary-small" data-bs-toggle="modal" data-bs-target="#exampleModalMessage" (click)="openPreviewMessageModal(message.realEstateAgentMessageId, previewMessageModalContent)">View
+                                                        Message</a></li>
+                                            </ul>
+                                            <!-- <a href="javascript:;" (click)="openPreviewMessageModal(message.realEstateAgentMessageId, previewMessageModalContent)" class="message-disclose"><i class="fas fa-eye"></i></a> -->
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="row mb-5">
+
+
+            <div class="col-xl-6 col-lg-6 col-md-6">
+
+                <div class="pagination-per-page results-ine-box">
+                    <div class="results-per-page-box">
+                        <p>Results per page:</p>
+                        <div class="form-group">
+                            <div class="select-dropdown">
+                                <select id="pageSizeDropDown" class="form-select" aria-label="Default select example" (change)="onChangePageSize($event)">
+                                    <option value="10" selected>10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="30">30</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6">
+                <div class="pagination-block-up" *ngIf="MessageList.length>0">
+                    <ngb-pagination [maxSize]="5" [collectionSize]="totalRecords" [pageSize]="dataTableParams.pageSize" [page]="dataTableParams.pageNo" [rotate]="true" (pageChange)="loadPage($event)" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<!-- Modal -->
+<div class="edit-message-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #previewMessageModalContent let-modal>
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeAllModals()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-footer-modal-heading">
+                        <h4>Preview Message</h4>
+                        <!-- <p>Update your photo and personal details here.</p> -->
+                    </div>
+
+
+
+
+                    <div class="select-year-text-box">
+                        <h6>Schedule Message Month</h6>
+                        <p>{{getMonthNameByCode(message?.month)}} {{message?.year}}</p>
+                    </div>
+
+                    <!-- <div class="select-year-text-box">
+                        <h6>Add Subject </h6>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div> -->
+
+                    <div class="select-year-text-box">
+                        <h6>Subject</h6>
+                        <div class="parent-pre-msg subject-msg-w">
+
+                            <p>{{message?.subject}}</p>
+
+                        </div>
+                    </div>
+                    <!-- <div class="select-year-text-box">
+                        <h6>Short Description</h6>
+                        <p>{{message?.shortDescription}}</p>
+                    </div> -->
+
+                    <div *ngIf="message?.realEstateAgentMessageLinks.length>0" class="select-year-text-box">
+                        <h6>Optional Links</h6>
+                        <ul class="optional-link-w">
+                            <li *ngFor="let link of message?.realEstateAgentMessageLinks">
+                                <a [href]="'http://' + link.linkUrl" target="_blank">
+                                    {{link.linkUrl}}
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="select-year-text-box">
+                        <h6>Message</h6>
+                        <p>{{message?.messageText}}</p>
+                    </div>
+                    <div *ngIf="message?.messageImageBase64" class="upload-image-box preview-msg-img-ho">
+                        <img [src]="message?.messageImageBase64" class="modal-home-img img-fluid" alt="festivals-img">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" *ngIf="tabCode==1 || tabCode==2" (click)="open(cancelAccountAlertModel)" class="btn btn-secondary">Remove
+                            message</button>
+                         <button type="button" *ngIf="tabCode==1 || tabCode==2" (click)="openEditModalFromPreviewMessage(messageModalContent)" class="btn btn-primary">Edit message</button>
+                    </div>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<ng-template #cancelAccountAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onConfirmationModal_No()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p *ngIf="selectedRealEstateAgentMessageIds.length==1 && deleteSingle==false">Are you sure you want to Delete this message?</p>
+            <p *ngIf="selectedRealEstateAgentMessageIds.length>1 && deleteSingle==false">Are you sure you want to Delete these messages?</p>
+            <p *ngIf="selectedRealEstateAgentMessageIds!=undefined && (!selectedRealEstateAgentMessageIds.length>1 || !selectedRealEstateAgentMessageIds.length==1) && deleteSingle==false">Are you sure you want to Delete this message?</p>
+            <p *ngIf="deleteSingle==true">Are you sure you want to Delete this message?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onConfirmationModal_No()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onConfirmationModal_Yes()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Modal -->
+<div class="edit-message-modal">
+    <div class="modal">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #messageModalContent let-modal>
+                <app-message-editor [realEstateAgentMessageId]="selRealEstateAgentMessageId" (refreshMessageListEvent)="onRefreshMessageListEvent()"></app-message-editor>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<!-- <ng-template #cropImageModal let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelCropImageModal()" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio"
+        (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template> -->
+
+<!-- Modal -->
+<div class="add-footer-link-modal">
+    <div class="modal">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #welcomeMessageModalContent let-modal>
+                <form [formGroup]="inputFormWelcomeMessage" (ngSubmit)="onWelcomeMessageFormSubmit()">
+                    <input type="hidden" formControlName="realEstateAgentWelcomeMessageId">
+                    <input type="hidden" formControlName="userRefId">
+                    <div class="modal-header update-msg-welcome">
+                        <button type="button" class="btn-close" (click)="onClickCloseModal()" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4>Update Welcome Message Text</h4>
+                            <!-- <p>Update your photo and personal details here.</p> -->
+                        </div>
+
+                        <div class="edit-welcome-message-modal">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="edit-welcome-message-box">
+                                        <h5>Message<span> *</span></h5>
+                                        <textarea class="edit-welcome-message-form welcome-message-textarea" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormWelcomeMessage, 'messageText')" rows="6" cols="50" formControlName="messageText">
+                                        </textarea>
+                                        <div *ngIf="inputFormWelcomeMessageControls.messageText.invalid && (submitted  || inputFormWelcomeMessageControls.messageText.dirty || inputFormWelcomeMessageControls.messageText.touched)" class="text-danger">
+                                            <div *ngIf="inputFormWelcomeMessageControls.messageText.errors?.required">
+                                                Message is required.
+                                            </div>
+                                            <div *ngIf="inputFormWelcomeMessageControls?.messageText?.errors?.maxlength">
+                                                Message can be max 500 characters long.
+                                            </div> 
+                                            <!-- <div *ngIf="inputFormWelcomeMessageControls.messageText.errors?.pattern">
+                                                Invalid Message.
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save message</button>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

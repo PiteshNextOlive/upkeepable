@@ -1,0 +1,199 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <div class="modal-inner">
+        <div class="modal-header">
+            <div class="home-img-box">
+                <img src="assets/img/{{mainCategory?.iconName}}" class="treat-water-home-icon" alt="treat-water-home-icon">
+                <h4>{{mainCategory?.title}}</h4>
+            </div>
+            <button type="button" class="btn-close" (click)="closeFormEvent.emit()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" formControlName="homeOwnerAddressAttributeRefId">
+            <input type="hidden" formControlName="homeAddressWaterTreatmentDetailId">
+            <div class="row">
+                <div class="col-xl-6 col-lg-5 col-md-5">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[0]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" formControlName="waterTreatmentHeatingType" aria-label="Default select example">
+                                <option value="0" selected>Select {{subCategories[0]?.title}}</option>
+                                <option *ngFor="let waterTreatmentHeatingType of subCategories[0]?.homeVariableSubCategoryListItems"
+                                    value="{{waterTreatmentHeatingType.homeVariableSubCategoryListItemId}}">
+                                    {{waterTreatmentHeatingType.title}}</option>
+                            </select>
+                        </div>
+                        <div *ngIf="(formControls.waterTreatmentHeatingType.invalid) && (submitted || formControls.waterTreatmentHeatingType.dirty || formControls.waterTreatmentHeatingType.touched)" class="text-danger">
+                            <div *ngIf="formControls.waterTreatmentHeatingType.errors.required">
+                                {{subCategories[0]?.title}} is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-xl-6 col-lg-7 col-md-7">
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label for="heating-temp">{{subCategories[1]?.title}}</label>
+                                    <input type="number" class="form-control" [ngStyle]="{'display':(formControls.isHeatingTemperatureKnown.value==1) ? 'block' : 'none'}" [ngClass]="{'disabled-input': formControls.isHeatingTemperatureKnown.value==0}" formControlName="heatingTemperature" placeholder="Temp"
+                                        id="heating-temp">
+                                    <!-- <input type="text" class="form-control disabled-input" value="0" readonly [ngStyle]="{'display':(formControls.isHeatingTemperatureKnown.value==0) ? 'block' : 'none'}"> -->
+
+                                    <div *ngIf="(formControls.heatingTemperature.invalid) && (submitted || formControls.heatingTemperature.dirty || formControls.heatingTemperature.touched)" class="text-danger">
+                                        <div *ngIf="formControls.heatingTemperature.errors.required">
+                                            Heating Temp is required.
+                                        </div>
+                                        <div *ngIf="formControls.heatingTemperature.errors.pattern">
+                                            Invalid value.
+                                        </div>
+                                        <div *ngIf="formControls.heatingTemperature.errors?.maxlength">
+                                            Please enter 3 digit value.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <div class="checkbox-group dont-know-checkbox know-new-box">
+                                        <input type="checkbox" [checked]="formControls.isHeatingTemperatureKnown.value==0" (click)="onClickDontHave($event, 'heatingTemperature')" id="dontHave1">
+                                        <label for="dontHave1">Don’t Know</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-5 col-md-5">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[2]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" formControlName="waterTreatmentFilterType" aria-label="Default select example">
+                                <option value="0" selected>Select {{subCategories[2]?.title}}</option>
+                                <option *ngFor="let waterTreatmentFilterType of subCategories[2]?.homeVariableSubCategoryListItems"
+                                    value="{{waterTreatmentFilterType.homeVariableSubCategoryListItemId}}">
+                                    {{waterTreatmentFilterType.title}}</option>
+                            </select>
+                        </div>
+                        <div *ngIf="(formControls.waterTreatmentFilterType.invalid) && (submitted || formControls.waterTreatmentFilterType.dirty || formControls.waterTreatmentFilterType.touched)" class="text-danger">
+                            <div *ngIf="formControls.waterTreatmentFilterType.errors.required">
+                                {{subCategories[2]?.title}} is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-xl-6 col-lg-7 col-md-7">
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label for="last">{{subCategories[3]?.title}}</label>
+                                    <select class="form-select" aria-label="Default select example" formControlName="filterAge" [attr.disabled]="formControls.isFilterAgeKnown.value==1 ? null : 'disabled'" [ngClass]="{'disabled-input': formControls.isFilterAgeKnown.value==0}">
+                                        <option value="0" selected>Months</option>
+                                        <option value="1">1 month</option>
+                                        <option value="2">2 months</option>
+                                        <option value="3">3 months</option>
+
+                                        <option value="4">4 months</option>
+                                        <option value="5">5 months</option>
+                                        <option value="6">6 months</option>
+
+                                        <option value="7">7 months</option>
+                                        <option value="8">8 months</option>
+                                        <option value="9">9 months</option>
+
+                                        <option value="10">10 months</option>
+                                        <option value="11">11 months</option>
+                                        <option value="12">12 months</option>
+                                    </select>
+                                    <!-- <div *ngIf="(formControls.filterAge.invalid || (formControls.isFilterAgeKnown.value==1 && formControls.filterAge.value==0)) && (submitted || formControls.filterAge.dirty || formControls.filterAge.touched)" class="text-danger"> -->
+                                        <!-- <div *ngIf="formControls.filterAge.errors.required"> -->
+                                        <!-- {{subCategories[3]?.title}} is required. -->
+                                        <!-- </div> -->
+                                    <!-- </div> -->
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <div class="checkbox-group dont-know-checkbox know-new-box">
+                                        <input type="checkbox" [checked]="formControls.isFilterAgeKnown.value==0" (click)="onClickDontHave($event, 'filterAge')" id="dontHave2">
+                                        <label for="dontHave2">Don’t Know</label>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-check-inline">
+
+
+                                    <label class="customradio">
+                                        <span class="radiotextsty">Don’t Know</span>
+                                        <input type="radio" formControlName="isFilterAgeKnown" name="isFilterAgeKnown">
+                                        <span class="checkmark"></span>
+                                    </label>
+
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="last">{{subCategories[4]?.title}}</label>
+                        <select class="form-select" formControlName="waterTreatmentSoftenerType" aria-label="Default select example">
+                            <option value="3" selected>Select {{subCategories[4]?.title}}</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                            <!-- <option *ngFor="let waterTreatmentSoftenerType of waterTreatmentSoftenerTypeEnum"
+                                value="{{waterTreatmentSoftenerType.value}}">
+                                {{waterTreatmentSoftenerType.description}}</option> -->
+                        </select>
+                        <div *ngIf="(formControls.waterTreatmentSoftenerType.invalid) && (submitted || formControls.waterTreatmentSoftenerType.dirty || formControls.waterTreatmentSoftenerType.touched)" class="text-danger">
+                            <div *ngIf="formControls.waterTreatmentSoftenerType.errors.required">
+                                {{subCategories[4]?.title}} is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  row   -->
+            <!-- <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="first">Area</label>
+                        <div class="floor-group-type">
+                            <div class="checkbox-group"
+                                *ngFor="let waterTreatmentAreaType of waterTreatmentAreaTypeEnum">
+                                <input type="checkbox" id="{{waterTreatmentAreaType.value}}"
+                                    value="{{waterTreatmentAreaType.value}}" (change)="onChangeAreaTypeCheckBox($event)"
+                                    [checked]="commonOpsService.markCheckboxChecked(waterTreatmentAreaType.value, this.inputForm.controls.areaTypeArray.value)">
+                                <label
+                                    for="{{waterTreatmentAreaType.value}}">{{waterTreatmentAreaType.description}}</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div *ngIf="formControls.areaTypeArray.value.length==0 && submitted" class="text-danger">
+                        Area Type is required.
+                    </div>
+                </div>
+            </div> -->
+            <!--  row   -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="closeFormEvent.emit()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>

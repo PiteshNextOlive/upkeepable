@@ -1,0 +1,74 @@
+
+div#contact_modal {
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+}
+
+
+
+@media(max-width:600px){
+    .navbar .container {
+        padding: 0 0;
+        max-width: 100%;
+    }
+}
+
+
+@media(max-width:370px){
+    .navbar .container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .navbar-brand img {
+        width: 110px;
+    }
+    
+    .navbar-brand {
+        width: auto;
+    }
+    
+    .fixed-nav-bg {
+        padding: 5px 10px !important;
+    }
+    
+    .video-notification-drop {
+        margin-right: 5px!important;
+    }
+    .view-ho-pro-img .profile-img {
+        width: 26px;
+        height: 26px;
+    }
+    
+    .hasDD a img {
+        width: 22px !important;
+        height: 25px !important;
+    }
+    
+    .video-notification-drop .video-notification img {
+        height: 27px;
+        width: 22px;
+    }
+    
+    .icon-bar {
+        width: 25px;
+    }
+    
+}
+@media screen and (min-width: 992px) {
+    .ho-save-info-box.ho-save-info-box-new
+    {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+}
+
+
+  .alertbox{
+    right: 0 !important;
+    margin-left: auto;
+    position: fixed;
+}
+  

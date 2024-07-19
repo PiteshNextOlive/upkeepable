@@ -1,0 +1,207 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="register-modal-header">
+            <h4>Create Your Monthly Message</h4>
+            <p>Your monthly message is shown to homeowners when they log into the dashboard. You can create messages in advance and include images and links. Create at least one new message now (you can create more later).</p>
+        </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="create-heading-text">
+            <a href="javascript:;" class="btn-primary" (click)="openModal(0, messageModalContent)">+ create New message</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="setting-heading-text">
+            <span *ngIf="MessageList.length==0" id="msgshow" hidden style="color: red;"> Create at least one new message</span>
+            <h4>Messages List</h4>
+            <h6>Here are the messages you’ve already created</h6>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="footer-link-table table-responsive no-upcoming-msg-bar">
+            <table class="table" cellspacing="0">
+                <tbody>
+                    <!-- <tr *ngIf="selectedRealEstateAgentMessageIds.length>0">
+                        <td>
+                            <a href="javascript:;" class="delete-all-message" (click)="deleteSingleMessageById(-1, cancelAccountAlertModel)"><i class="fas fa-trash-alt"></i>
+                            <span>Delete Message</span></a>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr> -->
+                    <tr *ngIf="MessageList.length==0" class="no-upcoming-msg-bar">
+                        <td colspan="4">No upcoming messages found..!</td>
+                    </tr>
+                    <tr *ngFor="let message of MessageList">
+                        <!-- <td>
+                            <div class="checkbox-setting">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="{{message.realEstateAgentMessageId}}" value="{{message.realEstateAgentMessageId}}" (change)="onChangeSelectMessageCheckBox($event)">
+                                    <label for="{{message.realEstateAgentMessageId}}"></label>
+                                </div>
+                            </div>
+                        </td> -->
+                        <td>
+                            <div class="home-msg-new-exp">
+
+                                <p class="ellipsis">{{message.subject}}</p>
+
+
+                                <div class="ellipsis">
+                                    {{message.messageText}}
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            <p>{{getMonthNameByCode(message.month)}}, {{message.year}}</p>
+                        </td>
+                        <td>
+                            <ul class="message-action">
+                                <li>
+                                    <!-- <a href="javascript:;"
+                                        (click)="openModal(message.realEstateAgentMessageId, messageModalContent)"><i
+                                            class="fas fa-edit"></i></a> -->
+
+                                    <!-- <a href="javascript:;" class="remove-footer-link" (click)="openModal(message.realEstateAgentMessageId, messageModalContent)"><i class="fas fa-edit"></i></a> -->
+                                </li>
+                                <li>
+                                    <!-- <a href="javascript:;"
+                                            (click)="deleteSingleMessageById(message.realEstateAgentMessageId, cancelAccountAlertModel)"><i
+                                                class="fas fa-trash-alt"></i></a> -->
+                                    <a href="javascript:;" (click)="deleteSingleMessageById(message.realEstateAgentMessageId, cancelAccountAlertModel)" class="remove-footer-link"><i class="fas fa-trash"></i></a>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="edit-footer-ul">
+                                <li><a href="javascript:;" class="btn-secondary-small" data-bs-toggle="modal" data-bs-target="#exampleModalMessage" (click)="openPreviewMessageModal(message.realEstateAgentMessageId, previewMessageModalContent)">View
+                                        Message</a></li>
+                            </ul>
+                            <!-- <a href="javascript:;" (click)="openPreviewMessageModal(message.realEstateAgentMessageId, previewMessageModalContent)" class="message-disclose"><i class="fas fa-eye"></i></a> -->
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="edit-message-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #previewMessageModalContent let-modal>
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeAllModals()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add-footer-modal-heading">
+                        <h4>Preview Message</h4>
+                        <!-- <p>Update your photo and personal details here.</p> -->
+                    </div>
+
+
+
+
+                    <div class="select-year-text-box">
+                        <h6>Schedule Message Month</h6>
+                        <p>{{getMonthNameByCode(message?.month)}} {{message?.year}}</p>
+                    </div>
+
+                    <!-- <div class="select-year-text-box">
+                        <h6>Add Subject </h6>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div> -->
+
+                    <div class="select-year-text-box">
+                        <h6>Subject</h6>
+                        <div class="parent-pre-msg subject-msg-w">
+                            <div class="ellipsis">
+                                <p>{{message?.subject}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="select-year-text-box">
+                        <h6>Short Description</h6>
+                        <p>{{message?.shortDescription}}</p>
+                    </div> -->
+
+                    <div *ngIf="message?.realEstateAgentMessageLinks.length>0" class="select-year-text-box">
+                        <h6>Optional Links</h6>
+                        <ul>
+                            <li *ngFor="let link of message?.realEstateAgentMessageLinks">
+                                <a [href]="'http://' + link.linkUrl" target="_blank">
+                                    {{link.linkUrl}}
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="select-year-text-box">
+                        <h6>Message</h6>
+                        <p>{{message?.messageText}}</p>
+                    </div>
+                    <div *ngIf="message?.messageImageBase64" class="upload-image-box">
+                        <img [src]="message?.messageImageBase64" class="modal-home-img img-fluid" alt="festivals-img">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)="open(cancelAccountAlertModel)" class="btn btn-secondary">Remove
+                            message</button>
+                         <button type="button" (click)="openEditModalFromPreviewMessage(messageModalContent)" class="btn btn-primary">Edit message</button>
+                    </div>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<ng-template #cancelAccountAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onConfirmationModal_No()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Delete this message?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onConfirmationModal_No()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onConfirmationModal_Yes()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Modal -->
+<div class="edit-message-modal">
+    <div class="modal">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #messageModalContent let-modal>
+                <app-message-editor [realEstateAgentMessageId]="selRealEstateAgentMessageId" (refreshMessageListEvent)="onRefreshMessageListEvent()"></app-message-editor>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,825 @@
+<section id="navigation-hero-ho-section" class="clearHeader">
+    <div class="container">
+        <div class="row mx-0">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="navigation-hero-main">
+                    <div class="logo-nav-ho"><img alt="upkeepable-white-logo-ho"
+                            src="assets/img/upkeepable-white-logo-ho.svg"></div>
+
+                    <!-- <div class="logo-nav-ho-link"><a href="javascript:;" (click)="scroll(target)" class="btn-secondary">COMMON QUESTIONS</a></div> -->
+                    <div class="logo-nav-ho-link"><a href="javascript:;" (click)="scroll(register)"
+                            class="btn-secondary">REGISTER</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Hero 5 - Bootstrap Brain Component -->
+<section id="hero-ho-section">
+    <div class="container">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="hero-ho-text">
+                    <h1>Upkeepable: Your Home's Best Friend!</h1>
+                    <h4>Ever wished for a personal home upkeep guide without the hefty price?<br> Get sponsored by
+                        {{pageAdditionalInfo?.firstName}} {{pageAdditionalInfo?.lastName}} and let Upkeepable guide you
+                        for free!</h4>
+                </div>
+                <a (click)="openVideoModal(viewVideoModalContent)" class="mobile_video_button">Watch Video</a>
+            </div>
+        </div>
+
+        
+
+        <div class="desktop_video">
+            <div class="custom-video-desktop">
+                <div class="et_pb_video_box">
+                   <div class="fluid-width-video-wrapper" id="iframe_container" style="padding-top: 56.2963%;">
+                    <!-- <iframe id="banner_video" title="Learn about Upkeepable" src="https://www.youtube.com/embed/C1APWZYa3jg?feature=oembed" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" name="fitvid0"></iframe> -->
+                    </div> 
+                </div>
+                <div style="background-image:url(https://upkeepable.com/wp-content/uploads/2024/01/home-owner-video-overlay-min.png)" class="et_pb_video_overlay" id="et_pb_video_overlay">
+                   <div class="et_pb_video_overlay_hover"><a href="#" class="et_pb_video_play"></a></div>
+                </div>
+             </div>
+        </div>
+       
+    </div>
+    <div class="hero-ho-section-img">
+        <img alt="profile-img" class="img-fluid" src="assets/img/banner-hero-img.jpg">
+    </div>
+
+
+
+
+
+</section>
+
+
+
+<section id="welcome-msg-sponsors-section">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-8 col-md-12">
+                <div class="welcome-msg-sponsors-main">
+                    <div class="sponsors-agent-img-ho">
+                        <img *ngIf="pageAdditionalInfo?.userImageBase64" [src]="pageAdditionalInfo?.userImageBase64"
+                            class="rea-profile-img" alt="rea-profile-img">
+                        <img *ngIf="pageAdditionalInfo?.userImageBase64==null" [src]="defaultProfilePhoto"
+                            class="rea-profile-img" alt="rea-profile-img">
+
+                    </div>
+                    <h5>{{pageAdditionalInfo?.firstName}} {{pageAdditionalInfo?.lastName}}</h5>
+                    <h3>Welcome to Upkeepable</h3>
+                    <h6>{{pageAdditionalInfo?.realEstateAgentMessageInfo1?.messageText}}</h6>
+
+                    <div class="rea-profile-link rea-profile-link-mob">
+                        <ul>
+                            <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_FacebookUrl">
+                                <a href="{{pageAdditionalInfo?.socialMedia_FacebookUrl}}" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_InstagramUrl">
+                                <a href="{{pageAdditionalInfo?.socialMedia_InstagramUrl}}" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_TweeterUrl">
+                                <a href="{{pageAdditionalInfo?.socialMedia_TweeterUrl}}" target="_blank">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item" *ngIf="pageAdditionalInfo?.socialMedia_YoutubeUrl">
+                                <a href="{{pageAdditionalInfo?.socialMedia_YoutubeUrl}}" target="_blank">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="register-ho-itself-section" #register>
+    <div class="create-new-owner-modal register-ho-itself">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-8 col-md-12">
+                    <form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+                        <div class="add-footer-modal-heading">
+                            <h3>Get Started With Your Personal Home <br>Maintenance Recommendations</h3>
+                            <p>Your $99/year fee is paid for by <span>{{pageAdditionalInfo?.firstName}}
+                                    {{pageAdditionalInfo?.lastName}}</span></p>
+                        </div>
+                        <div class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">First Name <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="First Name"
+                                            formControlName="firstName">
+                                        <div *ngIf="InviteClientformControls.firstName.invalid && (submitted || InviteClientformControls.firstName.dirty || InviteClientformControls.firstName.touched)"
+                                            class="text-danger">
+                                            <div *ngIf="InviteClientformControls.firstName.errors?.required">
+                                                First name is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.firstName.errors?.pattern">
+                                                Invalid First name.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.firstName.errors?.maxlength">
+                                                First name can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">Last Name <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Last Name"
+                                            formControlName="lastName">
+                                        <div *ngIf="InviteClientformControls.lastName.invalid && (submitted || InviteClientformControls.lastName.dirty || InviteClientformControls.lastName.touched)"
+                                            class="text-danger">
+                                            <div *ngIf="InviteClientformControls.lastName.errors?.required">
+                                                Last name is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.lastName.errors?.pattern">
+                                                Invalid Last name.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.lastName.errors?.maxlength">
+                                                Last name can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="phone">Phone <span></span></label>
+                                        <!-- <label for="phone">Phone <span>*</span></label> -->
+                                        <input type="text" formControlName="phone" class="form-control"
+                                            placeholder="Phone" id="phone">
+
+                                        <div *ngIf="(InviteClientformControls.phone.invalid) && (submitted || InviteClientformControls.phone.dirty || InviteClientformControls.phone.touched)"
+                                            class="text-danger">
+                                            <!-- <div *ngIf="InviteClientformControls.phone.errors?.required">
+                                                Phone is required.
+                                            </div> -->
+                                            <div *ngIf="InviteClientformControls.phone.errors?.pattern">
+                                                Invalid phone number.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email address <span>*</span></label>
+                                        <input type="email" class="form-control" placeholder="Email"
+                                            formControlName="email" (keyup)="checkDuplicateEmail()"
+                                            (focusout)="onEmailFocusOut()">
+                                        <div *ngIf="(InviteClientformControls.email.invalid) && (submitted || InviteClientformControls.email.dirty || InviteClientformControls.email.touched)"
+                                            class="text-danger">
+                                            <div *ngIf="InviteClientformControls.email.errors?.required">
+                                                Email address is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.email.errors?.pattern">
+                                                Invalid email address.
+                                            </div>
+                                        </div>
+                                        <div *ngIf="isDuplicateEmail && (!InviteClientformControls.email.errors?.required) && (!InviteClientformControls.email.errors?.pattern)"
+                                            class="text-danger">
+                                            Email id already exists..!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label
+                                            for="first">{{mainCategories[0]?.homeVariableSubCategories[0]?.title}}</label>
+                                        <div class="select-dropdown">
+                                            <select class="form-select" formControlName="homeType"
+                                                aria-label="Default select example" data-wow-delay=".15s">
+                                                <option value="0">Select Home Type</option>
+                                                <option *ngFor="let homeType of enumListTemplateLists"
+                                                    value="{{homeType?.homeVariableSubCategoryListItemId}}">
+                                                    {{homeType?.title}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="first">Home Type</label>
+                            <div class="select-dropdown">
+                                <select class="form-select" formControlName="homeType"
+                                    aria-label="Default select example">
+                                    <option value="0">Select Home Type</option>
+                                    <option
+                                        *ngFor="let homeType of " value="{{homeType?.description}}">
+                                        {{homeType?.description}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>                  
+
+                </div> -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Home address <span></span></label>
+                                        <!-- <label for="email">Home address <span>*</span></label> -->
+                                        <input type="text" class="form-control" placeholder="Home address"
+                                            formControlName="address">
+                                        <div *ngIf="InviteClientformControls.address.invalid && (submitted || InviteClientformControls.address.dirty || InviteClientformControls.address.touched)"
+                                            class="text-danger">
+                                            <!-- <div *ngIf="InviteClientformControls.address.errors?.required">
+                            Address is required.
+                        </div> -->
+                                            <div *ngIf="InviteClientformControls.address.errors?.pattern">
+                                                Invalid Address.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls?.address?.errors?.maxlength">
+                                                Address can be max 40 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  col-md-6   -->
+                                <div class="col-md-12" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="email">Home address <span></span></label>
+                                        <!-- <label for="email">Home address <span>*</span></label> -->
+                                        <input type="text" class="form-control" placeholder="Home address"
+                                            formControlName="address">
+                                        <div *ngIf="InviteClientformControls.address.invalid && (submitted || InviteClientformControls.address.dirty || InviteClientformControls.address.touched)"
+                                            class="text-danger">
+                                            <!-- <div *ngIf="InviteClientformControls.address.errors?.required">
+                                                Address is required.
+                                            </div> -->
+                                            <div *ngIf="InviteClientformControls.address.errors?.pattern">
+                                                Invalid Address.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls?.address?.errors?.maxlength">
+                                                Address can be max 40 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+
+                            </div>
+                            <div class="row">
+
+
+                                <!--  col-md-4   -->
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <div class="select-dropdown">
+                                            <!-- <select class="form-select" formControlName="cityRefId"
+                aria-label="Default select example">
+                <option value="" selected>City Name</option>
+                <option *ngFor="let cityType of cityTypeEnum" value="{{cityType.value}}">
+                    {{cityType.description}}
+                </option>
+            </select> -->
+                                            <input type="text" class="form-control"
+                                                (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'cityName')"
+                                                placeholder="City Name" formControlName="cityName">
+                                            <div *ngIf="(InviteClientformControls.cityName.invalid) && (submitted || InviteClientformControls.cityName.dirty || InviteClientformControls.cityName.touched)"
+                                                class="text-danger">
+                                                <!-- <div *ngIf="InviteClientformControls.cityName.errors?.required">
+                                                    City is required.
+                                                </div> -->
+                                                <div *ngIf="InviteClientformControls.cityName.errors?.pattern">
+                                                    Invalid City.
+                                                </div>
+                                                <div *ngIf="InviteClientformControls.cityName.errors?.maxlength">
+                                                    City can be max 20 characters long.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <div class="select-dropdown">
+                                            <select class="form-select" formControlName="stateCode"
+                                                aria-label="Default select example">
+                                                <option value="" selected>State Name</option>
+                                                <option *ngFor="let state of states" value="{{state.stateCode}}">
+                                                    {{state.stateTitle}}
+                                                </option>
+                                            </select>
+                                            <!-- <div *ngIf="(InviteClientformControls.stateCode.invalid) && (submitted || InviteClientformControls.stateCode.dirty || InviteClientformControls.stateCode.touched)" class="text-danger">
+                                                <div *ngIf="InviteClientformControls.stateCode.errors?.required || InviteClientformControls.stateCode.value==0">
+                                                    State is required.
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!--  col-md-4   -->
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" formControlName="zipCode"
+                                            placeholder="Zip Code">
+                                        <div *ngIf="(InviteClientformControls.zipCode.invalid) && (submitted || InviteClientformControls.zipCode.dirty || InviteClientformControls.zipCode.touched)"
+                                            class="text-danger">
+                                            <!-- <div *ngIf="InviteClientformControls.zipCode.errors?.required">
+                                                Zip code is required.
+                                            </div> -->
+                                            <div *ngIf="InviteClientformControls.zipCode.errors?.pattern">
+                                                Invalid zip code.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-4   -->
+                            </div>
+
+
+
+                        </div>
+                        <div class="modal-footer rea-modal-footer">
+                            <button type="button" (click)="onSubmitWithskipHomeDetails()" class="btn btn-primary"
+                                data-bs-dismiss="modal">REGISTER NOW</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="unlock-upkeepable-top-box-section">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="common-question-btn-center">
+                    <a href="javascript:;" (click)="scroll(target)" class="btn-secondary">COMMON QUESTION</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 order-1 order-lg-1 order-2">
+                <div class="unlock-upkeepable-box-img">
+                    <img alt="upkeepable-tab-design" class="img-fluid" src="assets/img/upkeepable-tab-design.png">
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 order-1">
+                <div class="unlock-upkeepable-box-left-text">
+                    <h3>Unlock Upkeepable: Save on home care, sponsored for you!</h3>
+                    <h6>Ever wished for a personal guide to help you navigate the intricacies of home maintenance?
+                        Upkeepable is here to revolutionize the way you care for your home. With tailored
+                        recommendations and timely reminders, we ensure your home gets the love it deserves.</h6>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="unlock-upkeepable-bottom-box-section">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="unlock-upkeepable-box-right-text">
+                    <h3>How Upkeepable Works & Why It's a Game-Changer
+                    </h3>
+                    <h6>Dive into Upkeepable, your intuitive guide to home maintenance. Here's the magic: based on your
+                        unique home profile, we curate personalized upkeep recommendations. No more guesswork or missed
+                        maintenance tasks. And the cherry on top? Real estate agents can sponsor your access, making it
+                        free for you. Why does this matter? Regular home care not only ensures a safe and comfortable
+                        living space but also saves you significant repair costs in the long run. With Upkeepable,
+                        you're not just maintaining a house; you're investing in a home.</h6>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="unlock-upkeepable-box-img">
+                    <img alt="upkeepable-tab-design" class="img-fluid" src="assets/img/upkeepable-mobile-design.png">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</section>
+
+
+
+<section id="love-upkeepable-text-section">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="love-upkeepable-text-main">
+                    <h3>Why You’ll Love Upkeepable</h3>
+                    <ul class="solid-main">
+                        <li><b>Personalized Recommendations:</b> Every home is unique, and so are its needs. Get advice
+                            tailored to your home's specific profile.</li>
+                        <li><b>Timely Reminders:</b> Never miss out on essential upkeep tasks. From seasonal maintenance
+                            to crucial checks, we've got you covered.</li>
+                        <li><b>Trusted Advice:</b>Our recommendations are backed by industry experts, ensuring your home
+                            is in safe hands.</li>
+                        <li><b>Easy-to-Use:</b> With a user-friendly interface, managing your home's upkeep has never
+                            been this simple.</li>
+                    </ul>
+                    <a href="javascript:;" (click)="scroll(register)" class="btn-secondary">REGISTER NOW</a>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="love-upkeepable-image-main">
+                    <img alt="upkeepable-tab-design" class="img-fluid" src="assets/img/upkeepable-home-bg.png">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</section>
+
+
+
+<section id="testimonials-upkeepable-text-section">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="testimonials-upkeepable-heading">
+                    <img alt="upkeepable-tab-design" src="assets/img/testimonials-icon.svg">
+                    <h3>Hear What Home Owners Are Saying</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="testimonials-upkeepable-text-main">
+                    <p>"I've always been a DIY kind of guy, but I'd often forget some of the seasonal tasks around the
+                        house. Upkeepable changed that for me. The platform not only reminds me of what needs doing but
+                        also offers valuable tips on how to do it right. Plus, having it sponsored was a pleasant
+                        surprise! It's made home care so much simpler and stress-free."</p>
+                    <div class="testimonials-upkeepable-img">
+                        <img alt="upkeepable-tab-design" src="assets/img/profile-img-woman.jpg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="testimonials-upkeepable-text-main">
+                    <p>"When I moved into my home, I was overwhelmed with all the maintenance tasks. I wasn't sure where
+                        to start or what was crucial. Then I discovered Upkeepable. It's been a lifesaver! Every month,
+                        I get personalized reminders tailored to my home's needs. I've avoided some potentially costly
+                        repairs thanks to their advice. It's like having a home expert in my pocket!"</p>
+                    <div class="testimonials-upkeepable-img">
+                        <img alt="upkeepable-tab-design" src="assets/img/profile-img-man.jpg">
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="testimonials-register-btn-center">
+                    <a href="javascript:;" (click)="scroll(register)" class="btn-primary">REGISTER NOW</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section id="faq-upkeepable-text-section" #target>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="faq-upkeepable-heading">
+                    <h3>Frequently Asked Questions</h3>
+                    <h6>Have questions? We’re here to help.</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <section class="admin-recommendation-section admin-recommendation-new">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="accordion-recommendation-section">
+                        <div class="accordion" id="accordionExample">
+
+
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne"
+                                    [ngClass]="{'collapsed': !isCollapsedShown('collapseOne')}"
+                                    (click)="toggleCollapse('collapseOne')">
+                                    What is Upkeepable?
+                                    <button class="accordion-button" type="button" aria-expanded="true"
+                                        aria-controls="collapseOne">
+
+                                    </button>
+
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse" aria-labelledby="headingOne"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p>A maintenance platform that helps you protect and maintain your home by
+                                            providing recommendations each month based on your unique home profile.</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSeven"
+                                    [ngClass]="{'collapsed': isCollapsedShown('collapseSeven')}"
+                                    (click)="toggleCollapse('collapseSeven')" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSeven">
+                                    Who much does Upkeepable cost?
+                                    <button class="accordion-button" type="button" aria-expanded="false"
+                                        aria-controls="collapseSeven">
+
+                                    </button>
+                                </h2>
+                                <div id="collapseSeven" class="accordion-collapse collapse"
+                                    aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+
+                                        <p>Upkeepable is $99 a year for homeowners, paid for by
+                                            <span>{{pageAdditionalInfo?.firstName}}
+                                                {{pageAdditionalInfo?.lastName}}</span></p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree"
+                                    [ngClass]="{'collapsed': isCollapsedShown('collapseThree')}"
+                                    (click)="toggleCollapse('collapseThree')" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree">
+                                    What can Upkeepable do?
+                                    <button class="accordion-button" type="button" aria-expanded="false"
+                                        aria-controls="collapseThree">
+
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse"
+                                    aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+
+                                        <p>Upkeepable can provide you maintenance recommendations to help protect your
+                                            home. It also allows you to input your upgrades and other work you do on
+                                            your home.</p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour"
+                                    [ngClass]="{'collapsed': isCollapsedShown('collapseFour')}"
+                                    (click)="toggleCollapse('collapseFour')" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFour">
+                                    How do I customize my home recommendations?
+
+                                    <button class="accordion-button" type="button" aria-expanded="false"
+                                        aria-controls="collapseFour">
+
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+
+                                        <p>Fill out your home profile; the more you tell about your home, the more
+                                            detailed your monthly recommendations.</p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive"
+                                    [ngClass]="{'collapsed': isCollapsedShown('collapseFive')}"
+                                    (click)="toggleCollapse('collapseFive')" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFive">
+                                    Can I record my own home updates?
+                                    <button class="accordion-button" type="button" aria-expanded="false"
+                                        aria-controls="collapseFive">
+
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+
+                                        <p>Yes! You can record maintenance, upgrades, and to-dos. If it has to do with
+                                            your home, you can record it.
+                                        </p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSix"
+                                    [ngClass]="{'collapsed': isCollapsedShown('collapseSix')}"
+                                    (click)="toggleCollapse('collapseSix')" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSix">
+                                    How often do I get recommendations?
+                                    <button class="accordion-button" type="button" aria-expanded="false"
+                                        aria-controls="collapseSix">
+
+                                    </button>
+                                </h2>
+                                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+
+                                        <p>You’ll receive custom home maintenance recommendations once per month, but
+                                            you can log into your dashboard anytime.</p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingEight"
+                                    [ngClass]="{'collapsed': isCollapsedShown('collapseEight')}"
+                                    (click)="toggleCollapse('collapseEight')" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseEight">
+                                    Can I share Upkeepable with others?
+
+                                    <button class="accordion-button" type="button" aria-expanded="false"
+                                        aria-controls="collapseEight">
+
+                                    </button>
+                                </h2>
+                                <div id="collapseEight" class="accordion-collapse collapse"
+                                    aria-labelledby="headingEight" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+
+                                        <p>Yes! Contact <span>SPONSOR {{pageAdditionalInfo?.firstName}}
+                                                {{pageAdditionalInfo?.lastName}} {{pageAdditionalInfo?.email}}</span>
+                                            with link to their email to get your friends and family setup with
+                                            Upkeepable.
+                                        </p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item" [ngClass]="{'collapsed': isCollapsedShown('collapseNine')}"
+                                (click)="toggleCollapse('collapseNine')" data-bs-toggle="collapse"
+                                data-bs-target="#collapseNine">
+                                <h2 class="accordion-header" id="headingNine">
+                                    How do I get started?
+
+                                    <button class="accordion-button" type="button" aria-expanded="false"
+                                        aria-controls="collapseNine">
+
+                                    </button>
+                                </h2>
+                                <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+
+                                        <p>Fill out the form above and you’ll be sent a confirmation email. Then, finish
+                                            your profile and you’re ready to go!
+
+                                        </p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="faq-register-btn-center">
+                    <a href="javascript:;" (click)="scroll(register)" class="btn-primary">REGISTER NOW</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<div class="add-footer-link-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <ng-template #viewVideoModalContent let-modal>
+
+
+                <div class="modal-header">
+                    <button type="button" (click)="onVideoModalCancelClick()" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <br>
+                <div class="modal-body">
+                    <div class="">
+
+                        <div class="video-box">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/C1APWZYa3jg"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <div class="help-request-modal">
+                        <a href="javascript:;" (click)="addClass()" class="btn-primary-small">help request</a>
+                    </div> -->
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

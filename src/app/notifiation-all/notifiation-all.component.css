@@ -1,0 +1,9 @@
+section.notification-setting-section {
+    min-height: calc(100vh - 270px);
+}
+
+@media(max-width:991px){
+    section.notification-setting-section{
+        min-height: calc(100vh - 312px);
+    }
+}

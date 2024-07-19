@@ -1,0 +1,358 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <div id="account" class="tabcontent">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="setting-heading-text">
+                    <h4>Account</h4>
+                    <h6>Update your photo and personal details here.</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="profile-section">
+                    <div class="profile-image">
+                        <img class="img-fluid" [src]="profilePhoto" id="profilePhotoImgElement" alt="rea-agent-img">
+                    </div>
+                    <ul>
+                        <li>
+                            <input type="file" accept="image/png, image/jpeg" id="profilePhotoBrowserInput" (change)="onPhotoBrowserInputChange($event,'profilePhotoImgElement', '1')" style="display: none;">
+                            <a (click)="passClickToFileInput('profilePhotoBrowserInput')" onclick="profilePhotoBrowserInput.value = null" class="btn-primary-small">Upload</a>
+                        </li>
+                        <li> <a (click)="removeImage('profilePhotoImgElement')" class="btn-secondary-small">Remove</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="file-maxi-error">
+                    <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                        Maximum File Size Limit is 1MB
+                    </div>
+                </div>
+            </div> -->
+
+            <!--<div class="col-lg-5 col-md-12 col-sm-12">
+              <div class="change-account-box">
+                    <a href="https://upkeepable.com/login/" target="_blank" class="change-account-link"> change account</a>
+                </div>
+
+            </div> -->
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="profile-information-box">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="company">First Name<span>*</span></label>
+                                <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" id="first-name" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'firstName')">
+                                <div *ngIf="formControls.firstName.invalid && (formControls.firstName.dirty || formControls.firstName.touched)" class="text-danger">
+                                    <div *ngIf="formControls.firstName.errors?.required">
+                                        First name is required.
+                                    </div>
+                                    <div *ngIf="formControls.firstName.errors?.pattern">
+                                        Invalid First name.
+                                    </div>
+                                    <div *ngIf="formControls?.firstName?.errors?.maxlength">
+                                        First name can be max 20 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="company">Last Name <span>*</span></label>
+                                <input type="text" formControlName="lastName" class="form-control" placeholder="Last Name" id="last-name" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'lastName')">
+                                <div *ngIf="formControls.lastName.invalid && (formControls.lastName.dirty || formControls.lastName.touched)" class="text-danger">
+                                    <div *ngIf="formControls.lastName.errors?.required">
+                                        Last name is required.
+                                    </div>
+                                    <div *ngIf="formControls.lastName.errors?.pattern">
+                                        Invalid Last name.
+                                    </div>
+                                    <div *ngIf="formControls?.lastName?.errors?.maxlength">
+                                        Last name can be max 20 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone">Phone <span>*</span></label>
+                                <input type="text" formControlName="phone" class="form-control" placeholder="Phone" id="phone">
+
+                                <div *ngIf="(formControls.phone.invalid) && (submitted || formControls.phone.dirty || formControls.phone.touched)" class="text-danger">
+                                    <div *ngIf="formControls.phone.errors?.required">
+                                        Phone is required.
+                                    </div>
+                                    <div *ngIf="formControls.phone.errors?.pattern">
+                                        Invalid phone number.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email address <span>*</span></label>
+                                <input type="email" formControlName="email" class="form-control" placeholder="Email" id="email" (input)="checkDuplicateEmail()" (focusout)="onEmailFocusOut()">
+
+
+                                <div *ngIf="(formControls.email.invalid) && (submitted || formControls.email.dirty || formControls.email.touched)" class="text-danger">
+                                    <div *ngIf="formControls.email.errors?.required">
+                                        Email address is required.
+                                    </div>
+                                    <div *ngIf="formControls.email.errors?.pattern">
+                                        Invalid email address.
+                                    </div>
+                                </div>
+                                <div *ngIf="isDuplicateEmail && (!formControls.email?.errors?.required) && (!formControls.email?.errors?.pattern)" class="text-danger">
+                                    Email id already exists..!
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group">
+                    <label for="address-name-1">Address Line<span>*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter address" id="address-name-1" formControlName="address" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'address')">
+                    <div *ngIf="formControls.address.invalid && (submitted || formControls.address.dirty || formControls.address.touched)" class="text-danger">
+                        <div *ngIf="formControls.address.errors?.required">
+                            Address is required.
+                        </div>
+                        <div *ngIf="formControls.address.errors?.pattern">
+                            Invalid Address.
+                        </div>
+                        <div *ngIf="formControls?.address?.errors?.maxlength">
+                            Address can be max 40 characters long.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <!--  col-md-6   -->
+            <div class="col-lg-6 col-md-12">
+                <div class="form-group">
+                    <label for="city-name">City <span>*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter city name" id="city-name" formControlName="cityName">
+                    <div *ngIf="formControls.cityName.invalid && (submitted || formControls.cityName.dirty || formControls.cityName.touched)" class="text-danger">
+                        <div *ngIf="formControls.cityName.errors?.required">
+                            City is required.
+                        </div>
+                        <div *ngIf="formControls.cityName.errors?.pattern">
+                            Invalid City.
+                        </div>
+                        <div *ngIf="formControls?.cityName?.errors?.maxlength">
+                            City can be max 50 characters long.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-6 col-md-12">
+                <div class="form-group">
+                    <label for="address-name-1">State<span>*</span></label>
+                    <div class="select-dropdown">
+                        <select class="form-select" formControlName="stateCode" id="stateCode" aria-label="Default select example">
+                            <option value="" selected>State Name</option>
+                            <option *ngFor="let state of states" value="{{state.stateCode}}">
+                                {{state.stateTitle}}
+                            </option>
+                        </select>
+                        <div *ngIf="(formControls.stateCode.invalid) && (submitted || formControls.stateCode.dirty || formControls.stateCode.touched)" class="text-danger">
+                            <div *ngIf="formControls.stateCode.errors?.required || formControls.stateCode.value==0">
+                                State is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--  col-md-6   -->
+            <div class="col-lg-6 col-md-12">
+                <div class="form-group">
+                    <label for="zip-code">Zip Code <span>*</span></label>
+                    <input type="text" class="form-control" placeholder="Enter zip code" id="zip-code" formControlName="zipCode" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'zipCode')">
+                    <div *ngIf="formControls.zipCode.invalid && (submitted || formControls.zipCode.dirty || formControls.zipCode.touched)" class="text-danger">
+                        <div *ngIf="formControls.zipCode.errors?.required">
+                            Zip code is required.
+                        </div>
+                        <div *ngIf="formControls.zipCode.errors?.pattern">
+                            Invalid Zip code.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--  col-md-6   -->
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="social-media-heading">
+                    <h4>Social Media</h4>
+                    <h6>Add your social media accounts.</h6>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="social-media-form">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group facebook-icon-input">
+                                <input type="text" class="form-control facebook-input" placeholder="Add profile's URL" formControlName="socialMedia_FacebookUrl">
+                                <div *ngIf="(formControls.socialMedia_FacebookUrl.invalid) && (submitted || formControls.socialMedia_FacebookUrl.dirty || formControls.socialMedia_FacebookUrl.touched)" class="text-danger">
+                                    <div *ngIf="formControls.socialMedia_FacebookUrl.errors?.pattern">
+                                        Please provide valid url.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+
+                        <div class="col-md-6">
+                            <div class="form-group  tweeter-icon-input">
+                                <input type="text" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_TweeterUrl">
+                                <div *ngIf="(formControls.socialMedia_TweeterUrl.invalid) && (submitted || formControls.socialMedia_TweeterUrl.dirty || formControls.socialMedia_TweeterUrl.touched)" class="text-danger">
+                                    <div *ngIf="formControls.socialMedia_TweeterUrl.errors?.pattern">
+                                        Please provide valid url.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+
+                        <div class="col-md-6">
+                            <div class="form-group instagram-icon-input">
+                                <input type="text" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_InstagramUrl">
+                                <div *ngIf="(formControls.socialMedia_InstagramUrl.invalid) && (submitted || formControls.socialMedia_InstagramUrl.dirty || formControls.socialMedia_InstagramUrl.touched)" class="text-danger">
+                                    <div *ngIf="formControls.socialMedia_InstagramUrl.errors?.pattern">
+                                        Please provide valid url.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+
+                        <div class="col-md-6">
+                            <div class="form-group youtube-icon-input">
+                                <input type="text" class="form-control" placeholder="Add profile's URL" formControlName="socialMedia_YoutubeUrl">
+                                <div *ngIf="(formControls.socialMedia_YoutubeUrl.invalid) && (submitted || formControls.socialMedia_YoutubeUrl.dirty || formControls.socialMedia_YoutubeUrl.touched)" class="text-danger">
+                                    <div *ngIf="formControls.socialMedia_YoutubeUrl.errors?.pattern">
+                                        Please provide valid url.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+
+                <div class="notification-settings-heading">
+                    <h5>Notification Settings</h5>
+                   
+                    <div style="margin: 0 auto;">
+                        <input [checked]="formControls.isNotficationOn.value==1" type="checkbox"
+                            id="toggle-button-checkbox" style="display: none;"
+                            (change)="toggleChanged($event.target.checked)">
+                        <label class="toggle-button-switch" for="toggle-button-checkbox"></label>
+                        <div class="toggle-button-text">
+                            <div class="toggle-button-text-on">ON</div>
+                            <div class="toggle-button-text-off">OFF</div>
+                        </div>
+                    </div>
+
+                    <div class="notification-slide">
+                        <p>We may still send you important notification about your account outside of your
+                            notification Settings.</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="checkbox-setting">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="heating-system">
+                        <label for="heating-system"> Update the Billing Address used for all future renewals of
+                            my active subscriptions (optional)</label>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="row mt-5 mb-5">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="save-info--box">
+                    <button type="submit" class="btn btn-primary">Save Information</button>
+                </div>
+            </div>
+
+            <!-- <div class="col-lg-6 col-md-6 col-sm-6">
+
+                <div class="cancel-account-box">
+                    <a (click)="open(cancelAccountAlertModel)" class="cancel-account-link">Close My Account</a>
+                </div>
+
+            </div> -->
+        </div>
+    </div>
+</form>
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>
+
+<ng-template #cancelAccountAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Close this account?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCancelAccountModelNoClick()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onCancelAccountModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>

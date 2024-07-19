@@ -1,0 +1,13 @@
+
+.tabcontent{
+    float: none;
+    margin:40px auto;
+    width: 60%;
+}
+
+
+@media(max-width:767px){
+    .tabcontent {
+        width: 100% !important;
+    }
+}

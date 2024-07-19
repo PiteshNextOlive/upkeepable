@@ -1,0 +1,487 @@
+<section class="home-search-admin-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="dashboard-search admin-panel-search">
+                    <div class="form-group">
+                        <i class="fas fa-search"></i>
+                        <input class="form-control form-control-lg form-control-borderless" type="search" (keyup)="searchKeyUp($event)" (keydown)="searchPressed($event)" placeholder="Search by Vendor Article" id="searchKeyword">
+                        <button class="btn btn-lg btn-danger" *ngIf="searchText.length>0" (click)="clearSearch()" type="button"></button>
+                        <button class="btn btn-lg btn-success" (click)="onClickSearchBar()"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="recently-added-btn-main">
+                    <a href="javascript:;" (click)="openAddArticleModal(0, addArticleStep1ModalContent)" class="btn-primary-small">+ create new article</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <div class="recently-added-heading-main vendro-article-text-new">
+                <h4>Vendor Articles</h4>
+            </div>
+        </div>
+        <div class="col-xl-3"></div>
+
+        <div class="col-xl-3 col-lg-6 col-md-12">
+            <div class="sorting-filter-main all-client-list-box">
+                <div class="form-group">
+
+                    <div class="select-dropdown">
+                        <select class="form-select" aria-label="Default select example" (change)="onChangeSortOrder($event)">
+                            <option value="1">Ascending</option>
+                            <option value="2">Descending </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="recently-added-table home-owner-table table-responsive">
+                <table class="table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <!-- <th>
+                                <div class="checkbox-setting">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="message-1">
+                                        <label for="message-1"></label>
+                                    </div>
+                                </div>
+                            </th> -->
+
+                            <th>
+                                Article Title
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'ArticleTitle', 'fa-sort-up': (dataTableParams.sortColumn === 'ArticleTitle' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'ArticleTitle' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('ArticleTitle')"></i>
+                            </th>
+                            <th>
+                                Create Date
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'CreatedOn', 'fa-sort-up': (dataTableParams.sortColumn === 'CreatedOn' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'CreatedOn' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('CreatedOn')"></i>
+                            </th>
+                            <th>View Details</th>
+                            <th>Views</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="totalRecords>0; else noArticle">
+                        <tr *ngFor="let article of articleList">
+                            <!-- <td>
+                                <div class="checkbox-setting">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="message-2">
+                                        <label for="message-2"></label>
+                                    </div>
+                                </div>
+                            </td> -->
+                            <td>
+                                <div class="ho-name-td-width">{{article.articleTitle}}</div>
+                            </td>
+                            <td>{{article.createdOnText}}</td>
+                            <td>
+                                <ul class="edit-footer-ul">
+                                    <li>
+                                        <a href="javascript:;" (click)="openDetailArticleModal(detailArticleStep1ModalContent, article.articleId)" class="btn-secondary-small" data-bs-toggle="modal" data-bs-target="#exampleModalMessage">View Details</a>
+                                    </li>
+                                </ul>
+                            </td>
+
+                            <td>
+                                <span *ngIf="article.maxViewEachMonth<=0; else hasMaxViews">
+                                    Unlimited
+                                </span>
+                                <ng-template #hasMaxViews>
+                                    {{article.maxViewEachMonth}}
+                                </ng-template>
+                            </td>
+
+                            <td>
+                                <ul class="message-action">
+                                    <li><a href="javascript:;" (click)="openAddArticleModal(article.articleId, addArticleStep1ModalContent)"><i
+                                                class="fas fa-edit"></i></a></li>
+                                    <li><a href="javascript:;" (click)="openDeleteArticleModal(deleteArticleAlertModel, article.articleId)"><i
+                                                class="fas fa-trash-alt"></i></a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noArticle>
+                        <tbody>
+                            <tr>
+                                <td col-md-6>
+                                    No Article is found..!
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="totalRecords>0">
+    <div class="row mb-5">
+        <div class="col-xl-6 col-lg-6 col-md-6">
+
+            <div class="pagination-per-page results-ine-box">
+                <div class="results-per-page-box">
+                    <p>Results per page:</p>
+                    <div class="form-group">
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" (change)="onChangePageSize($event)">
+                                <option value="10" selected>10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="pagination-block-up">
+                <ngb-pagination [collectionSize]="totalRecords" [maxSize]="5" [pageSize]="dataTableParams.pageSize" [page]="dataTableParams.pageNo" [rotate]="true" (pageChange)="loadPage($event)" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="create-new-owner-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <ng-template #addArticleStep1ModalContent let-modal>
+                <!-- <div class="modal-content"> -->
+                <form [formGroup]="inputForm" (ngSubmit)="saveArticle()">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" value="admin-home-owner" (click)="closeModal()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4 *ngIf="selectedArticleId==0">Create New Vendor Article</h4>
+                            <h4 *ngIf="selectedArticleId!=0">Edit Vendor Article</h4>
+                            <p>Fill the complete information about Vendor Article</p>
+                        </div>
+
+                        <input type="hidden" formControlName="articleId">
+                        <input type="hidden" formControlName="createdOn">
+                        <div *ngIf="stepCode==1" class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">Title <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Title Text" id="Enter Title Text" formControlName="articleTitle">
+                                        <div *ngIf="(formControls.articleTitle.invalid) && (submitted || formControls.articleTitle.dirty || formControls.articleTitle.touched)" class="text-danger">
+                                            <div *ngIf="formControls.articleTitle.errors?.required">
+                                                Article title is required.
+                                            </div>
+                                            <div *ngIf="formControls.articleTitle.errors?.pattern">
+                                                Please provide valid Article title.
+                                            </div>
+                                            <div *ngIf="formControls.articleTitle.errors?.maxlength">
+                                                Title can be max 100 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group short-description-mob">
+                                        <label for="short-description">Short Description <span>*</span></label>
+                                        <textarea id="short-description" class="form-control" rows="5" cols="50" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'shortDescriptionText')" formControlName="shortDescriptionText">Write Short Description here.</textarea>
+                                        <div *ngIf="(formControls.shortDescriptionText.invalid) && (submitted || formControls.shortDescriptionText.dirty || formControls.shortDescriptionText.touched)" class="text-danger">
+                                            <div *ngIf="formControls.shortDescriptionText.errors?.required">
+                                                Short description is required.
+                                            </div>
+                                            <!-- <div *ngIf="formControls.shortDescriptionText.errors?.pattern">
+                                                Please provide valid Short Description.
+                                            </div> -->
+                                            <div *ngIf="formControls.shortDescriptionText.errors?.maxlength">
+                                                Short description can be max 500 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group short-description-mob">
+                                        <label for="description">Description <span>*</span></label>
+                                        <textarea id="description" class="form-control" rows="8" cols="50" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'descriptionText')" formControlName="descriptionText">Write Description here.</textarea>
+                                        <div *ngIf="(formControls.descriptionText.invalid) && (submitted || formControls.descriptionText.dirty || formControls.descriptionText.touched)" class="text-danger">
+                                            <div *ngIf="formControls.descriptionText.errors?.required">
+                                                Description is required.
+                                            </div>
+                                            <!-- <div *ngIf="formControls.descriptionText.errors?.pattern">
+                                                Please provide valid Description.
+                                            </div> -->
+                                            <div *ngIf="formControls.descriptionText.errors?.maxlength">
+                                                Description can be max 500 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="upload-image-box" *ngIf="articleImage">
+                                        <img class="img-fluid" id="homePhotoImgElement" [src]="articleImage" alt="profile-change-img">
+                                    </div>
+                                    <!-- 
+                                    <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                                        Maximum File Size Limit is 1MB
+                                    </div> -->
+
+                                    <ul class="upload-image-box-link">
+                                        <li>
+
+                                            <input type="file" accept="image/png, image/jpeg" id="articleImageBrowserInput" (change)="onArticleImageBrowserInputChange($event,'articleImageElement', '4.52')" style="display: none;">
+                                            <a href="javascript:;" (click)="passClickToFileInput('articleImageBrowserInput')" onclick="articleImageBrowserInput.value = null" class="btn-primary-small">Upload Image</a>
+                                        </li>
+                                        <li> <a href="javascript:;" *ngIf="articleImage" (click)="onRemoveImage()" class="btn-secondary-small">Remove</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="!articleImage && submitted">
+                                <div class="col-md-12 text-danger">
+                                    Image is required.
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div *ngIf="stepCode==2" class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">Optional Links</label>
+                                        <div class="optional-links-box" *ngFor="let articleLink of articleLinks; let i=index">
+                                            <input type="text" class="form-control" placeholder="Add Optional Links" [value]="articleLink">
+                                            <a href="javascript:;" (click)="onRemoveOptionalLink(i)" class="optional-links-add">-</a>
+                                        </div>
+                                        <div class="optional-links-box">
+                                            <div class="optional-block-rec-admin optional-display-off">
+                                                <div class="optional-block-rec-admin">
+                                                    <input type="text" class="form-control" placeholder="Add Optional Links" id="addOptionalress" formControlName="optionalLinkText">
+
+                                                    <a href="javascript:;" [ngClass]="!(formControls.optionalLinkText.value==0) ? '' : 'disabled-add-more-button'" (click)="onAddNewOptionalLink(formControls.optionalLinkText.value)" class="optional-links-add">+</a></div>
+
+                                                <div *ngIf="(formControls.optionalLinkText.invalid) && (submitted || formControls.optionalLinkText.dirty || formControls.optionalLinkText.touched)" class="text-danger">
+                                                    <div *ngIf="formControls.optionalLinkText.errors?.pattern">
+                                                        Please provide valid url.
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">Home Variables <span>*</span></label>
+                                        <div class="select-dropdown">
+                                            <select class="form-select" aria-label="Default select example" formControlName="homeOwnerAddressDetailType">
+                                                <option value="" selected>Add Home Variables </option>
+                                                <option value="1">Home General Variables</option>
+                                                <option value="2">Home Heating Variables</option>
+                                                <option value="3">Home Cooling Variables</option>
+                                                <option value="4">Home Water Treatment Variables</option>
+                                                <option value="5">Home Outside Variables</option>
+                                                <option value="6">Home Appliances Variables</option>
+                                            </select>
+                                            <div *ngIf="(formControls.homeOwnerAddressDetailType.invalid) && (submitted || formControls.homeOwnerAddressDetailType.dirty || formControls.homeOwnerAddressDetailType.touched)" class="text-danger">
+                                                <div *ngIf="formControls.homeOwnerAddressDetailType.errors?.required || formControls.homeOwnerAddressDetailType.value==0">
+                                                    Home Variable is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group month-block">
+                                        <label for="company">Start Specific Month <span>*</span></label>
+                                        <div class="month-block">
+                                            <app-month-year-picker name="monthStartJson" formControlName="monthStartJson"></app-month-year-picker>
+                                        </div>
+                                        <!-- <div *ngIf="formControls.monthStart_isValid.invalid && submitted" class="text-danger">
+                                            <div *ngIf="formControls.monthStart_isValid.errors?.required || formControls.monthStart_isValid.errors?.min">
+                                                Invalid start month.
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">End Specific Month <span>*</span></label>
+                                        <div class="month-block">
+                                            <!-- <input type="text" class="form-control" placeholder="Add Specific Months"
+                                                id="last-name">
+                                            <a href="#"><i class="fas fa-calendar-alt"></i></a> -->
+                                            <app-month-year-picker name="monthEndJson" formControlName="monthEndJson">
+                                            </app-month-year-picker>
+                                            <!-- <div *ngIf="formControls.monthEnd_isValid.invalid && submitted" class="text-danger">
+                                                <div *ngIf="formControls.monthEnd_isValid.errors?.required || formControls.monthEnd_isValid.errors?.min">
+                                                    Invalid end month.
+                                                </div>
+                                            </div> -->
+
+                                            <div *ngIf="(formControls.monthEnd.invalid) && (submitted || formControls.monthEnd.dirty || formControls.monthEnd.touched)" class="text-danger">
+                                                <div *ngIf="formControls.monthEnd.errors?.required || formControls.monthEnd.value==0">
+                                                    Invalid period is selected.
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">Max Views</label>
+                                        <input *ngIf="!unlimitedViews" type="number" class="form-control" (input)="isValidMaxNum()" placeholder="Choose Max Views" autocomplete="off" id="first-name" (keypress)="numberOnly($event)" formControlName="maxViewEachMonth">
+                                        <input *ngIf="unlimitedViews" type="text" value="Unlimted" class="form-control disabled-input" disabled>
+                                        <div *ngIf="(formControls.maxViewEachMonth.invalid) && !unlimitedViews && (submitted || formControls.maxViewEachMonth.dirty || formControls.maxViewEachMonth.touched)" class="text-danger">
+                                            <div *ngIf="formControls.maxViewEachMonth.errors?.required">
+                                                Max views is required.
+                                            </div>
+                                            <div *ngIf="formControls.maxViewEachMonth.errors?.pattern && isValidNumber">
+                                                Max Views can be max 9 digits long.
+                                            </div>
+
+                                        </div>
+                                        <div *ngIf="!unlimitedViews && (submitted || formControls.maxViewEachMonth.dirty || formControls.maxViewEachMonth.touched)" class="text-danger">
+                                            <div class="text-danger" *ngIf="!isValidNumber">
+                                                Please enter number greater than zero.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check unlimited-view-box">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" (change)="onSetMaxViewUnlimitedChange($event)" [checked]="unlimitedViews" id="unlimited">
+                                            <label for="unlimited">Set max view as unlimited</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" *ngIf="stepCode==2" (click)="setArticleModalStep(stepCode-1)" class="btn btn-secondary">Back</button>
+                        <button type="button" *ngIf="stepCode==1" (click)="setArticleModalStep(2)" class="btn btn-primary">Next</button>
+                        <button type="submit" *ngIf="stepCode==2" class="btn btn-primary">Save</button>
+                        <!-- [disabled]="formControls.articleTitle.invalid || formControls.shortDescriptionText.invalid || formControls.descriptionText.invalid  || formControls.imageFile.invalid" -->
+
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+
+<ng-template #cropImageModal let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelCropImageModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>
+
+<ng-template #deleteArticleAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="closeModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Delete this article?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="deleteArticle()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- Detail Vendor Article Modal -->
+<div class="creat-new-vendor-article-modal">
+    <div class="modal" id="exampleModalMessage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <ng-template #detailArticleStep1ModalContent let-modal>
+                <!-- <div class="modal-content"> -->
+                <div class="modal-header view-vendor-article-box">
+                    <div class="new-vendor-article-heading">
+                        <h4>{{formControls.articleTitle.value}}</h4>
+                        <h6>{{formControls.shortDescriptionText.value}}</h6>
+                    </div>
+                    <div class="new-vendor-article-image">
+                        <img [src]="articleImage" class="modal-home-img img-fluid" alt="modal-home-img">
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+                </div>
+                <div class="modal-body view-vendor-article-box">
+                    <div class="new-vendor-article-information">
+                        <div class="new-vendor-article-text-des">
+                            <p>{{formControls.descriptionText.value}}</p>
+                        </div>
+                        <div class="home-variables-optional-box">
+                            <div class="home-variables-optional-link">
+                                <h5>Optional Links</h5>
+                                <div *ngFor="let articleLink of articleLinks; let i=index">
+                                    <a [href]="articleLink" target="_blank">{{articleLink}}</a>
+                                </div>
+                            </div>
+                            <div class="home-variables-view-admin">
+                                <h5>Home Variables</h5>
+                                <p>{{getHomeVariableName(formControls.homeOwnerAddressDetailType.value)}}</p>
+                            </div>
+                        </div>
+                        <div class="specific-month-admin-main">
+                            <div class="home-variables-specific-month-admin">
+                                <h5>Start Specific Month </h5>
+                                <p>{{getMonthNameByCode(formControls.monthStartJson.value.month)}}, {{formControls.monthStartJson.value.year}}</p>
+                            </div>
+                            <div class="home-variables-specific-end-month-admin">
+                                <h5>End Specific Month</h5>
+                                <p>{{getMonthNameByCode(formControls.monthEndJson.value.month)}}, {{formControls.monthEndJson.value.year}}</p>
+                            </div>
+                        </div>
+                        <div class="home-variables-max-view-admin">
+                            <h5>Max Views </h5>
+                            <p *ngIf="formControls.maxViewEachMonth.value==0">Unlimited</p>
+                            <p *ngIf="formControls.maxViewEachMonth.value>0">{{formControls.maxViewEachMonth.value}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="openEditArticleModal(formControls.articleId.value, addArticleStep1ModalContent)" class="btn btn-primary">edit Vendor Article</button>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

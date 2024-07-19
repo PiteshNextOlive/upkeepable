@@ -1,0 +1,67 @@
+<form [formGroup]="inputFormWelcomeMessage" (ngSubmit)="onWelcomeMessageFormSubmit()">
+    <input type="hidden" formControlName="realEstateAgentWelcomeMessageId">
+    <input type="hidden" formControlName="userRefId">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="register-modal-header">
+                <h4>Create Your Welcome Message</h4>
+                <p>New homeowners receive a welcome email that has your personalized message.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="messageText">Write Your Message<span> *</span></label>
+                <textarea class="edit-welcome-message-form welcome-message-textarea" rows="5" cols="50" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormWelcomeMessage, 'messageText')" formControlName="messageText">
+                </textarea>
+                <div *ngIf="(WelcomeMessageformControls.messageText.invalid) && (submitted || WelcomeMessageformControls.messageText.dirty || WelcomeMessageformControls.messageText.touched)" class="text-danger">
+                    <div *ngIf="WelcomeMessageformControls.messageText.errors?.required">
+                        Message is required.
+                    </div>
+                    <div *ngIf="WelcomeMessageformControls.messageText?.errors?.maxlength">
+                        Message can be max 500 characters long.
+                    </div>
+                    <!-- <div *ngIf="WelcomeMessageformControls.messageText.errors?.pattern">
+                        Invalid Message.
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="col-md-12">
+        <div class="upload-form-group">
+            <button type="button" class="btn btn-primary">upload image</button>
+        </div>
+    </div> -->
+
+    </div>
+</form>
+
+
+<!-- <form [formGroup]="inputFormWelcomeMessage" (ngSubmit)="onWelcomeMessageFormSubmit()">
+    <input type="hidden" formControlName="realEstateAgentWelcomeMessageId">
+    <input type="hidden" formControlName="userRefId">
+
+    <div class="modal-body">
+
+
+        <div class="edit-welcome-message-modal">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="edit-welcome-message-box">
+                        <h5>Message</h5>
+                        <textarea class="edit-welcome-message-form welcome-message-textarea" rows="6" cols="50"
+                            formControlName="messageText">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save message</button>
+    </div>
+</form> -->

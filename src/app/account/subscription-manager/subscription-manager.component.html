@@ -1,0 +1,116 @@
+<div id="payment-details" class="tabcontent">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="subscription-heading-text">
+                <h3>Subscription Details</h3>
+                <h6>Here‘s your subscription details.</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="subscription-quantity-shows">
+                <img src="../../../assets/img/dollor-icon-sub.svg" alt="dollor-icon-sub">
+                <h6>Subscription</h6>
+                <h4>
+                    {{stripeSubscriptionDetail?.plan_Amount | currency:'USD'}}/{{stripeSubscriptionDetail?.plan_IntervalCount}}
+                    <span *ngIf="stripeSubscriptionDetail?.plan_IntervalCount > 1; else singleMonth">
+                        {{stripeSubscriptionDetail?.plan_Interval}}s
+                    </span>
+                    <ng-template #singleMonth>
+                        {{stripeSubscriptionDetail?.plan_Interval}}
+                    </ng-template>
+                </h4>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="next-payment-block">
+                <h6> Next payment is due {{stripeSubscriptionDetail?.nextPaymentDate | date: 'MMMM d, yyyy'}}. </h6>
+                <a href="javascript:;" (click)="onAddCard()" class="btn-secondary">Manage Payment</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="subscription-table-heading-text">
+                <h3>Billing History</h3>
+                <h6>View all your invoices and receipts of bill</h6>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="choose-date-block-sub subcriptions-date">
+                <form [formGroup]="inputForm" (ngSubmit)="filterData()" class="choose-date-block-cal">
+                    <app-month-year-picker name="monthYear" [allMonths]="true" formControlName="monthYear" class="choose-date-full-cal">
+                    </app-month-year-picker>
+                    <button type="submit" class="btn btn-secondary-small filter-btn-cal">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mb-5 pb-5">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="footer-link-table table-responsive">
+                <table class="table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="stripeInvoiceDetailList?.length>0; else noinvoicesList">
+                       
+                       
+                         <tr *ngFor="let item of stripeInvoiceDetailList">
+                            <td>#{{item.id}}</td>
+                            <td>{{item.invoiceDate | date: 'MMM d, yyyy'}}</td>
+                            <td><a href="javascript:;" class="btn-secondary-small view-status-btn-up">{{item.status}}</a></td>
+                            <td>${{item.amount}}</td>
+                            <td><a href="javascript:;" class="btn-secondary-small">View</a></td>                            
+                        </tr>
+                    </tbody>
+                    <ng-template #noinvoicesList>
+                        <tr>
+                            <td colspan="4"><span>No data..!</span></td>
+                        </tr>
+                    </ng-template>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="cancel-account-box">
+                <!-- <button type="button" class="btn btn-secondary" (click)="open(cancelAccountAlertModel)" data-bs-dismiss="modal">Close My Account</button> -->
+                <a (click)="open(cancelAccountAlertModel)" class="btn btn-secondary">Close My Account</a>
+            </div>
+
+        </div>
+    </div>
+    <ng-template #cancelAccountAlertModel let-modal>
+        <div class="skip-recommendations">
+            <div class="modal-header">
+                <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+                <p>Are you sure you want to Close this account?</p>
+                <p class="notification-text-account">This cannot be undone</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="onCancelAccountModelNoClick()" data-bs-dismiss="modal">No</button>
+                <button type="button" (click)="onCancelAccountModelYesClick()" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

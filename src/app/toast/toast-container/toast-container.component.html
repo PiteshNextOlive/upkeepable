@@ -1,0 +1,8 @@
+<ngb-toast *ngFor="let toast of toastService.toasts" 
+    [autohide]="true"  
+    [class]="toast.classList" 
+    style="min-width:300px ;"
+    [delay]="toast.delay || 5000" 
+    (hidden)="toastService.remove(toast)" id="myDIV">
+        <i class="fa {{toast.icon}}"></i> {{toast.body}}
+</ngb-toast>

@@ -1,0 +1,56 @@
+<div [ngClass]="{'home-detail-modal': counter === 1, 'heat-detail-modal': counter === 2, 'cooling-detail-modal' : counter === 3, 'treat-water-detail-modal' : counter === 4, 'outside-Home-detail-modal' : counter === 5, 'home-appliances-detail-modal' : counter === 6}">
+    <div class="" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="col-md-12 slider-view-port" [@animImageSlider]="counter">
+                    <app-home-address-general-detail *ngIf="counter==1 && homeOwnerAddressAttributes" [homeOwnerAddressAttributeRefId]="homeOwnerAddressAttributes[0]?.homeOwnerAddressAttributeId" [homeAddressGeneralDetailList]="homeOwnerAddressAttributes[0]?.homeAddressGeneralDetails"
+                        [mainCategory]="mainCategories[0]" (moveToNextFormEvent)="onMoveToNextFormEvent($event)" (closeFormEvent)="oncloseFormEventEvent($event)">
+                    </app-home-address-general-detail>
+
+                    <app-home-address-heat-detail *ngIf="counter==2" [homeOwnerAddressAttributeRefId]="homeOwnerAddressAttributes[1].homeOwnerAddressAttributeId" [homeAddressHeatingDetailList]="homeOwnerAddressAttributes[1].homeAddressHeatingDetails" [homeOwnerAddressDetailStatusType]="homeOwnerAddressAttributes[1].homeOwnerAddressDetailStatusType"
+                        [mainCategory]="mainCategories[1]" (moveToNextFormEvent)="onMoveToNextFormEvent($event)" (closeFormEvent)="oncloseFormEventEvent($event)">
+                    </app-home-address-heat-detail>
+
+                    <app-home-address-cooling-detail *ngIf="counter==3" [homeOwnerAddressAttributeRefId]="homeOwnerAddressAttributes[2].homeOwnerAddressAttributeId" [homeAddressCoolingDetailList]="homeOwnerAddressAttributes[2].homeAddressCoolingDetails" [homeOwnerAddressDetailStatusType]="homeOwnerAddressAttributes[2].homeOwnerAddressDetailStatusType"
+                        [mainCategory]="mainCategories[2]" (moveToNextFormEvent)="onMoveToNextFormEvent($event)" (closeFormEvent)="oncloseFormEventEvent($event)">
+                    </app-home-address-cooling-detail>
+
+                    <app-home-address-water-treatment-detail *ngIf="counter==4" [homeOwnerAddressAttributeRefId]="homeOwnerAddressAttributes[3].homeOwnerAddressAttributeId" [homeAddressWaterTreatmentDetailList]="homeOwnerAddressAttributes[3].homeAddressWaterTreatmentDetails"
+                        [mainCategory]="mainCategories[3]" (moveToNextFormEvent)="onMoveToNextFormEvent($event)" (closeFormEvent)="oncloseFormEventEvent($event)">
+                    </app-home-address-water-treatment-detail>
+
+                    <app-home-address-outside-detail *ngIf="counter==5" [homeOwnerAddressAttributeRefId]="homeOwnerAddressAttributes[4].homeOwnerAddressAttributeId" [homeAddressOutsideDetailList]="homeOwnerAddressAttributes[4].homeAddressOutsideDetails" [mainCategory]="mainCategories[4]"
+                        (moveToNextFormEvent)="onMoveToNextFormEvent($event)" (closeFormEvent)="oncloseFormEventEvent($event)">
+                    </app-home-address-outside-detail>
+                    <app-home-address-appliance-detail *ngIf="counter==6" [homeOwnerAddressAttributeRefId]="homeOwnerAddressAttributes[5].homeOwnerAddressAttributeId" [homeAddressApplianceDetailList]="homeOwnerAddressAttributes[5].homeAddressApplianceDetails" [mainCategory]="mainCategories[5]"
+                        (moveToNextFormEvent)="onMoveToNextFormEvent($event)" (closeFormEvent)="oncloseFormEventEvent($event)">
+                    </app-home-address-appliance-detail>
+
+                    <ng-container class="col-md-12" *ngIf="counter==100">
+                        <div class="skip-recommendations">
+                            <div class="modal-body">
+                                <img src="assets/img/thanks-icon.svg" class="thanks-icon" alt="modal-home-icon">
+                                <h5>Thank You!</h5>
+                                <p>You have successfully submitted your home details.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" (click)="onClickUpkeep()" class="btn btn-primary">Go to home</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+
+                <div class="modal-progress" *ngIf="counter <= maxSteps">
+                    <button type="button" (click)="onPrevious()" [ngStyle]="{'visibility':(this.counter > 1 && specificStepNum==0 && previousClosestStep!=-1) ? 'visible' : 'hidden'}" class="modal-left-slide">
+                        <i class="fa fa-angle-left"></i>
+                    </button>
+                    <p>Information page <strong>{{counter}}</strong> of {{maxSteps}}</p>
+                    <button type="button" (click)="onNext()" [ngStyle]="{'visibility':(this.counter < maxSteps && specificStepNum==0 && nextClosestStep!=-1) ? 'visible' : 'hidden'}" class="modal-right-slide">
+                        <i class="fa fa-angle-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

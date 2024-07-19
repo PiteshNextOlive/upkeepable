@@ -1,0 +1,427 @@
+<section class="home-search-admin-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-12">
+                <div class="coupon-row-box">   
+            <div class="dashboard-search admin-panel-search">
+            <div class="form-group">
+            <i class="fas fa-search"></i>
+            <input class="form-control form-control-lg form-control-borderless" type="search" (input)="searchKeyUpInput()" (keyup)="searchKeyUp($event)" (keydown)="searchPressed($event)" placeholder="Search by Vendor Coupon" id="searchKeyword">
+            <button class="btn btn-lg btn-danger" *ngIf="searchText.length>0" (click)="clearSearch()" type="button"></button>
+            <button class="btn btn-lg btn-success" (click)="onClickSearchBar()"></button>
+            </div>
+            </div>
+
+            
+                <div class="search-main all-client-list-box coupon-dropdown">
+                    <div class="form-group">
+    
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" (change)="onChangeSearchOrder($event.target)">
+                                <option value="1">Coupon Codes</option>
+                                <option value="2">Values </option>
+                                <option value="3">Periods </option>
+                             </select>
+                        </div>
+                    </div>
+                </div> 
+           
+            </div>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-12">
+            <div class="recently-added-btn-coupon">
+            <a href="javascript:;" (click)="openAddCouponModal(0, addCouponStep1ModalContent)" class="btn-primary-small">+ create new coupon</a>
+            </div>
+            </div>
+
+            
+    
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <div class="recently-added-heading-main vendro-Coupon-text-new">
+                <h4>Coupons</h4>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12"> <button (click)="exportexcel()" class="btn-primary-small export-data-btn">Export Data</button></div>
+
+        <div class="col-xl-3 col-lg-3 col-md-12">
+            <div class="sorting-filter-main all-client-list-box">
+                <div class="form-group">
+
+                    <div class="select-dropdown">
+                        <select class="form-select" aria-label="Default select example" (change)="onChangeSortOrder($event)">
+                            <option value="1">Ascending</option>
+                            <option value="2">Descending </option>
+                         </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="recently-added-table home-owner-table table-responsive">
+               
+                <table class="table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                               Active
+                            </th>
+                            <th>
+                                Coupon Code
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'CouponCode', 'fa-sort-up': (dataTableParams.sortColumn === 'CouponCode' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'CouponCode' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('CouponCode')"></i>
+                            </th>
+                            <th>
+                                Value
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'CouponValue', 'fa-sort-up': (dataTableParams.sortColumn === 'CouponValue' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'CouponValue' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('CouponValue')"></i>
+                            </th>
+                            <th>
+                                Period
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'CouponPeriod', 'fa-sort-up': (dataTableParams.sortColumn === 'CouponPeriod' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'CouponPeriod' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('CouponPeriod')"></i>
+                            </th>
+                            <th>
+                                Use
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'CouponUse', 'fa-sort-up': (dataTableParams.sortColumn === 'CouponUse' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'CouponUse' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('CouponUse')"></i>
+                            </th>
+                            <th>View Details</th>
+                            <th>Expires
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'CreatedOn', 'fa-sort-up': (dataTableParams.sortColumn === 'CreatedOn' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'CreatedOn' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('CreatedOn')"></i> </th>
+                            
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="totalRecords>0; else noCoupon">
+                        <tr *ngFor="let Coupon of couponList">
+                          <td>
+                            <div class="coupon-toggle-box">
+                            <div style="margin: 0 auto; position: relative;">
+                                <input [checked]="Coupon.couponStatus==true" type="checkbox" id={{Coupon.couponId}} style="display: none;" (change)="toggleChanged($event.target)">
+                                <label class="toggle-button-switch" for={{Coupon.couponId}}></label>
+                                <div class="toggle-button-text">
+                                    <div class="toggle-button-text-on">ON</div>
+                                    <div class="toggle-button-text-off">OFF</div>
+                                </div>
+                            </div>
+                        </div>
+                            </td>
+
+                            <td>
+                                <div class="ho-name-td-width">{{Coupon.couponCode}}</div>
+                            </td>
+                            <td>{{Coupon.couponValue}}</td>
+                            <td>
+                                <span *ngIf="Coupon.couponPeriod<=1; else hascouponPeriod">
+                                    {{Coupon.couponPeriod}} Year
+                                </span>
+                                <ng-template #hascouponPeriod>
+                                    {{Coupon.couponPeriod}} Years
+                                </ng-template>
+                                
+                            <td>
+                                <span *ngIf="Coupon.couponUse<=0; else hasMaxViews">
+                                    Unlimited
+                                </span>
+                                <ng-template #hasMaxViews>
+                                    {{Coupon.couponUse}}
+                                </ng-template>
+                            </td>
+                            
+                            <td>
+                                <ul class="edit-footer-ul">
+                                    <li>
+                                        <a href="javascript:;" (click)="openDetailCouponModal(detailCouponStep1ModalContent, Coupon.couponId)" class="btn-secondary-small" data-bs-toggle="modal" data-bs-target="#exampleModalMessage">View Details</a>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                {{Coupon.couponExpires}}
+                            </td>
+                            <td>
+                                <ul class="message-action">
+                                    <li><a href="javascript:;" (click)="openAddCouponModal(Coupon.couponId, addCouponStep1ModalContent)"><i
+                                                class="fas fa-edit"></i></a></li>
+                                    <li><a href="javascript:;" (click)="openDeleteCouponModal(deleteCouponAlertModel, Coupon.couponId)"><i
+                                                class="fas fa-trash-alt"></i></a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noCoupon>
+                        <tbody>
+                            <tr>
+                                <td col-md-6>
+                                    No Coupon is found..!
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" *ngIf="totalRecords>0">
+    <div class="row mb-5">
+        <div class="col-xl-6 col-lg-6 col-md-6">
+
+            <div class="pagination-per-page results-ine-box">
+                <div class="results-per-page-box">
+                    <p>Results per page:</p>
+                    <div class="form-group">
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" (change)="onChangePageSize($event)">
+                                <option value="10" selected>10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="pagination-block-up">
+                <ngb-pagination [collectionSize]="totalRecords" [maxSize]="5" [pageSize]="dataTableParams.pageSize" [page]="dataTableParams.pageNo" [rotate]="true" (pageChange)="loadPage($event)" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="create-new-owner-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <ng-template #addCouponStep1ModalContent let-modal>
+                <!-- <div class="modal-content"> -->
+                <form [formGroup]="inputForm" (ngSubmit)="saveCoupon()">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" value="admin-home-owner" (click)="closeModal()"></button>
+                    </div>.
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4 *ngIf="selectedCouponId==0">Create New Coupon</h4>
+                            <h4 *ngIf="selectedCouponId!=0">Edit Coupon</h4>
+                            <p>Fill the complete information about Coupon</p>
+                        </div>
+
+                        <div class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="couponCode">Coupon Code <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Coupon Code" id="EnterCouponcode" formControlName="couponCode">
+                                        <div *ngIf="(formControls.couponCode?.invalid) && (submitted || formControls.couponCode?.dirty || formControls.couponCode?.touched)" class="text-danger">
+                                            <div *ngIf="formControls.couponCode?.errors?.required">
+                                                Coupon Code is required.
+                                            </div>
+                                            <div *ngIf="formControls.couponCode?.errors?.pattern">
+                                                Please provide valid Coupon Code.
+                                            </div>
+                                            <div *ngIf="formControls.couponCode?.errors?.maxlength">
+                                                Coupon Code can be max 50 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="couponValue">Value <span>*</span></label>
+                                        <input type="number" class="form-control" placeholder="Enter Value" id="CouponValue" formControlName="couponValue">
+                                        <div *ngIf="(formControls.couponValue?.invalid) && (submitted || formControls.couponValue?.dirty || formControls.couponValue?.touched)" class="text-danger">
+                                            <div *ngIf="formControls.couponValue?.errors?.required">
+                                                Value is required.
+                                            </div>
+                                            <div *ngIf="formControls.couponValue?.errors?.pattern">
+                                                Please provide valid Value.
+                                            </div>
+                                            <div *ngIf="formControls.couponValue?.errors?.maxlength">
+                                                Value can be max 50 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="couponPeriod">Coupon Period<span>*</span></label>
+                                        <div class="select-dropdown">
+                                            <select id="period" class="form-select" aria-label="Default select example" formControlName="couponPeriod">
+                                                <option selected value="">Select Coupon Period</option>
+                                                <option value="1">1 Year</option>
+                                                <option value="2">2 Year</option>
+                                                <option value="3">3 Year</option>
+                                                <option value="4">4 Year</option>
+                                            </select>
+                                            <div *ngIf="(formControls.couponPeriod?.invalid) && (submitted || formControls.couponPeriod?.dirty || formControls.couponPeriod?.touched)" class="text-danger">
+                                                <div *ngIf="formControls.couponPeriod?.errors?.required">
+                                                    Coupon Period is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="couponUse">Use</label>
+                                        <input *ngIf="!unlimitedUse" type="number" class="form-control" (input)="isValidMaxNum()" placeholder="Choose Use" autocomplete="off" id="couponUse" (keypress)="numberOnly($event)" formControlName="couponUse">
+                                        <input *ngIf="unlimitedUse" type="text" value="Unlimted" class="form-control disabled-input" disabled>
+                                        <div *ngIf="(formControls.couponUse?.invalid) && !unlimitedUse && (submitted || formControls.couponUse?.dirty || formControls.couponUse?.touched)" class="text-danger">
+                                            <div *ngIf="formControls.couponUse?.errors?.required">
+                                                Use is required.
+                                            </div>
+                                            <div *ngIf="formControls.couponUse?.errors?.pattern && isValidNumber">
+                                                Use can be max 9 digits long.
+                                            </div>
+
+                                        </div>
+                                        <div *ngIf="!unlimitedUse && (submitted || formControls.couponUse?.dirty || formControls.couponUse?.touched)" class="text-danger">
+                                            <div class="text-danger" *ngIf="!isValidNumber">
+                                                Please enter number greater than zero.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check unlimited-view-box-text">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" (change)="onSetMaxViewUnlimitedChange($event)" [checked]="unlimitedUse" id="unlimitedUsed">
+                                            <label for="unlimitedUsed">Set use as unlimited</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group short-description-mob">
+                                        <label for="descriptionText">Description <span>*</span></label>
+                                        <textarea id="description" class="form-control" rows="8" cols="50" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputForm, 'descriptionText')" formControlName="descriptionText">Write Description here.</textarea>
+                                        <div *ngIf="(formControls.descriptionText?.invalid) && (submitted || formControls.descriptionText?.dirty || formControls.descriptionText?.touched)" class="text-danger">
+                                            <div *ngIf="formControls.descriptionText?.errors?.required">
+                                                Description is required.
+                                            </div>
+                                            <!-- <div *ngIf="formControls.descriptionText.errors?.pattern">
+                                                Please provide valid Description.
+                                            </div> -->
+                                            <div *ngIf="formControls.descriptionText?.errors?.maxlength">
+                                                Description can be max 500 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                        </div>
+
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+
+<ng-template #cropImageModal let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelCropImageModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>
+
+<ng-template #deleteCouponAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="closeModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Delete this Coupon?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="deleteCoupon()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- Detail Vendor Coupon Modal -->
+<div class="creat-new-vendor-Coupon-modal">
+    <div class="modal" id="exampleModalMessage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <ng-template #detailCouponStep1ModalContent let-modal>
+                <!-- <div class="modal-content"> -->
+                <div class="modal-header view-vendor-Coupon-box">
+                    <div class="new-view-Coupon-heading">
+                        <h4>View Coupon</h4>
+                        <h6>Complete information about coupon</h6>
+                    </div>
+                    
+                    <div class="new-view-coupon-data">
+                    <h6>Coupon Code</h6>
+                    <p>{{formControls.couponCode.value}}</p>
+                    </div>
+
+                    <div class="new-view-coupon-data">
+                    <h6>Value</h6>
+                    <p>{{formControls.couponValue.value}}</p>
+                    </div>
+
+                    <div class="new-view-coupon-data">
+                    <h6>Coupon Period</h6>
+                    <p>{{formControls.couponPeriod.value}}</p>
+                    </div>
+
+                    <div class="new-view-coupon-data">
+                    <h6>Used Coupon</h6>
+                    <p>{{formControls.couponUse.value}}</p>
+                    <ul>
+                    <li>Jacqueline Sinex</li>
+                    <li>Eli Newman</li>
+                    <li> Joris Dubouloz</li>
+                    <li>Oliver Jake</li>
+                    <li>Gold Smith</li>
+                    </ul>
+                    </div>
+
+                    <div class="new-view-coupon-data">
+                    <h6>Description</h6>
+                    <p>{{formControls.descriptionText.value}}</p>
+                    </div>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+                </div>
+             
+                <div class="modal-footer">
+                    <button type="button" (click)="exportDataasCSV()" class="btn btn-primary">Export History as CSV</button>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div> 

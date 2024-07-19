@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="breadcrumb-box">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:;" (click)="onClickDashboard()">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Settings</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="setting-heading-main setting-ho-heading">
+                <!-- <h4>Settings</h4> -->
+                <button class="back-button" (click)="goBack()">❮</button>
+            </div>            
+        </div>
+        
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="tab rea-tabs-new">
+                <button class="tablinks" [ngClass]="{'active': pageId === 1}" (click)="OpenPageById(1)">Account</button>
+                <button class="tablinks" *ngIf="userJwtDecodedInfo?.RoleName=='REAL_ESTATE_USER'" [ngClass]="{'active': pageId === 2}" (click)="OpenPageById(2)">Footer Links</button>
+                <button class="tablinks" *ngIf="userJwtDecodedInfo?.RoleName=='ADMIN_USER'" [ngClass]="{'active': pageId === 2}" (click)="OpenPageById(2)">Global Footer Links</button>
+
+                <button class="tablinks" [ngClass]="{'active': pageId === 3}" (click)="OpenPageById(3)">Password</button>
+
+                <button *ngIf="prevUserId==null && userJwtDecodedInfo?.RoleName=='REAL_ESTATE_USER'" [ngClass]="{'active': pageId === 4}" (click)="OpenPageById(4)" class="tablinks">Subscription</button>
+                <button *ngIf="prevUserId==null && userJwtDecodedInfo?.RoleName=='HOME_OWNER_USER'" [ngClass]="{'active': pageId === 5}" (click)="OpenPageById(5)" class="tablinks">Subscription</button>
+                <!-- <button *ngIf="prevUserId==null" (click)="open(cancelAccountAlertModel)" class="tablinks">cancel account</button> -->
+                <a href="https://upkeepable.com/login/" target="_blank" style="display:none" id="paymentDetailLink"></a>
+                <button class="tablinks" (click)="authService.onLogoutClick()">Logout</button>
+
+            </div>
+            <app-profile-manager [homeOwnerAddressId_fromQueryStr]="homeOwnerAddressId" *ngIf="pageId==1 && (userJwtDecodedInfo?.RoleName=='HOME_OWNER_USER' || homeOwnerAddressId>0)"></app-profile-manager>
+            <app-profile-manager-rea *ngIf="pageId==1 && userJwtDecodedInfo?.RoleName=='REAL_ESTATE_USER' && homeOwnerAddressId==0"></app-profile-manager-rea>
+            <app-profile-manager-admin *ngIf="pageId==1 && userJwtDecodedInfo?.RoleName=='ADMIN_USER' && homeOwnerAddressId==0"></app-profile-manager-admin>
+
+
+            <app-footer-links-manager *ngIf="pageId==2"></app-footer-links-manager>
+            <app-change-password *ngIf="pageId==3"></app-change-password>
+            <app-subscription-manager *ngIf="pageId==4"></app-subscription-manager>
+            <app-subscription-for-ho *ngIf="pageId==5"></app-subscription-for-ho>
+        </div>
+    </div>
+    <ng-template #cancelAccountAlertModel let-modal>
+        <div class="skip-recommendations">
+            <div class="modal-header">
+                <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+                <p>Are you sure you want to Close this account?</p>
+                <p class="notification-text-account">This cannot be undone</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="onCancelAccountModelNoClick()" data-bs-dismiss="modal">No</button>
+                <button type="button" (click)="onCancelAccountModelYesClick()" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

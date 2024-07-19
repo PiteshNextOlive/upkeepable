@@ -1,0 +1,316 @@
+<!-- *ngIf="homeAddressGeneralDetailList.length==0 || wantToEdit" -->
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+    <div class="modal-inner">
+        <div class="modal-header">
+            <div class="home-img-box">
+                <img src="assets/img/{{mainCategory?.iconName}}" class="iZoticus-logo" alt="detail-home-icon">
+                <h4>{{mainCategory?.title}}</h4>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeFormEvent.emit()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <input type="hidden" formControlName="homeOwnerAddressAttributeRefId">
+            <input type="hidden" formControlName="homeAddressGeneralDetailId">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[0]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" formControlName="homeType" aria-label="Default select example">
+                                <option value="0">Select {{subCategories[0]?.title}}</option>
+                                <option *ngFor="let homeType of subCategories[0]?.homeVariableSubCategoryListItems" value="{{homeType?.homeVariableSubCategoryListItemId}}">
+                                    {{homeType.title}}
+                                </option>
+                            </select>
+                            <div *ngIf="formControls.homeType.invalid && (submitted || formControls.homeType.dirty || formControls.homeType.touched)" class="text-danger">
+                                <!-- <div *ngIf="formControls.homeType.errors?.required" class="text-danger"> -->
+
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 year-ho-select">
+                                <label for="last">Year</label>
+                                <!-- <select class="form-select" formControlName="homeAge_Year" aria-label="Default select example">
+                                    <option value="0" selected>Year</option>
+                                     <option value="0">Zero</option> 
+                                    <option value="1">1 year</option>
+                                    <option value="2">2 years</option>
+                                    <option value="3">3 years</option>
+                                    <option value="4">4 years</option>
+                                    <option value="5">5 years</option>
+                                    <option value="6">6 years</option>
+                                    <option value="7">7 years</option>
+                                    <option value="8">8 years</option>
+                                    <option value="9">9 years</option>
+                                    <option value="10">10 years</option>
+                                </select> -->
+                                <input type="number" maxlength="4" formControlName="homeAge_Year" class="form-control" placeholder="Year" (input)="chaeckValidYear()" id="homeAge_Year">
+                                <!-- <div *ngIf="(formControls.homeAge_Year.invalid) && (submitted || formControls.homeAge_Year.dirty || formControls.homeAge_Year.touched)" class="text-danger">
+                                    <div *ngIf="formControls.homeAge_Year?.errors?.required">
+                                        {{subCategories[1]?.title}} is required.
+                                    </div>
+                                </div> -->
+                                <div *ngIf="(formControls.homeAge_Year.dirty || formControls.homeAge_Year.touched)" class="text-danger">
+                                    <div *ngIf="!isValidYear && !formControls.homeAge_Year?.errors?.required">
+                                        Value should be greater than {{validYear}} and less than {{currentYear}}.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6">
+                                <label for="last">{{subCategories[1]?.title}}</label>
+                                <input type="number" disabled formControlName="homeAge_Month" class="form-control" placeholder="Month" id="homeAge_Month">
+
+                                <!-- <select class="form-select" formControlName="homeAge_Month" aria-label="Default select example">
+                                    <option value="0" selected>Months</option>
+                                    <option value="0">Zero</option> 
+                                    <option value="1">1 month</option>
+                                    <option value="2">2 months</option>
+                                    <option value="3">3 months</option>
+
+                                    <option value="4">4 months</option>
+                                    <option value="5">5 months</option>
+                                    <option value="6">6 months</option>
+
+                                    <option value="7">7 months</option>
+                                    <option value="8">8 months</option>
+                                    <option value="9">9 months</option>
+
+                                    <option value="10">10 months</option>
+                                    <option value="11">11 months</option>
+                                    <option value="12">12 months</option>
+                                </select> -->
+                            </div>
+                        </div>
+                        <!-- <div *ngIf="(formControls.homeAge_Month.value==0 && formControls.homeAge_Year.value==0) && (submitted || formControls.homeAge_Month.dirty || formControls.homeAge_Month.touched || formControls.homeAge_Year.dirty || formControls.homeAge_Year.touched)" class="text-danger">
+                            <div *ngIf="formControls.homeAge_Month.errors?.required || formControls.homeAge_Month.errors?.required"> 
+                            Age is required.
+                             </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="company">{{subCategories[2]?.title}}</label>
+                        <input type="number" (input)="chaeckValidArea()" formControlName="homeTotalArea_SqFt" class="form-control" autocomplete="off" placeholder="Square Feet" id="homeTotalArea_SqFt">
+                        <div>Maximum 13 digits are allowed.</div>
+                        <div *ngIf="(formControls.homeTotalArea_SqFt.dirty || formControls.homeTotalArea_SqFt.touched)" class="text-danger">
+                            <div *ngIf="isZeroValidArea">
+                                Please enter a value greater than zero.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label for="first">{{subCategories[3]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" formControlName="floorsCount" aria-label="Default select example">
+                                <option value="0" selected>Select Floor</option>
+                                <option value="1" >1 Floor</option>
+                                <option value="2">2 Floors</option>
+                                <option value="3">3 Floors</option>
+                                <option value="4">4 Floors</option>
+                                <option value="5">5+ Floors</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <!--  row   -->
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="first">{{subCategories[4]?.title}}</label>
+                        <div class="floor-group-type">
+
+                            <div class="checkbox-group" *ngFor="let homeFloorType of subCategories[4]?.homeVariableSubCategoryListItems">
+                                <input type="checkbox" id="{{homeFloorType.homeVariableSubCategoryListItemId}}" value="{{homeFloorType.homeVariableSubCategoryListItemId}}" (change)="onChangeFoorTypeCheckBox($event)" [checked]="commonOpsService.markCheckboxChecked(homeFloorType.homeVariableSubCategoryListItemId, this.inputForm.controls.floorTypesArray.value)">
+                                <label for="{{homeFloorType.homeVariableSubCategoryListItemId}}">{{homeFloorType.title}}</label>
+                            </div>
+                        </div>
+                        <!-- <div *ngIf="formControls?.floorTypesArray?.value?.length==0 && submitted" class="text-danger">
+                            {{subCategories[4]?.title}} is required.
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!--  row   -->
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[5]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" formControlName="homeSidingType">
+                                <option value="0">Select {{subCategories[5]?.title}}</option>
+                                <option *ngFor="let homeSidingType of subCategories[5]?.homeVariableSubCategoryListItems"
+                                    value="{{homeSidingType.homeVariableSubCategoryListItemId}}">
+                                    {{homeSidingType.title}}
+                                </option>
+                            </select>
+                        </div>
+                        <div *ngIf="formControls.homeSidingType.invalid && (submitted || formControls.homeSidingType.dirty || formControls.homeSidingType.touched)" class="text-danger">
+                            <!-- <div *ngIf="formControls.homeType.errors?.required" class="text-danger"> -->
+                            <!-- {{subCategories[5]?.title}} is required. -->
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="company">{{subCategories[6]?.title}}</label>
+                        <div class="garage-check-box">
+                            <div class="form-check-inline">
+
+                                <label class="customradio"><span class="radiotextsty">Yes</span>
+                                    <input type="radio" formControlName="isGarage" value="1" checked="checked" name="isGarage">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="customradio"><span class="radiotextsty">No</span>
+                                    <input type="radio" name="isGarage" formControlName="isGarage" value="0">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+            <!--  row   -->
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="first">{{subCategories[7]?.title}}</label>
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" formControlName="garageSize" [ngClass]="{'disabled-input': formControls.isGarage.value==0}" [attr.disabled]="formControls.isGarage.value==1 ? null : 'disabled'">
+                                <option value="0">Select {{subCategories[7]?.title}}</option>
+                                <option *ngFor="let homeGarageSizeType of subCategories[7]?.homeVariableSubCategoryListItems" value="{{homeGarageSizeType.homeVariableSubCategoryListItemId}}">
+                                    {{homeGarageSizeType.title}}
+                                </option>
+                            </select>
+                        </div>
+                        <div *ngIf="formControls.isGarage.value==1 && (formControls.garageSize.value==0 || formControls.garageSize.invalid) && (submitted || formControls.garageSize.dirty || formControls.garageSize.touched)" class="text-danger">
+                            <!-- <div *ngIf="formControls.homeType.errors?.required" class="text-danger"> -->
+                            <!-- {{subCategories[7]?.title}} is required. -->
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </div>
+                <!--  col-md-6   -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <!-- {{inputForm.value | json}} -->
+            <button type="button" class="btn btn-secondary" (click)="closeFormEvent.emit()" data-bs-dismiss="modal">Close</button>
+            <button type="button" type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>
+
+<!-- 
+<section class="home-information-completed" *ngIf="homeAddressGeneralDetailList.length>0 && !wantToEdit">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="home-information-block">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-img-header-block">
+                                <div class="home-img-box">
+                                    <img src="assets/img/detail-home-icon.svg" class="iZoticus-logo" alt="detail-home-icon">
+                                    <h4>Details about your home</h4>
+                                </div>
+                                <a class="home-img-check-box">
+                                    <img src="assets/img/check-icon.svg" alt="check-icon">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="home-information-box">
+                                <h5>Heating source 1</h5>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Type</th>
+                                            <td>:</td>
+                                            <td>Single family home</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Age</th>
+                                            <td>:</td>
+                                            <td>10 years, 3 months</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Size</th>
+                                            <td>:</td>
+                                            <td>1,500 square feet</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Floors</th>
+                                            <td>:</td>
+                                            <td>2 floors</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Floor Type</th>
+                                            <td>:</td>
+                                            <td>Hardwood, carpet</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Siding</th>
+                                            <td>:</td>
+                                            <td>Vinyl</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Garage</th>
+                                            <td>:</td>
+                                            <td>Yes, 2 spots</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="heat-home-modal-img">
+                                <img src="assets/img/home-icon-info.svg" class="home-icon-info" alt="home-icon-info">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="home-edit-box-link">
+                                <a style="cursor: pointer;" class="btn-secondary" (click)="onEditClick()">Edit information</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section> -->

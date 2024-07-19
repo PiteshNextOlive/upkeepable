@@ -1,0 +1,851 @@
+<section class="home-search-admin-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="dashboard-search admin-panel-search">
+                    <div class="form-group">
+                        <i class="fas fa-search"></i>
+                        <input class="form-control form-control-lg form-control-borderless" type="search" (keyup)="searchKeyUp($event)" (keydown)="searchPressed($event)" placeholder="Search by Home Owner" id="searchKeyword">
+                        <button class="btn btn-lg btn-danger" *ngIf="searchText.length>0" (click)="clearSearch()" type="button"></button>
+                        <button class="btn btn-lg btn-success" (click)="onClickSearchBar()" type="submit"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="recently-added-btn-main">
+                    <a href="javascript:;" (click)="openInviteClientModal(inviteClientModalContent)" class="btn-primary-small">+ create new homeowner</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="container">
+    <div class="row mb-3 mt-4">
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <div class="recently-added-heading-main">
+                <h4>Home Owners</h4>
+            </div>
+        </div>
+
+
+        <div class="col-xl-6 col-lg-6 col-md-12">
+
+            <div class="row">
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                    <div class="sorting-filter-main sorting-box-new all-client-list-box">
+                        <div class="form-group">
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example" (change)="onChangeSortOrder($event)">
+                                    <option value="1">Sort Ascending</option>
+                                    <option value="2">Sort Descending</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <!-- <ngx-bootstrap-multiselect [options]="myOptions" [(ngModel)]="optionsModel"
+                        (ngModelChange)="onChange($event)"></ngx-bootstrap-multiselect> -->
+                    <div class="checkbox-dropdown" id="filterDropDown" (click)="OpenFilterDropDown()">
+                        Filter
+                        <ul class="checkbox-dropdown-list">
+                            <li>
+                                <label>
+                                  <input type="checkbox" value="1" id="filterOption_1"  (change)="onFilterOptionChange($event, 1)" />Active</label>
+                            </li>
+                            <li>
+                                <label>
+                                  <input type="checkbox" value="2" id="filterOption_2"  (change)="onFilterOptionChange($event, 2)"  />Paused</label>
+                            </li>
+                            <li>
+                                <label>
+                                  <input type="checkbox" value="0" id="filterOption_0"  (change)="onFilterOptionChange($event, 0)"  />Pending</label>
+                            </li>
+                            <!-- <li>
+                                <label>
+                                  <input type="checkbox" value="3" id="filterOption_3"  (change)="onFilterOptionChange($event, 3)"  />Deleted</label>
+                            </li> -->
+
+                        </ul>
+                    </div>
+                    <!-- <div class="sorting-filter-main all-client-list-box">
+                        <div class="form-group">
+
+                            <div class="select-dropdown">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Filter</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Paused</option>
+                                    <option value="0">Pending</option>
+                                    <option value="3">Deleted</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="dis-table-container" class="recently-added-table home-owner-table table-responsive">
+                <table class="table" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <!-- <th>
+                                <div class="checkbox-setting">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="message-1">
+                                        <label for="message-1"></label>
+                                    </div>
+                                </div>
+                            </th> -->
+                            <th>
+                                Home Owner
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'FirstName', 'fa-sort-up': (dataTableParams.sortColumn === 'FirstName' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'FirstName' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('FirstName')"></i>
+                            </th>
+                            <th>
+                                Sponsor
+                                <!-- <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'ReaName', 'fa-sort-up': (dataTableParams.sortColumn === 'ReaName' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'ReaName' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('ReaName')"></i> -->
+                            </th>
+                            <th>
+                                Email
+                                <i class="sort-icon fa fa-fw" [ngClass]="{'fa-sort': dataTableParams.sortColumn != 'Email', 'fa-sort-up': (dataTableParams.sortColumn === 'Email' && dataTableParams.sortOrder==='1'), 'fa-sort-down': (dataTableParams.sortColumn === 'Email' && dataTableParams.sortOrder==='2') }"
+                                    (click)="sortByColName('Email')"></i>
+                            </th>
+                            <!-- <th>Level</th> -->
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="clientList.length>0; else noHomeOwner">
+                        <tr *ngFor="let client of clientList; let i=index" [ngClass]="{'paused-section-status': client.userStatusType==2}">
+                            <!-- <td>
+                                <div class="checkbox-setting">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="message-2">
+                                        <label for="message-2"></label>
+                                    </div>
+                                </div>
+                            </td> -->
+                            <td>
+                                <div class="ho-name-td-width">{{client.name}}</div>
+                            </td>
+                            <td>
+                                <div class="ho-name-td-width">{{client.reaName}}</div>
+                            </td>
+                            <td>
+                                <div class="ho-email-td-width">{{client.email}}</div>
+                            </td>
+                            <!-- <td>
+                                <div class="form-group">
+
+                                    <div class="select-dropdown">
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option selected>Basic</option>
+                                            <option value="1">Premium</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td> -->
+                            <!-- <td>
+                                <ul class="edit-footer-ul">
+                                    <li><a href="javascript:;" class="btn-secondary-small" data-bs-toggle="modal" data-bs-target="#exampleModalMessage" (click)="openViewHomeDetailModal(client.homeOwnerAddressId, viewHomeDetailModalContent)">View
+                                            Details</a></li>
+                                </ul>
+                            </td> -->
+                            <td>
+                                <span *ngIf="client.userStatusType==0" class="pending-status">Pending</span>
+                                <span *ngIf="client.userStatusType==1" class="active-status">Active</span>
+                                <span *ngIf="client.userStatusType==2" class="paused-status">Paused</span>
+                                <span *ngIf="client.userStatusType==3" class="deleted-status">Deleted</span>
+                            </td>
+
+                            <td>
+                                <div class="select-block-drop">
+                                    <select name="homeOwnerDropDown" class="select-drop-new form-select" id="homeOwnerDropDown" (change)="onChangeOption($event.target, client)">
+                                        <option value="0">Choose Action</option>
+                                        <option value="1">Edit Profile</option>
+                                        <option *ngIf="client.userStatusType==1" value="2">Pause Profile</option>
+                                        <option *ngIf="client.userStatusType==2" value="3">Unpause Profile</option>
+                                        <option value="4">Delete Profile</option>
+                                        <option value="5">Login HO</option>
+                                        <option value="6">View Details</option>
+                                    </select>
+                                </div>
+
+                                <!-- <div class="dropdown">
+                                    <button (click)="showDopdownMenu(i)" class="dropbtn"></button>
+                                    <div id="myDropdown{{i}}" class="dropdown-content">
+
+                                        <a href="javascript:;" (click)="openEditClientModal(client.homeOwnerAddressId, editClientModalContent)">Edit Profile</a>
+
+                                        <a href="javascript:;" *ngIf="client.userStatusType==1" (click)="openPauseHomeOwnerAccountModal(client.userId, pauseAccountAlertModel)">Pause Profile</a>
+
+                                        <a href="javascript:;" *ngIf="client.userStatusType==2" (click)="openUnPauseProfileModal(client.userId, unpauseHoAlertModel)">Unpause Profile</a>
+
+                                        <a href="javascript:;" (click)="openCancelHomeOwnerAccountModal(client.userId, cancelAccountAlertModel)">Delete Profile</a>
+                                         <a href="javascript:;"
+                                            (click)="openEditHomeDetail(client.homeOwnerAddressId)">Edit Home Profile</a>
+                                        <a href="javascript:;" (click)="directLogin(client.userId)">Login Homeowner</a>
+                                    </div>
+                                </div> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                    <ng-template #noHomeOwner>
+                        <tbody>
+                            <tr>
+                                <td col-md-6>
+                                    No Home Owner is found..!
+                                </td>
+                            </tr>
+                        </tbody>
+                    </ng-template>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container" *ngIf="clientList.length>0">
+    <div class="row mb-5">
+
+
+        <div class="col-xl-6 col-lg-6 col-md-6">
+
+            <div class="pagination-per-page results-ine-box">
+                <div class="results-per-page-box">
+                    <p>Results per page:</p>
+                    <div class="form-group">
+                        <div class="select-dropdown">
+                            <select class="form-select" aria-label="Default select example" (change)="onChangePageSize($event)">
+                                <option value="10" selected>10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-6 col-lg-6 col-md-6">
+            <div class="pagination-block-up">
+                <ngb-pagination [maxSize]="5" [collectionSize]="totalRecords" [pageSize]="dataTableParams.pageSize" [page]="dataTableParams.pageNo" [rotate]="true" (pageChange)="loadPage($event)" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="create-new-owner-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #editClientModalContent let-modal>
+                <form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" (click)="onClickCloseModal()" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4>Edit Homeowner Profile</h4>
+                            <p>Fill the complete information about homeowner</p>
+                        </div>
+                        <div class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">First Name <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="First Name" formControlName="firstName">
+                                        <div *ngIf="editClientformControls.firstName.invalid && (editClientformControls.firstName.dirty || editClientformControls.firstName.touched)" class="text-danger">
+                                            <div *ngIf="editClientformControls.firstName.errors?.required">
+                                                First name is required.
+                                            </div>
+                                            <div *ngIf="editClientformControls.firstName.errors?.pattern">
+                                                Invalid First name.
+                                            </div>
+                                            <div *ngIf="editClientformControls.firstName.errors?.maxlength">
+                                                First name can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">Last Name <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Last Name" formControlName="lastName">
+                                        <div *ngIf="editClientformControls.lastName.invalid && (editClientformControls.lastName.dirty || editClientformControls.lastName.touched)" class="text-danger">
+                                            <div *ngIf="editClientformControls.lastName.errors?.required">
+                                                Last name is required.
+                                            </div>
+                                            <div *ngIf="editClientformControls.lastName.errors?.pattern">
+                                                Invalid Last name.
+                                            </div>
+                                            <div *ngIf="editClientformControls.lastName.errors?.maxlength">
+                                                Last name can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="phone">Phone <span>*</span></label>
+                                        <input type="text" formControlName="phone" class="form-control" placeholder="Phone" id="phone">
+
+                                        <div *ngIf="(editClientformControls.phone.invalid) && (submitted || editClientformControls.phone.dirty || editClientformControls.phone.touched)" class="text-danger">
+                                            <div *ngIf="editClientformControls.phone.errors?.required">
+                                                Phone is required.
+                                            </div>
+                                            <div *ngIf="editClientformControls.phone.errors?.pattern">
+                                                Invalid phone number.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email address <span>*</span></label>
+                                        <input type="email" class="form-control" placeholder="Email" formControlName="email" (keyup)="checkDuplicateEmail('E')" (focusout)="onEmailFocusOut('E')">
+                                        <div *ngIf="(editClientformControls.email.invalid) && (submitted || editClientformControls.email.dirty || editClientformControls.email.touched)" class="text-danger">
+                                            <div *ngIf="editClientformControls.email.errors?.required">
+                                                Email address is required.
+                                            </div>
+                                            <div *ngIf="editClientformControls.email.errors?.pattern">
+                                                Invalid email address.
+                                            </div>
+                                        </div>
+                                        <div *ngIf="isDuplicateEmail && (!editClientformControls.email?.errors?.required) && (!editClientformControls.email?.errors?.pattern)" class="text-danger">
+                                            Email id already exists..!
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">Home address <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Home address" formControlName="address">
+                                        <div *ngIf="editClientformControls.address.invalid && (editClientformControls.address.dirty || editClientformControls.address.touched)" class="text-danger">
+                                            <div *ngIf="editClientformControls.address.errors?.required">
+                                                Address is required.
+                                            </div>
+                                            <div *ngIf="editClientformControls.address.errors?.pattern">
+                                                Invalid Address.
+                                            </div>
+                                            <div *ngIf="editClientformControls?.address?.errors?.maxlength">
+                                                Address can be max 500 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <div class="select-dropdown">
+                                            <select class="form-select" formControlName="stateCode" aria-label="Default select example">
+                                                <option value="" selected>State Name</option>
+                                                <option *ngFor="let state of states" value="{{state.stateCode}}">
+                                                    {{state.stateTitle}}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="(editClientformControls.stateCode.invalid) && (submitted || editClientformControls.stateCode.dirty || editClientformControls.stateCode.touched)" class="text-danger">
+                                                <div *ngIf="editClientformControls.stateCode.errors?.required || editClientformControls.stateCode.value==0">
+                                                    State is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-4   -->
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <div class="select-dropdown">
+                                            <!-- <select class="form-select" formControlName="cityRefId"
+                                                aria-label="Default select example">
+                                                <option value="" selected>City Name</option>
+                                                <option *ngFor="let cityType of cityTypeEnum" value="{{cityType.value}}">
+                                                    {{cityType.description}}
+                                                </option>
+                                            </select> -->
+                                            <input type="text" class="form-control" placeholder="City Name" formControlName="cityName">
+                                            <div *ngIf="(editClientformControls.cityName.invalid) && (submitted || editClientformControls.cityName.dirty || editClientformControls.cityName.touched)" class="text-danger">
+                                                <div *ngIf="editClientformControls.cityName.errors?.required">
+                                                    City is required.
+                                                </div>
+                                                <div *ngIf="editClientformControls.cityName.errors?.pattern">
+                                                    Invalid City.
+                                                </div>
+                                                <div *ngIf="editClientformControls.cityName.errors?.maxlength">
+                                                    City can be max 20 characters long.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-4   -->
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip Code">
+                                        <div *ngIf="(editClientformControls.zipCode.invalid) && (submitted || editClientformControls.zipCode.dirty || editClientformControls.zipCode.touched)" class="text-danger">
+                                            <div *ngIf="editClientformControls.zipCode.errors?.required">
+                                                Zip code is required.
+                                            </div>
+                                            <div *ngIf="editClientformControls.zipCode.errors?.pattern">
+                                                Invalid zip code.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-4   -->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="upload-image-box" *ngIf="homePhoto">
+                                        <img class="img-fluid" id="homePhotoImgElement" [src]="homePhoto" alt="profile-change-img">
+                                    </div>
+                                    <!-- 
+                                    <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                                        Maximum File Size Limit is 1MB
+                                    </div> -->
+                                    <ul class="upload-image-box-link">
+                                        <li>
+
+                                            <input type="file" accept="image/png, image/jpeg" id="homePhotoBrowserInput" (change)="onHomeProfilePhotoBrowserInputChange($event,'homePhotoImgElement', '4.52')" style="display: none;">
+                                            <a href="javascript:;" (click)="passClickToHomeProfileFileInput('homePhotoBrowserInput')" onclick="homePhotoBrowserInput.value = null" class="btn-primary-small">Add Home Profile Image</a>
+                                        </li>
+                                        <li> <a href="javascript:;" *ngIf="homePhoto" (click)="onRemoveImage()" class="btn-secondary-small">Remove</a></li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="rea-agent">Assign Associated Real Estate Agent <span>*</span></label>
+                                        <input placeholder="Enter Real Estate Agent Name" id="rea-agent" type="text" class="form-control" formControlName="reaUser" [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]="false" />
+                                        <div *ngIf="(editClientformControls.realEstateAgentUserRefId.invalid) && (submitted || editClientformControls.reaUser.dirty || editClientformControls.reaUser.touched)" class="text-danger">
+                                            <div *ngIf="editClientformControls.realEstateAgentUserRefId.errors?.required">
+                                                Real estate agent is required.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <hr />
+                                    <pre>Model: {{ inputFormHomeOwner.value | json }}</pre> -->
+                                </div>
+                                <!--  col-md-6   -->
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Information</button>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<ng-template #cropImageModal let-modal>
+    <div class="modal-header">
+        <button type="button" (click)="onCancelCropImageModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <app-image-cropper-tool [targetParentImageElementId]="targetImageElementId" [aspectRatio]="aspectRatio" (passCroppedImageToParentEvent)="onImageCropper($event)" [fileUploadEventObject]="fileUploadEventObject">
+    </app-image-cropper-tool>
+</ng-template>
+
+<ng-template #cancelAccountAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to delete this Home Owner?</p>
+            <p class="notification-text-account">This cannot be undone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCancelAccountModelNoClick()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onCancelAccountModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- <ng-template #pauseAccountAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="onCancelAccountModelNoClick()" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to Pause this account?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCancelAccountModelNoClick()"
+                data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onCancelAccountModelYesClick()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template> -->
+
+
+
+<!-- Modal -->
+<div class="create-new-owner-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #pauseAccountAlertModel let-modal>
+                <form [formGroup]="inputFormPauseHO" (ngSubmit)="onSubmitPauseHO()">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" (click)="onCancelAccountModelNoClick()" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="add-footer-modal-heading">
+                            <h4>Pause Home Owner</h4>
+                            <p>Write the pause message</p>
+                        </div>
+                        <div class="create-new-owner-modal-form">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <!-- <input type="text" formControlName="userId"> -->
+                                        <label for="email">Create Pause Message for Home Owner <span>*</span></label>
+                                        <textarea formControlName="pauseMessage" class="form-control" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormPauseHO, 'pauseMessage')" rows="6" cols="50" placeholder="Type Message"></textarea>
+                                        <div *ngIf="PauseClientformControls.pauseMessage.invalid && (submitted || PauseClientformControls.pauseMessage.dirty || PauseClientformControls.pauseMessage.touched)" class="text-danger">
+                                            <div *ngIf="PauseClientformControls.pauseMessage.errors?.required">
+                                                Pause message is required.
+                                            </div>
+                                             <div *ngIf="PauseClientformControls.pauseMessage.errors?.maxlength">
+                                                Pause message can be max 500 characters long.
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Home Information Modal -->
+<div class="home-information-modal">
+    <div class="modal fade" id="exampleModalMessage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #viewHomeDetailModalContent let-modal>
+                <div class="modal-header">
+                    <div class="home-img-box-modal">
+                        <!-- <a href="#" class="btn-primary-small">Change Image</a> -->
+                        <img *ngIf="homePhoto!=null" [src]="homePhoto" class="modal-home-img img-fluid" alt="modal-home-img">
+                        <img *ngIf="homePhoto==null" [src]="defaultHomePhoto" class="modal-home-img img-fluid" alt="modal-home-img">
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCancelViewDetailModelNoClick()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="home-information-contact">
+                        <h4>{{selectedClient.name}}</h4>
+
+                        <img src="assets/img/location-icons.svg" alt="location-icons">
+                        <h6>{{selectedClient.address}}</h6>
+                        <h6><a href="mailto:{{selectedClient.email}}">{{selectedClient.email}}</a></h6>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="onEditViewHomeDetail()">edit home
+                        details</button>
+                </div>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="create-new-owner-modal">
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- <div class="modal-content"> -->
+            <ng-template #inviteClientModalContent let-modal>
+                <form [formGroup]="inputFormHomeOwner" (ngSubmit)="onSubmitInviteClient()">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" (click)="onClickCloseModal()" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-footer-modal-heading">
+                            <h4>Create New Homeowner</h4>
+                            <p>Fill the complete information about new homeowner</p>
+                        </div>
+                        <div class="create-new-owner-modal-form">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">First Name <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="First Name" formControlName="firstName" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormHomeOwner, 'firstName')">
+                                        <div *ngIf="InviteClientformControls.firstName.invalid && (submitted || InviteClientformControls.firstName.dirty || InviteClientformControls.firstName.touched)" class="text-danger">
+                                            <div *ngIf="InviteClientformControls.firstName.errors?.required">
+                                                First name is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.firstName.errors?.pattern">
+                                                Invalid First name.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.firstName.errors?.maxlength">
+                                                First name can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label for="company">Last Name <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Last Name" formControlName="lastName" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormHomeOwner, 'lastName')">
+                                        <div *ngIf="InviteClientformControls.lastName.invalid && (submitted || InviteClientformControls.lastName.dirty || InviteClientformControls.lastName.touched)" class="text-danger">
+                                            <div *ngIf="InviteClientformControls.lastName.errors?.required">
+                                                Last name is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.lastName.errors?.pattern">
+                                                Invalid Last name.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.lastName.errors?.maxlength">
+                                                Last name can be max 20 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="phone">Phone <span>*</span></label>
+                                        <input type="text" formControlName="phone" class="form-control" placeholder="Phone" id="phone" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormHomeOwner, 'phone')">
+
+                                        <div *ngIf="(InviteClientformControls.phone.invalid) && (submitted || InviteClientformControls.phone.dirty || InviteClientformControls.phone.touched)" class="text-danger">
+                                            <div *ngIf="InviteClientformControls.phone.errors?.required">
+                                                Phone is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.phone.errors?.pattern">
+                                                Invalid phone number.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email address <span>*</span></label>
+                                        <input type="email" class="form-control" placeholder="Email" formControlName="email" (keyup)="checkDuplicateEmail('N')" (focusout)="onEmailFocusOut('N')">
+                                        <div *ngIf="(InviteClientformControls.email.invalid) && (submitted || InviteClientformControls.email.dirty || InviteClientformControls.email.touched)" class="text-danger">
+                                            <div *ngIf="InviteClientformControls.email.errors?.required">
+                                                Email address is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.email.errors?.pattern">
+                                                Invalid email address.
+                                            </div>
+                                        </div>
+                                        <div *ngIf="isDuplicateEmail && (!InviteClientformControls.email?.errors?.required) && (!InviteClientformControls.email?.errors?.pattern)" class="text-danger">
+                                            Email id already exists..!
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="email">Home address <span>*</span></label>
+                                        <input type="text" class="form-control" placeholder="Home address" formControlName="address" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormHomeOwner, 'address')">
+                                        <div *ngIf="InviteClientformControls.address.invalid && (submitted || InviteClientformControls.address.dirty || InviteClientformControls.address.touched)" class="text-danger">
+                                            <div *ngIf="InviteClientformControls.address.errors?.required">
+                                                Address is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.address.errors?.pattern">
+                                                Invalid Address.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls?.address?.errors?.maxlength">
+                                                Address can be max 500 characters long.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-6   -->
+
+                            </div>
+                            <div class="row">
+
+
+                                <!--  col-md-4   -->
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <div class="select-dropdown">
+                                            <!-- <select class="form-select" formControlName="cityRefId"
+                aria-label="Default select example">
+                <option value="" selected>City Name</option>
+                <option *ngFor="let cityType of cityTypeEnum" value="{{cityType.value}}">
+                    {{cityType.description}}
+                </option>
+            </select> -->
+                                            <input type="text" class="form-control" placeholder="City Name" formControlName="cityName">
+                                            <div *ngIf="(InviteClientformControls.cityName.invalid) && (submitted || InviteClientformControls.cityName.dirty || InviteClientformControls.cityName.touched)" class="text-danger">
+                                                <div *ngIf="InviteClientformControls.cityName.errors?.required">
+                                                    City is required.
+                                                </div>
+                                                <div *ngIf="InviteClientformControls.cityName.errors?.pattern">
+                                                    Invalid City.
+                                                </div>
+                                                <div *ngIf="InviteClientformControls.cityName.errors?.maxlength">
+                                                    City can be max 20 characters long.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <div class="select-dropdown">
+                                            <select class="form-select" formControlName="stateCode" aria-label="Default select example">
+                                                <option value="" selected>State Name</option>
+                                                <option *ngFor="let state of states" value="{{state.stateCode}}">
+                                                    {{state.stateTitle}}
+                                                </option>
+                                            </select>
+                                            <div *ngIf="(InviteClientformControls.stateCode.invalid) && (submitted || InviteClientformControls.stateCode.dirty || InviteClientformControls.stateCode.touched)" class="text-danger">
+                                                <div *ngIf="InviteClientformControls.stateCode.errors?.required || InviteClientformControls.stateCode.value==0">
+                                                    State is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  col-md-4   -->
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip Code" (focusout)="commonOpsService.trimFormControlOnFocusOut($event, inputFormHomeOwner, 'zipCode')">
+                                        <div *ngIf="(InviteClientformControls.zipCode.invalid) && (submitted || InviteClientformControls.zipCode.dirty || InviteClientformControls.zipCode.touched)" class="text-danger">
+                                            <div *ngIf="InviteClientformControls.zipCode.errors?.required">
+                                                Zip code is required.
+                                            </div>
+                                            <div *ngIf="InviteClientformControls.zipCode.errors?.pattern">
+                                                Invalid zip code.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--  col-md-4   -->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="upload-image-box" *ngIf="homePhoto">
+                                        <img class="img-fluid" id="newHomePhotoImgElement" [src]="homePhoto" alt="profile-change-img">
+
+                                    </div>
+
+                                    <div class="text-danger img-size-error" *ngIf="!invalidSize">
+                                        Maximum File Size Limit is 1MB
+                                    </div>
+
+                                    <ul class="upload-image-box-link">
+                                        <li>
+
+                                            <input type="file" accept="image/png, image/jpeg" id="homePhotoBrowserInput" (change)="onHomeProfilePhotoBrowserInputChange($event,'newHomePhotoImgElement', '4.52')" style="display: none;">
+                                            <a href="javascript:;" (click)="passClickToHomeProfileFileInput('homePhotoBrowserInput')" onclick="homePhotoBrowserInput.value = null" class="btn-primary-small">Add Home Profile Image</a>
+                                        </li>
+                                        <li> <a href="javascript:;" *ngIf="homePhoto" (click)="onRemoveImage()" class="btn-secondary-small">Remove</a></li>
+                                    </ul>
+
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="rea-agent">Assign Associated Real Estate Agent <span>*</span></label>
+                                        <input placeholder="Enter Real Estate Agent Name" id="rea-agent" type="text" class="form-control" formControlName="reaUser" [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]="false" />
+                                        <div *ngIf="(InviteClientformControls.reaUser.invalid) && (submitted || InviteClientformControls.reaUser.dirty || InviteClientformControls.reaUser.touched)" class="text-danger">
+                                            <div *ngIf="InviteClientformControls.reaUser.errors?.required || InviteClientformControls.reaUser.value==0">
+                                                Real estate agent is required.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <hr />
+                                    <pre>Model: {{ inputFormHomeOwner.value | json }}</pre> -->
+                                </div>
+                                <!--  col-md-6   -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer rea-modal-footer skip-ho-box-btn">
+                        <button type="button" (click)="onSubmitWithSkipHomeDetails()" class="btn btn-primary">skip home owner profile</button>
+                        <button type="button" (click)="onSubmitWithCompleteHomeDetails()" class="btn btn-disable" data-bs-dismiss="modal">Complete home owner profile</button>
+                    </div>
+                </form>
+            </ng-template>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+
+<ng-template #unpauseHoAlertModel let-modal>
+    <div class="skip-recommendations">
+        <div class="modal-header">
+            <button type="button" (click)="dismissAllModels()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img src="assets/img/notification-icon.svg" class="notification-icon" alt="modal-home-icon">
+            <p>Are you sure you want to unpaused profile?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="dismissAllModels()" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="onSubmitUnpause()" class="btn btn-primary">Yes</button>
+        </div>
+    </div>
+</ng-template>

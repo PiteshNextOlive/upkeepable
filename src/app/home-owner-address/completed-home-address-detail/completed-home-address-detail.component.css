@@ -1,0 +1,8 @@
+#addressbar-section ul li h5 a {
+    margin-left: 5px;
+}
+@media (max-width: 991px) {
+    ::ng-deep img.profile-img {
+        display: none;
+    }
+}
